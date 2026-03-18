@@ -857,7 +857,7 @@ export default function App() {
       </div>
 
       {/* BOTTOM NAV */}
-      <div className="nb">
+      <div className="nb" style={{ alignItems: "center" }}>
         {[
           { id: "home", label: t.navHome, icon: "home", color: "#7acae0" },
           { id: "codes", label: t.navCodes, icon: "book", color: "#7acae0" },
@@ -867,11 +867,20 @@ export default function App() {
         ].map(item => {
           const active = screen === item.id;
           const isCamera = item.id === "identify";
+          if (isCamera) {
+            return (
+              <div key={item.id} className="ni" onClick={() => navTo(item.id)}>
+                <div style={{ width: 46, height: 46, borderRadius: "50%", background: active ? "#c85a30" : "linear-gradient(135deg,#2a1a0f,#1a2a3a)", border: `2px solid ${active ? "#ff7a50" : "#c85a30"}`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 ${active ? "16px" : "6px"} rgba(200,90,48,${active ? ".6" : ".3"})`, marginBottom: 2 }}>
+                  <Icon name="camera" size={22} color={active ? "#fff" : "#c85a30"} />
+                </div>
+                <span className="nl" style={{ color: active ? "#c85a30" : "#c85a30", opacity: active ? 1 : 0.7 }}>{item.label}</span>
+              </div>
+            );
+          }
           return (
-            <div key={item.id} className="ni" onClick={() => navTo(item.id)} style={isCamera ? { position: "relative" } : {}}>
-              {isCamera && <div style={{ position: "absolute", top: -8, left: "50%", transform: "translateX(-50%)", width: 44, height: 44, background: active ? "#c85a30" : "#1a2a3a", border: `2px solid ${active ? "#c85a30" : "#3a5a6a"}`, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: active ? "0 0 16px rgba(200,90,48,.5)" : "none" }}><Icon name="camera" size={20} color={active ? "#fff" : "#3a8a9a"} /></div>}
-              {!isCamera && <Icon name={item.icon} size={22} color={active ? item.color : "#3a4a5a"} />}
-              <span className="nl" style={{ color: active ? item.color : "#3a4a5a", marginTop: isCamera ? 10 : 0 }}>{item.label}</span>
+            <div key={item.id} className="ni" onClick={() => navTo(item.id)}>
+              <Icon name={item.icon} size={22} color={active ? item.color : "#3a4a5a"} />
+              <span className="nl" style={{ color: active ? item.color : "#3a4a5a" }}>{item.label}</span>
             </div>
           );
         })}
