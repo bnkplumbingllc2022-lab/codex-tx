@@ -910,7 +910,6 @@ export default function App() {
 // ─── IDENTIFY SCREEN COMPONENT ───────────────────────────────
 function IdentifyScreen({ t, lang }) {
   const [phase, setPhase] = useState("idle"); // idle | analyzing | results | detail
-  const [imageData, setImageData] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [parts, setParts] = useState([]);
   const [selectedPart, setSelectedPart] = useState(null);
@@ -924,7 +923,6 @@ function IdentifyScreen({ t, lang }) {
       const dataUrl = e.target.result;
       const base64 = dataUrl.split(",")[1];
       setImagePreview(dataUrl);
-      setImageData(base64);
       setPhase("analyzing");
       setError(null);
       await analyzeImage(base64);
@@ -966,7 +964,7 @@ function IdentifyScreen({ t, lang }) {
     }
   };
 
-  const reset = () => { setPhase("idle"); setImageData(null); setImagePreview(null); setParts([]); setSelectedPart(null); setError(null); };
+  const reset = () => { setPhase("idle"); setImagePreview(null); setParts([]); setSelectedPart(null); setError(null); };
 
   const codeColor = (status) => ({ approved: "#4a9a6a", grandfathered: "#c8a030", "not-approved": "#c85a30" }[status] || "#4a6a7a");
   const codeLabel = (status) => ({ approved: t.identifyApproved, grandfathered: t.identifyGrandfathered, "not-approved": t.identifyNotApproved }[status] || status);
