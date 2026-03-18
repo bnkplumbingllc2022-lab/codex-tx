@@ -931,35 +931,29 @@ function IdentifyScreen({ t, lang }) {
   };
 
   const analyzeImage = async (base64) => {
-    const enPrompt = "You are an expert master plumber and parts identifier with 30+ years of experience. When shown a plumbing photo, identify every visible component. Respond ONLY with a valid JSON array, no markdown, no preamble. Each object must have: id (number), name (short part name), category (one of: Valve|Pipe|Fitting|Water Heater|Fixture|Gas|Backflow|Vent|Pump|Filter|Unknown), description (2-3 sentences: what it is and what it does), codeStatus (one of: approved|grandfathered|not-approved), codeNote (brief code status note), stillMade (true or false), manufacturer (brand if visible), whereToFind (Home Depot, Ferguson, Grainger, etc.), estimatedCost (price range like $8-$15), proTip (one field tip a master plumber would share), searchTerm (YouTube search term for repair video), affiliateSearch (Home Depot search keyword).";
-    const esPrompt = "Eres un maestro plomero experto con mas de 30 anos de experiencia. Cuando se muestra una foto de plomeria, identifica cada componente visible. Responde SOLO con un array JSON valido, sin markdown, sin preambulo. Cada objeto debe tener: id (numero), name (nombre corto), category (uno de: Valve|Pipe|Fitting|Water Heater|Fixture|Gas|Backflow|Vent|Pump|Filter|Unknown), description (2-3 oraciones en espanol: que es y que hace), codeStatus (uno de: approved|grandfathered|not-approved), codeNote (nota breve sobre codigo), stillMade (true o false), manufacturer (marca si visible), whereToFind (donde comprar), estimatedCost (rango de precio), proTip (consejo de campo), searchTerm (busqueda en YouTube), affiliateSearch (palabra clave Home Depot).";
-    const systemPrompt = lang === "en" ? enPrompt : esPrompt;
-
     try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
+      const response = await fetch("/api/identify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
-          system: systemPrompt,
-          messages: [{
-            role: "user",
-            content: [
-              { type: "image", source: { type: "base64", media_type: "image/jpeg", data: base64 } },
-              { type: "text", text: lang === "en" ? "Identify every plumbing part you can see in this photo. Return JSON array only." : "Identifica cada parte de plomería visible en esta foto. Devuelve solo el array JSON." }
-            ]
-          }]
-        })
+        body: JSON.stringify({ base64, lang })
       });
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error || "Server error " + response.status);
+      }
+
       const data = await response.json();
-      const text = data.content?.map(i => i.text || "").join("") || "";
-      const clean = text.replace(/```json|```/g, "").trim();
-      const parsed = JSON.parse(clean);
-      setParts(Array.isArray(parsed) ? parsed : []);
+      if (!data.parts || data.parts.length === 0) {
+        setError(lang === "en" ? "No plumbing parts detected — try a closer shot with better lighting" : "No se detectaron partes — intenta más cerca con mejor iluminación");
+        setPhase("idle");
+        return;
+      }
+      setParts(data.parts);
       setPhase("results");
     } catch (err) {
-      setError(t.identifyError);
+      console.error("Identify error:", err);
+      setError((lang === "en" ? "Could not analyze photo: " : "No se pudo analizar: ") + err.message);
       setPhase("idle");
     }
   };
