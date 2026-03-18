@@ -679,6 +679,7 @@ export default function App() {
         .buy-btn:active{background:#2a4a3a}
         .yt-btn{display:flex;align-items:center;gap:8px;background:#2a1a1a;border:1px solid #6a2a2a;border-radius:10px;padding:10px 14px;cursor:pointer;width:100%;margin-bottom:8px;transition:all .15s}
         .yt-btn:active{background:#3a1a1a}
+        @keyframes speakBar{from{transform:scaleY(.4)}to{transform:scaleY(1)}}
       `}</style>
 
       {/* HEADER */}
@@ -909,19 +910,69 @@ export default function App() {
 
 // ─── IDENTIFY SCREEN COMPONENT ───────────────────────────────
 function IdentifyScreen({ t, lang }) {
-  const [phase, setPhase] = useState("idle"); // idle | analyzing | results | detail
+  const [phase, setPhase] = useState("idle");
   const [imagePreview, setImagePreview] = useState(null);
   const [parts, setParts] = useState([]);
   const [selectedPart, setSelectedPart] = useState(null);
   const [error, setError] = useState(null);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [voiceEnabled, setVoiceEnabled] = useState(true);
   const fileRef = useRef(null);
+  const synthRef = useRef(window.speechSynthesis);
+
+  const speak = (text) => {
+    if (!voiceEnabled) return;
+    synthRef.current.cancel();
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = lang === "es" ? "es-MX" : "en-US";
+    utt.rate = 0.95;
+    utt.pitch = 1;
+    utt.volume = 1;
+    utt.onstart = () => setIsSpeaking(true);
+    utt.onend = () => setIsSpeaking(false);
+    utt.onerror = () => setIsSpeaking(false);
+    synthRef.current.speak(utt);
+  };
+
+  const stopSpeaking = () => {
+    synthRef.current.cancel();
+    setIsSpeaking(false);
+  };
+
+  const buildSpeech = (partsList) => {
+    if (partsList.length === 0) return lang === "en" ? "No plumbing parts detected." : "No se detectaron partes de plomería.";
+    if (partsList.length === 1) {
+      const p = partsList[0];
+      const codeWord = p.codeStatus === "approved"
+        ? (lang === "en" ? "code approved" : "aprobado por código")
+        : p.codeStatus === "grandfathered"
+        ? (lang === "en" ? "grandfathered, acceptable in existing systems" : "aceptable en sistemas existentes")
+        : (lang === "en" ? "not code approved, should be replaced" : "no aprobado por código, debe reemplazarse");
+      return lang === "en"
+        ? `I can see a ${p.name}. ${p.description} This part is ${codeWord}. ${p.proTip ? "Pro tip: " + p.proTip : ""}`
+        : `Veo ${p.name}. ${p.description} Esta parte es ${codeWord}. ${p.proTip ? "Consejo: " + p.proTip : ""}`;
+    }
+    const names = partsList.map(p => p.name).join(", ");
+    const issues = partsList.filter(p => p.codeStatus !== "approved");
+    let speech = lang === "en"
+      ? `I found ${partsList.length} parts: ${names}.`
+      : `Encontré ${partsList.length} partes: ${names}.`;
+    if (issues.length > 0) {
+      speech += lang === "en"
+        ? ` Heads up — ${issues.map(p => p.name).join(" and ")} ${issues.length === 1 ? "is" : "are"} not fully code approved. Tap each part for details.`
+        : ` Atención — ${issues.map(p => p.name).join(" y ")} no ${issues.length === 1 ? "está" : "están"} totalmente aprobado por código. Toca cada parte para más detalles.`;
+    } else {
+      speech += lang === "en" ? " All parts appear code approved. Tap any part for details." : " Todas las partes parecen aprobadas por código. Toca cualquier parte para más detalles.";
+    }
+    return speech;
+  };
 
   const handleImage = async (file) => {
     if (!file) return;
+    stopSpeaking();
     const reader = new FileReader();
     reader.onload = async (e) => {
       const dataUrl = e.target.result;
-      // Compress image before sending
       const compressed = await compressImage(dataUrl);
       const base64 = compressed.split(",")[1];
       setImagePreview(dataUrl);
@@ -967,15 +1018,20 @@ function IdentifyScreen({ t, lang }) {
 
       const data = await response.json();
       if (!data.parts || data.parts.length === 0) {
-        setError(lang === "en" ? "No plumbing parts detected — try a closer shot with better lighting" : "No se detectaron partes — intenta más cerca con mejor iluminación");
+        const msg = lang === "en" ? "No plumbing parts detected — try a closer shot with better lighting" : "No se detectaron partes — intenta más cerca con mejor iluminación";
+        setError(msg);
+        speak(lang === "en" ? "No plumbing parts detected. Try getting closer or improving the lighting." : "No se detectaron partes de plomería. Intenta acercarte más o mejorar la iluminación.");
         setPhase("idle");
         return;
       }
       setParts(data.parts);
       setPhase("results");
+      // Speak results automatically
+      speak(buildSpeech(data.parts));
     } catch (err) {
       console.error("Identify error:", err);
       setError((lang === "en" ? "Could not analyze photo: " : "No se pudo analizar: ") + err.message);
+      speak(lang === "en" ? "Could not analyze the photo. Please try again." : "No se pudo analizar la foto. Por favor intenta de nuevo.");
       setPhase("idle");
     }
   };
@@ -997,6 +1053,20 @@ function IdentifyScreen({ t, lang }) {
           </div>
 
           {error && <div style={{ background: "#2a1a1a", border: "1px solid #6a2a2a", borderRadius: 10, padding: "10px 14px", marginBottom: 16, fontFamily: "'Lora',serif", fontSize: 13, color: "#c87a60" }}>{error}</div>}
+
+          {/* Voice toggle */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "10px 14px", marginBottom: 16 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ fontSize: 18 }}>🔊</span>
+              <div>
+                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, fontWeight: 600, color: "#e0e8f0" }}>{lang === "en" ? "Voice Readout" : "Lectura por Voz"}</div>
+                <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#3a5a6a" }}>{lang === "en" ? "Bob speaks results aloud" : "Bob lee los resultados en voz alta"}</div>
+              </div>
+            </div>
+            <div onClick={() => setVoiceEnabled(v => !v)} style={{ width: 44, height: 24, background: voiceEnabled ? "#c85a30" : "#2a3038", borderRadius: 12, position: "relative", cursor: "pointer", transition: "background .2s" }}>
+              <div style={{ position: "absolute", top: 2, left: voiceEnabled ? 22 : 2, width: 20, height: 20, background: "#fff", borderRadius: "50%", transition: "left .2s" }} />
+            </div>
+          </div>
 
           <input ref={fileRef} type="file" accept="image/*" capture="environment" style={{ display: "none" }} onChange={e => handleImage(e.target.files[0])} />
 
@@ -1061,8 +1131,29 @@ function IdentifyScreen({ t, lang }) {
               <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 20, color: "#e0e8f0" }}>{parts.length} {t.identifyResults}</div>
               <div style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#3a5a6a" }}>{t.identifyTapPart}</div>
             </div>
-            <button onClick={reset} style={{ background: "none", border: "1px solid #2a3038", borderRadius: 8, padding: "6px 12px", cursor: "pointer", fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#4a6a7a", letterSpacing: ".06em" }}>{t.identifyNewPhoto}</button>
+            <div style={{ display: "flex", gap: 8 }}>
+              {isSpeaking ? (
+                <button onClick={stopSpeaking} style={{ background: "#2a1a1a", border: "1px solid #c85a30", borderRadius: 8, padding: "6px 12px", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
+                  <span style={{ fontSize: 14 }}>⏹</span>
+                  <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#c85a30", fontWeight: 700, letterSpacing: ".06em" }}>STOP</span>
+                </button>
+              ) : (
+                <button onClick={() => speak(buildSpeech(parts))} style={{ background: "#1a2a3a", border: "1px solid #3a5a6a", borderRadius: 8, padding: "6px 12px", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
+                  <span style={{ fontSize: 14 }}>🔊</span>
+                  <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#7acae0", fontWeight: 700, letterSpacing: ".06em" }}>REPLAY</span>
+                </button>
+              )}
+              <button onClick={reset} style={{ background: "none", border: "1px solid #2a3038", borderRadius: 8, padding: "6px 12px", cursor: "pointer", fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#4a6a7a", letterSpacing: ".06em" }}>{t.identifyNewPhoto}</button>
+            </div>
           </div>
+          {isSpeaking && (
+            <div style={{ background: "#1a2a1a", border: "1px solid #2a5a2a", borderRadius: 10, padding: "10px 14px", marginBottom: 14, display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{ display: "flex", gap: 3, alignItems: "center" }}>
+                {[0,1,2,3].map(i => <div key={i} style={{ width: 3, background: "#4a9a6a", borderRadius: 2, animation: "speakBar .6s ease-in-out infinite alternate", animationDelay: i * 0.15 + "s", height: [12,18,14,10][i] }} />)}
+              </div>
+              <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, color: "#4a9a6a", fontWeight: 600, letterSpacing: ".06em" }}>{lang === "en" ? "BOB IS SPEAKING..." : "BOB ESTÁ HABLANDO..."}</span>
+            </div>
+          )}
           {parts.map((part, i) => (
             <div key={part.id} className="part-card" style={{ animationDelay: `${i * 60}ms`, borderLeftColor: catColor[part.category] || "#3a5a6a", borderLeftWidth: 3 }} onClick={() => setSelectedPart(part)}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
