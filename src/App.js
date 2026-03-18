@@ -912,29 +912,21 @@ export default function App() {
 function IdentifyScreen({ t, lang }) {
   const [phase, setPhase] = useState("idle");
   const [imagePreview, setImagePreview] = useState(null);
-  const [parts, setParts] = useState([]);
+  const [partsEn, setPartsEn] = useState([]);
+  const [partsEs, setPartsEs] = useState([]);
   const [selectedPart, setSelectedPart] = useState(null);
   const [error, setError] = useState(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voiceEnabled, setVoiceEnabled] = useState(true);
   const [lastBase64, setLastBase64] = useState(null);
+  const [fetchedLangs, setFetchedLangs] = useState([]);
   const fileRef = useRef(null);
+  const galleryRef = useRef(null);
   const synthRef = useRef(window.speechSynthesis);
-  const langRef = useRef(lang);
 
-  // When language changes — re-analyze last photo if we have results
-  const prevLang = langRef.current;
-  if (prevLang !== lang) {
-    langRef.current = lang;
-    if (phase === "results" && lastBase64) {
-      // Re-fetch in new language
-      setTimeout(() => {
-        stopSpeaking();
-        setPhase("analyzing");
-        analyzeImage(lastBase64, lang);
-      }, 0);
-    }
-  }
+  // Current parts based on active language — no API call needed to switch
+  const parts = lang === "es" ? partsEs : partsEn;
+  const setParts = lang === "es" ? setPartsEs : setPartsEn;
 
   const unlockAudio = () => {
     // iOS requires audio to be triggered by a direct user gesture
@@ -1034,37 +1026,58 @@ function IdentifyScreen({ t, lang }) {
   const analyzeImage = async (base64, activeLang) => {
     const useLang = activeLang || lang;
     try {
-      const response = await fetch("/api/identify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ base64, lang: useLang })
-      });
+      // Fetch both languages in parallel — pay once, switch for free forever
+      const [resEn, resEs] = await Promise.all([
+        fetch("/api/identify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ base64, lang: "en" })
+        }),
+        fetch("/api/identify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ base64, lang: "es" })
+        })
+      ]);
 
-      if (!response.ok) {
-        const err = await response.json().catch(() => ({}));
-        throw new Error(err.error || "Server error " + response.status);
-      }
+      const [dataEn, dataEs] = await Promise.all([
+        resEn.json(),
+        resEs.json()
+      ]);
 
-      const data = await response.json();
-      if (!data.parts || data.parts.length === 0) {
-        const msg = useLang === "en" ? "No plumbing parts detected — try a closer shot with better lighting" : "No se detectaron partes — intenta más cerca con mejor iluminación";
+      const enParts = dataEn.parts || [];
+      const esParts = dataEs.parts || [];
+
+      if (enParts.length === 0 && esParts.length === 0) {
+        const msg = useLang === "en"
+          ? "No plumbing parts detected — try a closer shot with better lighting"
+          : "No se detectaron partes — intenta más cerca con mejor iluminación";
         setError(msg);
-        speak(useLang === "en" ? "No plumbing parts detected. Try getting closer or improving the lighting." : "No se detectaron partes. Intenta acercarte más o mejorar la iluminación.");
+        speak(useLang === "en"
+          ? "No plumbing parts detected. Try getting closer or improving the lighting."
+          : "No se detectaron partes. Intenta acercarte más o mejorar la iluminación.");
         setPhase("idle");
         return;
       }
-      setParts(data.parts);
+
+      setPartsEn(enParts);
+      setPartsEs(esParts);
+      setFetchedLangs(["en", "es"]);
       setPhase("results");
-      speak(buildSpeech(data.parts));
+      // Speak in whichever language is active
+      speak(buildSpeech(useLang === "es" ? esParts : enParts));
+
     } catch (err) {
       console.error("Identify error:", err);
       setError((useLang === "en" ? "Could not analyze photo: " : "No se pudo analizar: ") + err.message);
-      speak(useLang === "en" ? "Could not analyze the photo. Please try again." : "No se pudo analizar la foto. Por favor intenta de nuevo.");
+      speak(useLang === "en"
+        ? "Could not analyze the photo. Please try again."
+        : "No se pudo analizar la foto. Por favor intenta de nuevo.");
       setPhase("idle");
     }
   };
 
-  const reset = () => { stopSpeaking(); setPhase("idle"); setImagePreview(null); setParts([]); setSelectedPart(null); setError(null); setLastBase64(null); };
+  const reset = () => { stopSpeaking(); setPhase("idle"); setImagePreview(null); setPartsEn([]); setPartsEs([]); setSelectedPart(null); setError(null); setLastBase64(null); setFetchedLangs([]); };
 
   const codeColor = (status) => ({ approved: "#4a9a6a", grandfathered: "#c8a030", "not-approved": "#c85a30" }[status] || "#4a6a7a");
   const codeLabel = (status) => ({ approved: t.identifyApproved, grandfathered: t.identifyGrandfathered, "not-approved": t.identifyNotApproved }[status] || status);
@@ -1097,6 +1110,7 @@ function IdentifyScreen({ t, lang }) {
           </div>
 
           <input ref={fileRef} type="file" accept="image/*" capture="environment" style={{ display: "none" }} onChange={e => handleImage(e.target.files[0])} />
+          <input ref={galleryRef} type="file" accept="image/*" style={{ display: "none" }} onChange={e => handleImage(e.target.files[0])} />
 
           {/* Main camera button */}
           <div className="upload-zone" onClick={() => { unlockAudio(); fileRef.current?.click(); }}>
@@ -1107,7 +1121,15 @@ function IdentifyScreen({ t, lang }) {
               </svg>
             </div>
             <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 18, letterSpacing: ".08em", color: "#e0e8f0", marginBottom: 6 }}>{t.identifyTap}</div>
-            <div style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#3a5a6a" }}>{t.identifyOrUpload}</div>
+          </div>
+
+          {/* Gallery upload button */}
+          <div onClick={() => { unlockAudio(); galleryRef.current?.click(); }} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 12, padding: "12px 16px", marginTop: 10, cursor: "pointer", transition: "all .15s" }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7acae0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 600, fontSize: 15, letterSpacing: ".06em", color: "#7acae0" }}>{lang === "en" ? "UPLOAD FROM CAMERA ROLL" : "SUBIR DESDE LA GALERÍA"}</span>
           </div>
 
           {/* What it can identify */}
