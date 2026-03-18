@@ -661,6 +661,24 @@ export default function App() {
         .lang-btn{background:rgba(58,138,154,.15);border:1px solid #3a8a9a;border-radius:8px;padding:5px 10px;cursor:pointer;display:flex;align-items:center;gap:4px}
         .tab-btn{flex:1;padding:8px;border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;border-radius:6px;transition:all .15s}
         .diagram-box{background:#1a1f24;border:1px solid #2a3038;border-radius:12px;padding:16px;margin-bottom:16px}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        @keyframes scanLine{0%{top:10%}100%{top:90%}}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+        .part-card{background:#1a1f24;border:1px solid #2a3038;border-radius:12px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:all .15s;animation:fadeUp .3s ease forwards;opacity:0}
+        .part-card:active{background:#1f252c;transform:scale(.98)}
+        .scanner-box{position:relative;border-radius:12px;overflow:hidden;background:#0a0f14;border:1px solid #2a3038}
+        .scan-line{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#c85a30,transparent);animation:scanLine 1.8s ease-in-out infinite alternate}
+        .corner{position:absolute;width:20px;height:20px;border-color:#c85a30;border-style:solid}
+        .corner-tl{top:10px;left:10px;border-width:2px 0 0 2px}
+        .corner-tr{top:10px;right:10px;border-width:2px 2px 0 0}
+        .corner-bl{bottom:10px;left:10px;border-width:0 0 2px 2px}
+        .corner-br{bottom:10px;right:10px;border-width:0 2px 2px 0}
+        .upload-zone{border:2px dashed #2a3038;border-radius:14px;padding:32px 16px;text-align:center;cursor:pointer;transition:all .2s}
+        .upload-zone:active{border-color:#c85a30;background:rgba(200,90,48,.05)}
+        .buy-btn{display:flex;align-items:center;gap:8px;background:#1a3a2a;border:1px solid #2a6a3a;border-radius:10px;padding:10px 14px;cursor:pointer;width:100%;margin-bottom:8px;transition:all .15s}
+        .buy-btn:active{background:#2a4a3a}
+        .yt-btn{display:flex;align-items:center;gap:8px;background:#2a1a1a;border:1px solid #6a2a2a;border-radius:10px;padding:10px 14px;cursor:pointer;width:100%;margin-bottom:8px;transition:all .15s}
+        .yt-btn:active{background:#3a1a1a}
       `}</style>
 
       {/* HEADER */}
@@ -915,39 +933,9 @@ function IdentifyScreen({ t, lang }) {
   };
 
   const analyzeImage = async (base64) => {
-    const systemPrompt = lang === "en"
-      ? `You are an expert master plumber and parts identifier with 30+ years of experience. When shown a plumbing photo, identify every visible component. Respond ONLY with a valid JSON array, no markdown, no preamble. Each object must have these exact fields:
-{
-  "id": number,
-  "name": "short part name",
-  "category": "one of: Valve | Pipe | Fitting | Water Heater | Fixture | Gas | Backflow | Vent | Pump | Filter | Unknown",
-  "description": "2-3 sentences plain English: what it is and what it does",
-  "codeStatus": "one of: approved | grandfathered | not-approved",
-  "codeNote": "brief note about code status, which code applies",
-  "stillMade": true or false,
-  "manufacturer": "brand if visible, else common brands",
-  "whereToFind": "Home Depot, Ferguson, Grainger, etc.",
-  "estimatedCost": "price range like $8-$15",
-  "proTip": "one field tip a master plumber would share",
-  "searchTerm": "YouTube search term to find repair video",
-  "affiliateSearch": "Home Depot search URL keyword"
-}`
-      : `Eres un maestro plomero experto con más de 30 años de experiencia. Cuando se muestra una foto de plomería, identifica cada componente visible. Responde SOLO con un array JSON válido, sin markdown, sin preámbulo. Cada objeto debe tener exactamente estos campos:
-{
-  "id": número,
-  "name": "nombre corto de la parte",
-  "category": "uno de: Valve | Pipe | Fitting | Water Heater | Fixture | Gas | Backflow | Vent | Pump | Filter | Unknown",
-  "description": "2-3 oraciones en español simple: qué es y qué hace",
-  "codeStatus": "uno de: approved | grandfathered | not-approved",
-  "codeNote": "nota breve sobre el estado del código",
-  "stillMade": true o false,
-  "manufacturer": "marca si es visible, o marcas comunes",
-  "whereToFind": "Home Depot, Ferguson, Grainger, etc.",
-  "estimatedCost": "rango de precio como $8-$15",
-  "proTip": "un consejo de campo que daría un maestro plomero",
-  "searchTerm": "término de búsqueda en YouTube para encontrar video de reparación",
-  "affiliateSearch": "palabra clave para buscar en Home Depot"
-}`;
+    const enPrompt = "You are an expert master plumber and parts identifier with 30+ years of experience. When shown a plumbing photo, identify every visible component. Respond ONLY with a valid JSON array, no markdown, no preamble. Each object must have: id (number), name (short part name), category (one of: Valve|Pipe|Fitting|Water Heater|Fixture|Gas|Backflow|Vent|Pump|Filter|Unknown), description (2-3 sentences: what it is and what it does), codeStatus (one of: approved|grandfathered|not-approved), codeNote (brief code status note), stillMade (true or false), manufacturer (brand if visible), whereToFind (Home Depot, Ferguson, Grainger, etc.), estimatedCost (price range like $8-$15), proTip (one field tip a master plumber would share), searchTerm (YouTube search term for repair video), affiliateSearch (Home Depot search keyword).";
+    const esPrompt = "Eres un maestro plomero experto con mas de 30 anos de experiencia. Cuando se muestra una foto de plomeria, identifica cada componente visible. Responde SOLO con un array JSON valido, sin markdown, sin preambulo. Cada objeto debe tener: id (numero), name (nombre corto), category (uno de: Valve|Pipe|Fitting|Water Heater|Fixture|Gas|Backflow|Vent|Pump|Filter|Unknown), description (2-3 oraciones en espanol: que es y que hace), codeStatus (uno de: approved|grandfathered|not-approved), codeNote (nota breve sobre codigo), stillMade (true o false), manufacturer (marca si visible), whereToFind (donde comprar), estimatedCost (rango de precio), proTip (consejo de campo), searchTerm (busqueda en YouTube), affiliateSearch (palabra clave Home Depot).";
+    const systemPrompt = lang === "en" ? enPrompt : esPrompt;
 
     try {
       const response = await fetch("https://api.anthropic.com/v1/messages", {
@@ -986,27 +974,6 @@ function IdentifyScreen({ t, lang }) {
 
   return (
     <div>
-      <style>{`
-        @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes scanLine { 0%{top:10%} 100%{top:90%} }
-        @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
-        .part-card { background:#1a1f24; border:1px solid #2a3038; border-radius:12px; padding:14px 16px; margin-bottom:10px; cursor:pointer; transition:all .15s; animation: fadeUp .3s ease forwards; opacity:0; }
-        .part-card:active { background:#1f252c; transform:scale(.98); }
-        .scanner-box { position:relative; border-radius:12px; overflow:hidden; background:#0a0f14; border:1px solid #2a3038; }
-        .scan-line { position:absolute; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,#c85a30,transparent); animation: scanLine 1.8s ease-in-out infinite alternate; }
-        .corner { position:absolute; width:20px; height:20px; border-color:#c85a30; border-style:solid; }
-        .corner-tl { top:10px; left:10px; border-width:2px 0 0 2px; }
-        .corner-tr { top:10px; right:10px; border-width:2px 2px 0 0; }
-        .corner-bl { bottom:10px; left:10px; border-width:0 0 2px 2px; }
-        .corner-br { bottom:10px; right:10px; border-width:0 2px 2px 0; }
-        .upload-zone { border:2px dashed #2a3038; border-radius:14px; padding:32px 16px; text-align:center; cursor:pointer; transition:all .2s; }
-        .upload-zone:active { border-color:#c85a30; background:rgba(200,90,48,.05); }
-        .buy-btn { display:flex; align-items:center; gap:8px; background:#1a3a2a; border:1px solid #2a6a3a; border-radius:10px; padding:10px 14px; cursor:pointer; width:100%; margin-bottom:8px; transition:all .15s; }
-        .buy-btn:active { background:#2a4a3a; }
-        .yt-btn { display:flex; align-items:center; gap:8px; background:#2a1a1a; border:1px solid #6a2a2a; border-radius:10px; padding:10px 14px; cursor:pointer; width:100%; margin-bottom:8px; transition:all .15s; }
-        .yt-btn:active { background:#3a1a1a; }
-      `}</style>
-
       {/* IDLE — upload prompt */}
       {phase === "idle" && (
         <div>
