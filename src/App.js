@@ -921,13 +921,35 @@ function IdentifyScreen({ t, lang }) {
     const reader = new FileReader();
     reader.onload = async (e) => {
       const dataUrl = e.target.result;
-      const base64 = dataUrl.split(",")[1];
+      // Compress image before sending
+      const compressed = await compressImage(dataUrl);
+      const base64 = compressed.split(",")[1];
       setImagePreview(dataUrl);
       setPhase("analyzing");
       setError(null);
       await analyzeImage(base64);
     };
     reader.readAsDataURL(file);
+  };
+
+  const compressImage = (dataUrl) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const maxSize = 1024;
+        let w = img.width;
+        let h = img.height;
+        if (w > h && w > maxSize) { h = (h * maxSize) / w; w = maxSize; }
+        else if (h > maxSize) { w = (w * maxSize) / h; h = maxSize; }
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL("image/jpeg", 0.85));
+      };
+      img.src = dataUrl;
+    });
   };
 
   const analyzeImage = async (base64) => {
