@@ -917,21 +917,48 @@ function IdentifyScreen({ t, lang }) {
   const [error, setError] = useState(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voiceEnabled, setVoiceEnabled] = useState(true);
+  const [lastBase64, setLastBase64] = useState(null);
   const fileRef = useRef(null);
   const synthRef = useRef(window.speechSynthesis);
+  const langRef = useRef(lang);
+
+  // When language changes — re-analyze last photo if we have results
+  const prevLang = langRef.current;
+  if (prevLang !== lang) {
+    langRef.current = lang;
+    if (phase === "results" && lastBase64) {
+      // Re-fetch in new language
+      setTimeout(() => {
+        stopSpeaking();
+        setPhase("analyzing");
+        analyzeImage(lastBase64, lang);
+      }, 0);
+    }
+  }
+
+  const unlockAudio = () => {
+    // iOS requires audio to be triggered by a direct user gesture
+    // We play a silent utterance on the camera tap to unlock the audio engine
+    const utt = new SpeechSynthesisUtterance("");
+    utt.volume = 0;
+    synthRef.current.speak(utt);
+  };
 
   const speak = (text) => {
-    if (!voiceEnabled) return;
+    if (!voiceEnabled || !text) return;
     synthRef.current.cancel();
-    const utt = new SpeechSynthesisUtterance(text);
-    utt.lang = lang === "es" ? "es-MX" : "en-US";
-    utt.rate = 0.95;
-    utt.pitch = 1;
-    utt.volume = 1;
-    utt.onstart = () => setIsSpeaking(true);
-    utt.onend = () => setIsSpeaking(false);
-    utt.onerror = () => setIsSpeaking(false);
-    synthRef.current.speak(utt);
+    // Small delay gives iOS time to process after the async API call
+    setTimeout(() => {
+      const utt = new SpeechSynthesisUtterance(text);
+      utt.lang = lang === "es" ? "es-MX" : "en-US";
+      utt.rate = 0.92;
+      utt.pitch = 1;
+      utt.volume = 1;
+      utt.onstart = () => setIsSpeaking(true);
+      utt.onend = () => setIsSpeaking(false);
+      utt.onerror = () => setIsSpeaking(false);
+      synthRef.current.speak(utt);
+    }, 100);
   };
 
   const stopSpeaking = () => {
@@ -975,10 +1002,11 @@ function IdentifyScreen({ t, lang }) {
       const dataUrl = e.target.result;
       const compressed = await compressImage(dataUrl);
       const base64 = compressed.split(",")[1];
+      setLastBase64(base64);
       setImagePreview(dataUrl);
       setPhase("analyzing");
       setError(null);
-      await analyzeImage(base64);
+      await analyzeImage(base64, lang);
     };
     reader.readAsDataURL(file);
   };
@@ -1003,12 +1031,13 @@ function IdentifyScreen({ t, lang }) {
     });
   };
 
-  const analyzeImage = async (base64) => {
+  const analyzeImage = async (base64, activeLang) => {
+    const useLang = activeLang || lang;
     try {
       const response = await fetch("/api/identify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ base64, lang })
+        body: JSON.stringify({ base64, lang: useLang })
       });
 
       if (!response.ok) {
@@ -1018,25 +1047,24 @@ function IdentifyScreen({ t, lang }) {
 
       const data = await response.json();
       if (!data.parts || data.parts.length === 0) {
-        const msg = lang === "en" ? "No plumbing parts detected — try a closer shot with better lighting" : "No se detectaron partes — intenta más cerca con mejor iluminación";
+        const msg = useLang === "en" ? "No plumbing parts detected — try a closer shot with better lighting" : "No se detectaron partes — intenta más cerca con mejor iluminación";
         setError(msg);
-        speak(lang === "en" ? "No plumbing parts detected. Try getting closer or improving the lighting." : "No se detectaron partes de plomería. Intenta acercarte más o mejorar la iluminación.");
+        speak(useLang === "en" ? "No plumbing parts detected. Try getting closer or improving the lighting." : "No se detectaron partes. Intenta acercarte más o mejorar la iluminación.");
         setPhase("idle");
         return;
       }
       setParts(data.parts);
       setPhase("results");
-      // Speak results automatically
       speak(buildSpeech(data.parts));
     } catch (err) {
       console.error("Identify error:", err);
-      setError((lang === "en" ? "Could not analyze photo: " : "No se pudo analizar: ") + err.message);
-      speak(lang === "en" ? "Could not analyze the photo. Please try again." : "No se pudo analizar la foto. Por favor intenta de nuevo.");
+      setError((useLang === "en" ? "Could not analyze photo: " : "No se pudo analizar: ") + err.message);
+      speak(useLang === "en" ? "Could not analyze the photo. Please try again." : "No se pudo analizar la foto. Por favor intenta de nuevo.");
       setPhase("idle");
     }
   };
 
-  const reset = () => { setPhase("idle"); setImagePreview(null); setParts([]); setSelectedPart(null); setError(null); };
+  const reset = () => { stopSpeaking(); setPhase("idle"); setImagePreview(null); setParts([]); setSelectedPart(null); setError(null); setLastBase64(null); };
 
   const codeColor = (status) => ({ approved: "#4a9a6a", grandfathered: "#c8a030", "not-approved": "#c85a30" }[status] || "#4a6a7a");
   const codeLabel = (status) => ({ approved: t.identifyApproved, grandfathered: t.identifyGrandfathered, "not-approved": t.identifyNotApproved }[status] || status);
@@ -1071,7 +1099,7 @@ function IdentifyScreen({ t, lang }) {
           <input ref={fileRef} type="file" accept="image/*" capture="environment" style={{ display: "none" }} onChange={e => handleImage(e.target.files[0])} />
 
           {/* Main camera button */}
-          <div className="upload-zone" onClick={() => fileRef.current?.click()}>
+          <div className="upload-zone" onClick={() => { unlockAudio(); fileRef.current?.click(); }}>
             <div style={{ width: 72, height: 72, background: "linear-gradient(135deg,#2a1a0f,#3a2a1a)", border: "2px solid #c85a30", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
               <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#c85a30" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
