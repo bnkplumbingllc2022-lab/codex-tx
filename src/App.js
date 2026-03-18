@@ -919,7 +919,6 @@ function IdentifyScreen({ t, lang }) {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voiceEnabled, setVoiceEnabled] = useState(true);
   const [lastBase64, setLastBase64] = useState(null);
-  const [fetchedLangs, setFetchedLangs] = useState([]);
   const fileRef = useRef(null);
   const galleryRef = useRef(null);
   const synthRef = useRef(window.speechSynthesis);
@@ -1062,7 +1061,6 @@ function IdentifyScreen({ t, lang }) {
 
       setPartsEn(enParts);
       setPartsEs(esParts);
-      setFetchedLangs(["en", "es"]);
       setPhase("results");
       // Speak in whichever language is active
       speak(buildSpeech(useLang === "es" ? esParts : enParts));
@@ -1077,7 +1075,8 @@ function IdentifyScreen({ t, lang }) {
     }
   };
 
-  const reset = () => { stopSpeaking(); setPhase("idle"); setImagePreview(null); setPartsEn([]); setPartsEs([]); setSelectedPart(null); setError(null); setLastBase64(null); setFetchedLangs([]); };
+  const reset = () => { stopSpeaking(); setPhase("idle"); setImagePreview(null); setPartsEn([]); setPartsEs([]); setSelectedPart(null); setError(null); setLastBase64(null);
+ };
 
   const codeColor = (status) => ({ approved: "#4a9a6a", grandfathered: "#c8a030", "not-approved": "#c85a30" }[status] || "#4a6a7a");
   const codeLabel = (status) => ({ approved: t.identifyApproved, grandfathered: t.identifyGrandfathered, "not-approved": t.identifyNotApproved }[status] || status);
