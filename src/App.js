@@ -46,8 +46,29 @@ const T = {
     navCodes: "CODES",
     navCities: "CITIES",
     navInspectors: "INSPECTORS",
+    navIdentify: "IDENTIFY",
     pop: "Pop.",
     language: "EN",
+    identifyTitle: "PART IDENTIFIER",
+    identifySub: "Point your camera at any plumbing setup",
+    identifyTap: "TAP TO TAKE PHOTO",
+    identifyOrUpload: "or upload from camera roll",
+    identifyAnalyzing: "Analyzing your photo...",
+    identifyAnalyzingSub: "Identifying every part visible",
+    identifyResults: "Parts Identified",
+    identifyTapPart: "Tap any part for details",
+    identifyCodeStatus: "Code Status",
+    identifyStillMade: "Still Manufactured",
+    identifyDiscontinued: "Discontinued",
+    identifyWhereToBuy: "WHERE TO BUY",
+    identifyNewPhoto: "IDENTIFY ANOTHER",
+    identifyError: "Could not analyze — try again with better lighting",
+    identifyApproved: "✅ Code Approved",
+    identifyGrandfathered: "⚠ Grandfathered Only",
+    identifyNotApproved: "❌ Not Code Approved",
+    identifyRelatedVideos: "Related Repair Videos",
+    identifySearchVideo: "Search on YouTube",
+    identifyProTip: "Pro Tip",
   },
   es: {
     appSub: "CÓDIGO DE PLOMERÍA TEXAS",
@@ -93,8 +114,29 @@ const T = {
     navCodes: "CÓDIGOS",
     navCities: "CIUDADES",
     navInspectors: "INSPECTORES",
+    navIdentify: "IDENTIFICAR",
     pop: "Pob.",
     language: "ES",
+    identifyTitle: "IDENTIFICADOR DE PARTES",
+    identifySub: "Apunta tu cámara a cualquier instalación de plomería",
+    identifyTap: "TOCA PARA TOMAR FOTO",
+    identifyOrUpload: "o sube desde tu galería",
+    identifyAnalyzing: "Analizando tu foto...",
+    identifyAnalyzingSub: "Identificando cada parte visible",
+    identifyResults: "Partes Identificadas",
+    identifyTapPart: "Toca cualquier parte para ver detalles",
+    identifyCodeStatus: "Estado del Código",
+    identifyStillMade: "Aún se Fabrica",
+    identifyDiscontinued: "Descontinuado",
+    identifyWhereToBuy: "DÓNDE COMPRAR",
+    identifyNewPhoto: "IDENTIFICAR OTRA",
+    identifyError: "No se pudo analizar — intenta con mejor iluminación",
+    identifyApproved: "✅ Aprobado por Código",
+    identifyGrandfathered: "⚠ Solo Existente",
+    identifyNotApproved: "❌ No Aprobado por Código",
+    identifyRelatedVideos: "Videos de Reparación",
+    identifySearchVideo: "Buscar en YouTube",
+    identifyProTip: "Consejo Pro",
   }
 };
 
@@ -367,49 +409,49 @@ const DIAGRAMS = {
 // ─── CODES DATA ──────────────────────────────────────────────
 const CODES = [
   // GAS
-  { id: 1, category: "Gas", title: "Sediment trap (dirt leg)", titleEs: "Trampa de sedimentos (dirt leg)", code: "IFGC 408.4 · UPC 1212.9", plain: "A sediment trap must be installed downstream of the appliance shutoff valve, as close to the appliance inlet as practical. The tee MUST be oriented vertically — the nipple hangs straight down and is capped at the bottom. Gas cannot flow straight through; it must make a 90-degree turn, which is what forces sediment to drop into the leg.\n\n⚠ IPC vs UPC — CHECK YOUR CITY:\n\n🔵 IPC CITIES (Dallas, Fort Worth, Plano, San Antonio, most of Texas): Two valid tee orientations — gas can enter from the top flowing down and exit the horizontal tap, OR gas can enter the horizontal tap and exit upward. Either way the nipple hangs straight down. Nipple length: \"any length\" per code, though 3 inches is the field standard.\n\n🟠 UPC CITIES (Houston, Austin): The UPC figure specifically shows gas entering from the TOP of the tee, flowing down, and exiting the horizontal tap to the appliance. Only this orientation matches the UPC figure. Additionally, the UPC explicitly requires the trap to be installed BEFORE the flex connector — between the shutoff valve and the flex. Nipple minimum: 3 inches, explicitly stated.\n\nRequired on: furnaces, water heaters, boilers. NOT required on: ranges, cooktops, outdoor grills, decorative gas logs, gas fireplaces, gas lights.", plainEs: "Se debe instalar una trampa de sedimentos aguas abajo de la válvula de cierre del aparato. El accesorio en T DEBE estar orientado verticalmente — el niple cuelga recto hacia abajo y está tapado en el fondo. El gas no puede fluir directo; debe hacer un giro de 90 grados, lo que obliga al sedimento a caer en la pata.\n\n⚠ IPC vs UPC — VERIFICA TU CIUDAD:\n\n🔵 CIUDADES IPC (Dallas, Fort Worth, Plano, San Antonio, la mayoría de Texas): Dos orientaciones válidas — el gas puede entrar por arriba y salir por la salida horizontal, O puede entrar por la salida horizontal y salir hacia arriba. El niple siempre cuelga hacia abajo. Longitud mínima del niple: cualquier longitud según el código, aunque 3 pulgadas es el estándar de campo.\n\n🟠 CIUDADES UPC (Houston, Austin): La figura del UPC muestra específicamente el gas entrando POR ARRIBA del T, fluyendo hacia abajo y saliendo por la salida horizontal hacia el aparato. Además, el UPC requiere que la trampa se instale ANTES del conector flexible — entre la válvula de cierre y el flex. Mínimo del niple: 3 pulgadas, indicado explícitamente.\n\nRequerido en: hornos, calentadores de agua, calderas. NO requerido en: estufas, parrillas exteriores, registros decorativos de gas, chimeneas de gas, lámparas de gas.", tags: ["gas", "sediment trap", "dirt leg", "drip leg", "appliance", "IPC", "UPC", "Houston", "Austin", "flex connector"], diagram: "sedimentTrap" },
-  { id: 2, category: "Gas", title: "Appliance shutoff valve", titleEs: "Válvula de cierre del aparato", code: "IFGC 409.5", plain: "Each gas appliance must have its own shutoff valve located in the same room as the appliance, no more than 6 feet from the appliance, upstream of any union or connector. The valve must be accessible. Exception: decorative vented appliances may have remote shutoffs if they have ready access.", plainEs: "Cada aparato de gas debe tener su propia válvula de cierre ubicada en el mismo cuarto que el aparato, a no más de 6 pies del aparato, aguas arriba de cualquier unión o conector. La válvula debe ser accesible.", tags: ["gas", "shutoff valve", "appliance", "6 feet"] },
-  { id: 3, category: "Gas", title: "CSST bonding requirement", titleEs: "Requisito de bonding para CSST", code: "NFPA 54 7.13", plain: "Corrugated Stainless Steel Tubing (CSST) must be electrically bonded to the building's grounding electrode system. Many Texas cities require a bonding clamp every 6 feet along the run. Always check local amendments — this varies by city.", plainEs: "La tubería corrugada de acero inoxidable (CSST) debe estar eléctricamente unida al sistema de electrodo de tierra del edificio. Muchas ciudades de Texas requieren una abrazadera de bonding cada 6 pies a lo largo del recorrido.", tags: ["CSST", "gas", "bonding", "grounding"], diagram: "csst" },
-  { id: 4, category: "Gas", title: "Gas pressure test requirements", titleEs: "Requisitos de prueba de presión de gas", code: "IFGC 406.4", plain: "Gas piping systems must be tested with air, nitrogen, or CO2 at a minimum of 10 PSI for a minimum of 15 minutes. Many Texas cities require 30 minutes. Never test with gas. Document start and end pressures. Inspector may require witnessed test.", plainEs: "Los sistemas de tuberías de gas deben probarse con aire, nitrógeno o CO2 a un mínimo de 10 PSI por un mínimo de 15 minutos. Muchas ciudades de Texas requieren 30 minutos. Nunca pruebe con gas. Documente las presiones de inicio y fin.", tags: ["gas", "pressure test", "10 PSI", "leak test"] },
-  { id: 5, category: "Gas", title: "Gas pipe sizing — general", titleEs: "Dimensionamiento de tubería de gas", code: "IFGC 402.1", plain: "Gas piping must be sized to deliver gas at sufficient pressure to meet the demand of all appliances simultaneously. Pipe sizing is based on BTU load, pipe length, and allowable pressure drop. Use manufacturer-published sizing tables or an approved engineering method. Under-sized gas piping is a very common inspection fail.", plainEs: "La tubería de gas debe dimensionarse para entregar gas a suficiente presión para satisfacer la demanda de todos los aparatos simultáneamente. El dimensionamiento se basa en la carga BTU, la longitud de la tubería y la caída de presión permitida.", tags: ["gas", "pipe sizing", "BTU", "pressure drop"] },
-  { id: 6, category: "Gas", title: "Underground gas pipe material", titleEs: "Material de tubería de gas subterránea", code: "IFGC 404.8", plain: "Underground gas piping must be approved for burial. Polyethylene (PE) pipe with tracer wire is the most common choice. Black iron and steel must be protected from corrosion with approved coating. CSST is generally NOT approved for underground burial. Minimum burial depth is 12 inches for residential.", plainEs: "La tubería de gas subterránea debe ser aprobada para entierro. La tubería de polietileno (PE) con alambre trazador es la opción más común. El hierro negro y el acero deben protegerse de la corrosión. La profundidad mínima de entierro es de 12 pulgadas para uso residencial.", tags: ["gas", "underground", "PE pipe", "burial", "tracer wire"] },
-  { id: 7, category: "Gas", title: "Flexible gas connectors", titleEs: "Conectores flexibles de gas", code: "IFGC 411.1", plain: "Flexible gas connectors connecting appliances to gas supply piping must be listed and labeled, and must not exceed 6 feet in length. They cannot be concealed inside walls, floors, or partitions. Connectors must not be kinked or twisted. Replace connectors that show any signs of corrosion or damage.", plainEs: "Los conectores flexibles de gas que conectan aparatos a la tubería de suministro de gas deben estar listados y etiquetados, y no deben exceder 6 pies de longitud. No pueden estar ocultos dentro de paredes, pisos o particiones.", tags: ["gas", "flex connector", "appliance", "6 feet", "concealed"] },
+  { id: 1, category: "Gas", title: "Sediment trap (dirt leg)", titleEs: "Trampa de sedimentos (dirt leg)", code: "IFGC 408.4 · UPC 1212.9", plain: "A sediment trap must be installed downstream of the appliance shutoff valve, as close to the appliance inlet as practical. The tee MUST be oriented vertically — the nipple hangs straight down and is capped at the bottom. Gas cannot flow straight through; it must make a 90-degree turn, which is what forces sediment to drop into the leg.\n\n⚠ IPC vs UPC — CHECK YOUR CITY:\n\n🔵 IPC CITIES (Dallas, Fort Worth, Plano, San Antonio, most of Texas): Two valid tee orientations — gas can enter from the top flowing down and exit the horizontal tap, OR gas can enter the horizontal tap and exit upward. Either way the nipple hangs straight down. Nipple length: \"any length\" per code, though 3 inches is the field standard.\n\n🟠 UPC CITIES (Houston, Austin): The UPC figure specifically shows gas entering from the TOP of the tee, flowing down, and exiting the horizontal tap to the appliance. Only this orientation matches the UPC figure. Additionally, the UPC explicitly requires the trap to be installed BEFORE the flex connector — between the shutoff valve and the flex. Nipple minimum: 3 inches, explicitly stated.\n\nRequired on: furnaces, water heaters, boilers. NOT required on: ranges, cooktops, outdoor grills, decorative gas logs, gas fireplaces, gas lights.", plainEs: "Se debe instalar una trampa de sedimentos aguas abajo de la válvula de cierre del aparato. El T DEBE estar vertical — el niple cuelga recto hacia abajo y está tapado. El gas debe hacer un giro de 90 grados.\n\n⚠ IPC vs UPC — VERIFICA TU CIUDAD:\n\n🔵 CIUDADES IPC (Dallas, Fort Worth, Plano, San Antonio, mayoría de Texas): Dos orientaciones válidas del T. Longitud del niple: cualquier longitud, aunque 3\" es el estándar de campo.\n\n🟠 CIUDADES UPC (Houston, Austin): La figura del UPC muestra el gas entrando POR ARRIBA. El UPC requiere la trampa ANTES del conector flexible. Mínimo del niple: 3 pulgadas explícitamente.\n\nRequerido en: hornos, calentadores, calderas. NO requerido en: estufas, parrillas, chimeneas de gas.", tags: ["gas", "sediment trap", "dirt leg", "drip leg", "appliance", "IPC", "UPC", "Houston", "Austin", "flex connector"], diagram: "sedimentTrap" },
+  { id: 2, category: "Gas", title: "Appliance shutoff valve", titleEs: "Válvula de cierre del aparato", code: "IFGC 409.5 · UPC 1211.11", plain: "Each gas appliance must have its own shutoff valve located in the same room, no more than 6 feet from the appliance, upstream of any union or connector. The valve must be accessible.\n\n🔵 IPC/IFGC & 🟠 UPC: Both codes agree — accessible shutoff valve required at each appliance. No meaningful difference for Texas field work.", plainEs: "Cada aparato de gas debe tener su propia válvula de cierre en el mismo cuarto, a no más de 6 pies del aparato. La válvula debe ser accesible.\n\n🔵 IPC y 🟠 UPC: Ambos códigos están de acuerdo — se requiere válvula de cierre accesible en cada aparato.", tags: ["gas", "shutoff valve", "appliance", "6 feet"] },
+  { id: 3, category: "Gas", title: "CSST bonding requirement", titleEs: "Requisito de bonding para CSST", code: "NFPA 54 7.13 · UPC 1211.2", plain: "Corrugated Stainless Steel Tubing (CSST) must be electrically bonded to the building's grounding electrode system. Many Texas cities require a bonding clamp every 6 feet along the run. Always check local amendments — this varies by city.\n\n🔵 IPC/IFGC & 🟠 UPC: Both reference NFPA 54 for CSST bonding. Requirement is the same under both codes. Local Texas city amendments commonly add the 6-foot spacing rule on top of base code.", plainEs: "La tubería CSST debe estar eléctricamente unida al sistema de tierra del edificio. Muchas ciudades de Texas requieren una abrazadera cada 6 pies.\n\n🔵 IPC y 🟠 UPC: Ambos códigos referencian NFPA 54 para el bonding de CSST. El requisito es igual en ambos.", tags: ["CSST", "gas", "bonding", "grounding"], diagram: "csst" },
+  { id: 4, category: "Gas", title: "Gas pressure test requirements", titleEs: "Requisitos de prueba de presión de gas", code: "IFGC 406.4 · UPC 1213.2", plain: "Gas piping systems must be tested with air, nitrogen, or CO2. Never test with gas.\n\n🔵 IPC/IFGC: Minimum 10 PSI for 15 minutes. Many Texas IPC cities require 30 minutes.\n\n🟠 UPC (Houston, Austin): Minimum 10 PSI. Test duration and witnessed test requirements vary by local amendment — Houston typically requires 30 minutes witnessed. Always document start and end pressures.", plainEs: "Las tuberías de gas deben probarse con aire, nitrógeno o CO2. Nunca con gas.\n\n🔵 IPC/IFGC: Mínimo 10 PSI por 15 minutos. Muchas ciudades requieren 30 minutos.\n\n🟠 UPC (Houston, Austin): Mínimo 10 PSI. Houston generalmente requiere 30 minutos presenciados.", tags: ["gas", "pressure test", "10 PSI", "leak test"] },
+  { id: 5, category: "Gas", title: "Gas pipe sizing — general", titleEs: "Dimensionamiento de tubería de gas", code: "IFGC 402.1 · UPC 1215.2", plain: "Gas piping must be sized to deliver gas at sufficient pressure to meet the demand of all appliances simultaneously. Sizing is based on BTU load, pipe length, and allowable pressure drop.\n\n🔵 IPC/IFGC & 🟠 UPC: Both codes require adequate sizing for simultaneous demand. Tables and methods differ slightly but the field outcome is the same — use manufacturer sizing charts or an approved method. Under-sized gas piping is a very common inspection fail.", plainEs: "La tubería de gas debe dimensionarse para satisfacer la demanda de todos los aparatos simultáneamente.\n\n🔵 IPC/IFGC y 🟠 UPC: Ambos requieren dimensionamiento adecuado. Las tablas difieren ligeramente pero el resultado de campo es el mismo.", tags: ["gas", "pipe sizing", "BTU", "pressure drop"] },
+  { id: 6, category: "Gas", title: "Underground gas pipe material", titleEs: "Material de tubería de gas subterránea", code: "IFGC 404.8 · UPC 1210.1", plain: "Underground gas piping must be approved for burial. PE pipe with tracer wire is the most common choice. Black iron and steel must be coated for corrosion protection. CSST is generally NOT approved for underground burial. Minimum burial depth is 12 inches for residential.\n\n🔵 IPC/IFGC & 🟠 UPC: Both codes agree on approved materials and 12-inch minimum depth. Tracer wire on plastic pipe is required by many Texas cities regardless of code edition.", plainEs: "La tubería de gas subterránea debe ser aprobada para entierro. El tubo PE con alambre trazador es lo más común. Profundidad mínima: 12 pulgadas.\n\n🔵 IPC/IFGC y 🟠 UPC: Ambos coinciden en materiales aprobados y profundidad mínima de 12\".", tags: ["gas", "underground", "PE pipe", "burial", "tracer wire"] },
+  { id: 7, category: "Gas", title: "Flexible gas connectors", titleEs: "Conectores flexibles de gas", code: "IFGC 411.1 · UPC 1212.6", plain: "Flexible gas connectors must be listed and labeled, and must not exceed 6 feet in length. They cannot be concealed inside walls, floors, or partitions. Connectors must not be kinked or twisted.\n\n🔵 IPC/IFGC & 🟠 UPC: Both codes limit flex connectors to 6 feet maximum and prohibit concealment. No meaningful difference. Replace any connector showing corrosion or damage.", plainEs: "Los conectores flexibles de gas deben estar listados y no deben exceder 6 pies de longitud. No pueden estar ocultos dentro de paredes o pisos.\n\n🔵 IPC/IFGC y 🟠 UPC: Ambos limitan los conectores a 6 pies máximo y prohíben ocultarlos.", tags: ["gas", "flex connector", "appliance", "6 feet", "concealed"] },
   // WATER HEATERS
-  { id: 8, category: "Water Heaters", title: "TPR valve and discharge pipe", titleEs: "Válvula TPR y tubería de descarga", code: "IPC 504.6", plain: "Every water heater must have a temperature and pressure relief (TPR) valve. The discharge pipe must be the same size as the valve outlet, run full length to within 6 inches of the floor or to a drain, terminate in a visible location, and have NO threads on the discharge end. Never cap or plug a TPR discharge.", plainEs: "Cada calentador de agua debe tener una válvula de alivio de temperatura y presión (TPR). La tubería de descarga debe tener el mismo tamaño que la salida de la válvula, terminar a no más de 6 pulgadas del piso, en una ubicación visible, y NO tener roscas en el extremo de descarga.", tags: ["TPR", "water heater", "relief valve", "safety", "discharge"], diagram: "tprValve" },
-  { id: 9, category: "Water Heaters", title: "Thermal expansion tank", titleEs: "Tanque de expansión térmica", code: "IPC 607.3", plain: "A thermal expansion tank is required whenever a backflow preventer, check valve, or pressure reducing valve creates a closed system on the cold water supply to the water heater. Size the tank to match the water heater capacity. Most Texas cities enforce this strictly — it's one of the most common inspection fails.", plainEs: "Se requiere un tanque de expansión térmica cuando un preventer de reflujo, válvula de retención o válvula reductora de presión crea un sistema cerrado en el suministro de agua fría al calentador de agua. Dimensione el tanque para que coincida con la capacidad del calentador.", tags: ["water heater", "expansion tank", "closed system", "backflow"] },
-  { id: 10, category: "Water Heaters", title: "Garage installation — 18 inch rule", titleEs: "Instalación en garaje — regla de 18 pulgadas", code: "IPC 305.5", plain: "Water heaters installed in garages must be elevated so the ignition source is at least 18 inches above the garage floor. This prevents ignition of gasoline vapors. Most Texas cities strictly enforce this. A proper platform or listed stand must be used. The water heater pan is also required in garage installations.", plainEs: "Los calentadores de agua instalados en garajes deben elevarse para que la fuente de ignición esté al menos 18 pulgadas sobre el piso del garaje. Esto evita la ignición de vapores de gasolina. La mayoría de las ciudades de Texas lo hacen cumplir estrictamente.", tags: ["water heater", "garage", "18 inches", "ignition", "elevation"], diagram: "waterHeaterGarage" },
-  { id: 11, category: "Water Heaters", title: "Attic installation requirements", titleEs: "Requisitos de instalación en ático", code: "IPC 502.3", plain: "Water heaters in attics require: a level working platform at least 24 inches wide on the service side, a continuous pan under the unit with a minimum 3/4 inch drain line to a visible location, a clear 20x30 inch access opening, a light with a switch at the access point, and an 18-inch clearance on the service side. These are strictly checked in Texas.", plainEs: "Los calentadores de agua en áticos requieren: una plataforma de trabajo nivelada de al menos 24 pulgadas de ancho en el lado de servicio, una bandeja continua bajo la unidad con una línea de drenaje mínima de 3/4 de pulgada, una abertura de acceso de 20x30 pulgadas, una luz con interruptor en el punto de acceso y un espacio de 18 pulgadas en el lado de servicio.", tags: ["water heater", "attic", "platform", "pan", "access", "light"] },
-  { id: 12, category: "Water Heaters", title: "Water heater pan and drain", titleEs: "Bandeja y drenaje del calentador de agua", code: "IPC 504.7", plain: "A pan with a 3/4 inch minimum drain line is required when a water heater is located where leakage could cause property damage. Pan drain must run to a suitable location such as a floor drain, exterior, or termination point visible to the occupant. Many Texas cities require this in ALL locations.", plainEs: "Se requiere una bandeja con una línea de drenaje mínima de 3/4 de pulgada cuando un calentador de agua está ubicado donde una fuga podría causar daños a la propiedad. El drenaje de la bandeja debe ir a un lugar adecuado como un drenaje de piso, exterior o punto de terminación visible.", tags: ["water heater", "pan", "drain", "leak", "3/4 inch"] },
-  { id: 13, category: "Water Heaters", title: "Water heater seismic strapping", titleEs: "Sujeción sísmica del calentador", code: "IPC 507.2", plain: "Water heaters must be strapped or braced in designated seismic zones. In Texas, many city jurisdictions and third-party inspectors require double strapping on units 40 gallons and larger, especially in garage locations, even outside the strict code mandate.", plainEs: "Los calentadores de agua deben estar sujetados o reforzados en zonas sísmicas designadas. En Texas, muchos inspectores de terceros requieren doble sujeción en unidades de 40 galones o más.", tags: ["water heater", "strapping", "seismic", "garage", "40 gallon"] },
+  { id: 8, category: "Water Heaters", title: "TPR valve and discharge pipe", titleEs: "Válvula TPR y tubería de descarga", code: "IPC 504.6 · UPC 608.5", plain: "Every water heater must have a TPR valve. The discharge pipe must be the same size as the valve outlet and terminate in a visible location.\n\n🔵 IPC CITIES (Dallas, Fort Worth, most of Texas): Discharge must terminate no more than 6 inches above the floor. Can discharge to floor, pan, waste receptor, or outdoors.\n\n🟠 UPC CITIES (Houston, Austin): Discharge must terminate minimum 6 inches above floor AND maximum 24 inches above floor — a tighter window than IPC. Cannot discharge directly into a pan — must have an air gap. Both codes: NO threads on discharge end, pipe must not be trapped, must flow by gravity.", plainEs: "Cada calentador de agua debe tener válvula TPR. La tubería de descarga debe ser del mismo tamaño que la salida de la válvula.\n\n🔵 CIUDADES IPC: La descarga debe terminar a no más de 6 pulgadas del piso.\n\n🟠 CIUDADES UPC (Houston, Austin): La descarga debe terminar entre 6 y 24 pulgadas del piso — una ventana más estrecha que el IPC. No puede descargar directamente en una bandeja.", tags: ["TPR", "water heater", "relief valve", "safety", "discharge", "IPC", "UPC"], diagram: "tprValve" },
+  { id: 9, category: "Water Heaters", title: "Thermal expansion tank", titleEs: "Tanque de expansión térmica", code: "IPC 607.3 · UPC 608.3", plain: "Required whenever a backflow preventer, check valve, or PRV creates a closed system.\n\n🔵 IPC CITIES: Required specifically when a closed system exists with STORAGE water heating equipment. If you have a tankless water heater with no storage buffer, the IPC technically does not require an expansion tank — but many Texas cities require it anyway via local amendment.\n\n🟠 UPC CITIES (Houston, Austin): Required on ALL closed systems regardless of water heater type — tankless included. The UPC draws no distinction. Both codes: tank installs on the cold water supply side, downstream of all check valves and PRVs.", plainEs: "Requerido cuando un backflow preventer, válvula de retención o PRV crea un sistema cerrado.\n\n🔵 CIUDADES IPC: Técnicamente requerido solo con calentadores de almacenamiento, aunque muchas ciudades lo exigen en todos.\n\n🟠 CIUDADES UPC (Houston, Austin): Requerido en TODOS los sistemas cerrados sin importar el tipo de calentador — incluyendo calentadores sin tanque.", tags: ["water heater", "expansion tank", "closed system", "backflow", "tankless", "IPC", "UPC"] },
+  { id: 10, category: "Water Heaters", title: "Garage installation — 18 inch rule", titleEs: "Instalación en garaje — regla de 18 pulgadas", code: "IPC 305.5 · UPC 507.3", plain: "Water heaters in garages must be elevated so the ignition source is at least 18 inches above the garage floor. This prevents ignition of gasoline vapors.\n\n🔵 IPC/IFGC & 🟠 UPC: Both codes agree — 18-inch minimum elevation required. A proper platform or listed stand must be used. Most Texas cities strictly enforce this regardless of IPC or UPC. The water heater pan is also required in garage installations.", plainEs: "Los calentadores de agua en garajes deben elevarse para que la fuente de ignición esté al menos 18 pulgadas sobre el piso del garaje.\n\n🔵 IPC y 🟠 UPC: Ambos códigos están de acuerdo — se requiere elevación mínima de 18 pulgadas.", tags: ["water heater", "garage", "18 inches", "ignition", "elevation"], diagram: "waterHeaterGarage" },
+  { id: 11, category: "Water Heaters", title: "Attic installation requirements", titleEs: "Requisitos de instalación en ático", code: "IPC 502.3 · UPC 507.2", plain: "Water heaters in attics require: a level working platform at least 24 inches wide on the service side, a continuous pan with minimum 3/4 inch drain line to a visible location, a clear 20x30 inch access opening, a light with switch at the access point, and 18-inch clearance on the service side.\n\n🔵 IPC & 🟠 UPC: Platform, pan, access, and light requirements are consistent between both codes. Strictly checked in Texas by both city and third-party inspectors.", plainEs: "Los calentadores en áticos requieren: plataforma de 24\" de ancho, bandeja continua con drenaje de 3/4\", abertura de acceso de 20x30\", luz con interruptor y 18\" de espacio libre.\n\n🔵 IPC y 🟠 UPC: Requisitos de plataforma, bandeja, acceso y luz son consistentes en ambos códigos.", tags: ["water heater", "attic", "platform", "pan", "access", "light"] },
+  { id: 12, category: "Water Heaters", title: "Water heater pan and drain", titleEs: "Bandeja y drenaje del calentador de agua", code: "IPC 504.7 · UPC 507.4", plain: "A pan with a 3/4 inch minimum drain line is required when a water heater is located where leakage could cause property damage. Pan drain must run to a suitable visible location.\n\n🔵 IPC: Pan required where damage could occur — floor, waste receptor, or outdoors are all acceptable termination points.\n\n🟠 UPC (Houston, Austin): Pan required in same circumstances, but UPC is stricter on termination — drain must terminate to an indirect waste receptor or other approved location visible to the occupant. Many Texas cities require pans in ALL locations regardless of code.", plainEs: "Se requiere una bandeja con drenaje mínimo de 3/4\" cuando una fuga podría causar daños.\n\n🔵 IPC: Requerida donde pueda ocurrir daño. Termina en piso, receptor o exterior.\n\n🟠 UPC (Houston, Austin): Mismas circunstancias, pero el UPC es más estricto sobre el punto de terminación.", tags: ["water heater", "pan", "drain", "leak", "3/4 inch"] },
+  { id: 13, category: "Water Heaters", title: "Water heater seismic strapping", titleEs: "Sujeción sísmica del calentador", code: "IPC 507.2 · UPC 507.5", plain: "Water heaters must be strapped or braced in designated seismic zones.\n\n🔵 IPC & 🟠 UPC: Both codes require seismic strapping where applicable. In Texas, the seismic risk is generally low by code maps, but many third-party inspectors (Crossroads, Roadrunner, Veritas) require double strapping on units 40 gallons and larger regardless, especially in garages.", plainEs: "Los calentadores de agua deben estar sujetados en zonas sísmicas.\n\n🔵 IPC y 🟠 UPC: Ambos requieren sujeción sísmica donde aplique. En Texas, muchos inspectores de terceros requieren doble sujeción en unidades de 40 galones o más.", tags: ["water heater", "strapping", "seismic", "garage", "40 gallon"] },
   // DRAINAGE
-  { id: 14, category: "Drainage", title: "Horizontal drain slope", titleEs: "Pendiente de drenaje horizontal", code: "IPC 704.1", plain: "Horizontal drainage pipes must slope uniformly not less than ¼ inch per foot toward the point of disposal for pipes 2½ inches or smaller. Pipes 3 inches and larger may slope at ⅛ inch per foot minimum. No horizontal drain shall be installed level.", plainEs: "Las tuberías de drenaje horizontales deben tener una pendiente uniforme de no menos de ¼ de pulgada por pie para tuberías de 2½ pulgadas o menores. Las tuberías de 3 pulgadas o más pueden tener una pendiente de ⅛ de pulgada por pie como mínimo.", tags: ["drain", "slope", "horizontal", "grade", "¼ inch"], diagram: "drainSlope" },
-  { id: 15, category: "Drainage", title: "Cleanout spacing and access", titleEs: "Espaciado y acceso de limpiezas", code: "IPC 708.1", plain: "Cleanouts are required at each change of direction greater than 45 degrees in horizontal drainage lines, and at maximum 100-foot intervals. Cleanouts must be accessible and installed in the direction of flow for rodding. A cleanout within 5 feet of the building foundation is required in many Texas cities.", plainEs: "Se requieren limpiezas en cada cambio de dirección mayor de 45 grados en líneas de drenaje horizontal, y a intervalos máximos de 100 pies. Las limpiezas deben ser accesibles e instaladas en la dirección del flujo.", tags: ["cleanout", "access", "drain", "100 feet", "45 degrees"] },
-  { id: 16, category: "Drainage", title: "Fixture unit values (DFU)", titleEs: "Valores de unidades de accesorios (DFU)", code: "IPC Table 709.1", plain: "Each fixture is assigned a Drainage Fixture Unit (DFU) value: Toilet = 4, Shower = 2, Lavatory = 1, Kitchen sink = 2, Clothes washer = 3, Floor drain = 2, Bathtub = 2, Dishwasher = 2, Urinal = 4. Sum all DFU values to size the building drain and sewer.", plainEs: "A cada accesorio se le asigna un valor de Unidad de Drenaje de Accesorio (DFU): Inodoro = 4, Ducha = 2, Lavabo = 1, Fregadero = 2, Lavadora = 3, Drenaje de piso = 2, Bañera = 2, Lavavajillas = 2, Urinario = 4.", tags: ["DFU", "fixture units", "drain sizing", "toilet", "shower"] },
-  { id: 17, category: "Drainage", title: "Trap arm distance (trap to vent)", titleEs: "Distancia del brazo de trampa (trampa al venteo)", code: "IPC Table 909.1", plain: "Maximum trap arm distances from trap weir to vent: 1¼ inch pipe = 30 inches, 1½ inch pipe = 42 inches, 2 inch pipe = 60 inches, 3 inch pipe = 72 inches, 4 inch pipe = 10 feet. Exceeding these distances causes slow draining and sewer gas problems.", plainEs: "Distancias máximas del brazo de trampa desde el vertedero de la trampa al venteo: tubería de 1¼\" = 30\", tubería de 1½\" = 42\", tubería de 2\" = 60\", tubería de 3\" = 72\", tubería de 4\" = 10 pies.", tags: ["trap arm", "vent", "distance", "drain", "P-trap"], diagram: "trapArm" },
-  { id: 18, category: "Drainage", title: "Grease interceptor requirements", titleEs: "Requisitos del interceptor de grasa", code: "IPC 1003.3", plain: "Grease interceptors are required on all food service establishments including restaurants, commercial kitchens, cafeterias, and food processing facilities. The interceptor must be sized based on fixture load and flow rate. It must be accessible for cleaning and inspection. Local health codes may have additional requirements.", plainEs: "Se requieren interceptores de grasa en todos los establecimientos de servicio de alimentos incluyendo restaurantes, cocinas comerciales y cafeterías. El interceptor debe dimensionarse según la carga de accesorios y la tasa de flujo.", tags: ["grease interceptor", "restaurant", "commercial kitchen", "grease trap"] },
-  { id: 19, category: "Drainage", title: "Floor drain requirements", titleEs: "Requisitos de drenaje de piso", code: "IPC 412.2", plain: "Floor drains are required in commercial kitchens, laundry rooms, and mechanical rooms containing water heaters or HVAC equipment. Each floor drain must be connected to a trap. Floor drains subject to evaporation must have a trap primer or trap seal protection device.", plainEs: "Se requieren drenajes de piso en cocinas comerciales, cuartos de lavandería y cuartos mecánicos que contengan calentadores de agua o equipos HVAC. Cada drenaje de piso debe estar conectado a una trampa.", tags: ["floor drain", "trap", "commercial", "mechanical room", "laundry"] },
+  { id: 14, category: "Drainage", title: "Horizontal drain slope", titleEs: "Pendiente de drenaje horizontal", code: "IPC 704.1 · UPC 708.0", plain: "Horizontal drainage pipes must slope toward the point of disposal.\n\n🔵 IPC & 🟠 UPC: Both codes agree on the same minimum slopes — ¼ inch per foot for pipes 2½ inches and smaller, ⅛ inch per foot for pipes 3 inches and larger. No meaningful difference between codes on this one. No horizontal drain shall be installed level.", plainEs: "Las tuberías de drenaje horizontales deben tener pendiente hacia el punto de disposición.\n\n🔵 IPC y 🟠 UPC: Ambos códigos coinciden — ¼\" por pie para tuberías de 2½\" o menores, ⅛\" por pie para 3\" o más.", tags: ["drain", "slope", "horizontal", "grade", "¼ inch"], diagram: "drainSlope" },
+  { id: 15, category: "Drainage", title: "Cleanout spacing and access", titleEs: "Espaciado y acceso de limpiezas", code: "IPC 708.1 · UPC 719.0", plain: "Cleanouts are required at each change of direction greater than 45 degrees and at maximum 100-foot intervals in horizontal drainage lines.\n\n🔵 IPC & 🟠 UPC: Both codes require cleanouts at direction changes and at maximum 100-foot intervals. Both require accessible installation in the direction of flow. A cleanout within 5 feet of the building foundation is required by many Texas cities as a local amendment.", plainEs: "Se requieren limpiezas en cada cambio de dirección mayor de 45° y a intervalos máximos de 100 pies.\n\n🔵 IPC y 🟠 UPC: Ambos códigos requieren limpiezas en cambios de dirección y cada 100 pies máximo.", tags: ["cleanout", "access", "drain", "100 feet", "45 degrees"] },
+  { id: 16, category: "Drainage", title: "Fixture unit values (DFU)", titleEs: "Valores de unidades de accesorios (DFU)", code: "IPC Table 709.1 · UPC Table 702.1", plain: "Each fixture is assigned a Drainage Fixture Unit (DFU) value used to size drains and sewers.\n\n🔵 IPC: Toilet = 4, Shower = 2, Lavatory = 1, Kitchen sink = 2, Clothes washer = 3, Floor drain = 2, Bathtub = 2, Dishwasher = 2, Urinal = 4.\n\n🟠 UPC (Houston, Austin): Values are similar but the UPC table uses slightly different numbers for some fixtures. Always use the table from the correct code for your city when sizing.", plainEs: "A cada accesorio se le asigna un valor DFU para dimensionar drenajes.\n\n🔵 IPC: Inodoro=4, Ducha=2, Lavabo=1, Fregadero=2, Lavadora=3, Drenaje piso=2, Bañera=2.\n\n🟠 UPC (Houston, Austin): Los valores son similares pero la tabla del UPC puede diferir ligeramente en algunos accesorios.", tags: ["DFU", "fixture units", "drain sizing", "toilet", "shower"] },
+  { id: 17, category: "Drainage", title: "Trap arm distance (trap to vent)", titleEs: "Distancia del brazo de trampa (trampa al venteo)", code: "IPC Table 909.1 · UPC Table 1007.3", plain: "Maximum trap arm distances from trap weir to vent.\n\n🔵 IPC: 1¼\" pipe = 30\", 1½\" = 42\", 2\" = 60\", 3\" = 72\", 4\" = 10 ft.\n\n🟠 UPC (Houston, Austin): Distances are based on pipe diameter as a multiple — generally 2½x the pipe diameter for the maximum horizontal distance. This can produce slightly different numbers than the IPC table. When working in Houston or Austin, use UPC Table 1007.3, not IPC Table 909.1.", plainEs: "Distancias máximas del brazo de trampa hasta el venteo.\n\n🔵 IPC: 1¼\"=30\", 1½\"=42\", 2\"=60\", 3\"=72\", 4\"=10 pies.\n\n🟠 UPC (Houston, Austin): Las distancias se basan en múltiplos del diámetro de la tubería. Usa la Tabla 1007.3 del UPC en Houston o Austin.", tags: ["trap arm", "vent", "distance", "drain", "P-trap"], diagram: "trapArm" },
+  { id: 18, category: "Drainage", title: "Grease interceptor requirements", titleEs: "Requisitos del interceptor de grasa", code: "IPC 1003.3 · UPC 1017.0", plain: "Grease interceptors are required on all food service establishments. The interceptor must be sized based on fixture load and flow rate and must be accessible for cleaning and inspection.\n\n🔵 IPC & 🟠 UPC: Both codes require grease interceptors on food service facilities. Sizing methods differ slightly — IPC uses flow rate, UPC uses fixture unit method. Local health codes and the city fire marshal may add requirements on top of base code.", plainEs: "Se requieren interceptores de grasa en todos los establecimientos de servicio de alimentos.\n\n🔵 IPC y 🟠 UPC: Ambos códigos los requieren. El método de dimensionamiento difiere ligeramente — IPC usa tasa de flujo, UPC usa unidades de accesorio.", tags: ["grease interceptor", "restaurant", "commercial kitchen", "grease trap"] },
+  { id: 19, category: "Drainage", title: "Floor drain requirements", titleEs: "Requisitos de drenaje de piso", code: "IPC 412.2 · UPC 411.0", plain: "Floor drains are required in commercial kitchens, laundry rooms, and mechanical rooms containing water heaters or HVAC equipment. Each floor drain must be connected to a trap.\n\n🔵 IPC & 🟠 UPC: Both codes agree on where floor drains are required and that each must have a trap. Floor drains subject to evaporation must have a trap primer or trap seal protection device under both codes.", plainEs: "Se requieren drenajes de piso en cocinas comerciales, cuartos de lavandería y cuartos mecánicos. Cada drenaje debe estar conectado a una trampa.\n\n🔵 IPC y 🟠 UPC: Ambos códigos coinciden en los requisitos de drenaje de piso.", tags: ["floor drain", "trap", "commercial", "mechanical room", "laundry"] },
   // VENTING
-  { id: 20, category: "Venting", title: "Minimum vent pipe diameter", titleEs: "Diámetro mínimo de tubería de venteo", code: "IPC 903.1", plain: "No vent pipe shall be less than 1¼ inches in diameter. Individual vents for sinks and lavatories may use 1¼ inch but main stacks require a minimum of 3 inches. Vent pipe must be the same diameter as the drain it serves or not less than 1¼ inches.", plainEs: "Ninguna tubería de venteo debe tener menos de 1¼ pulgadas de diámetro. Los venteos individuales para fregaderos y lavabos pueden usar 1¼ pulgadas, pero las columnas principales requieren un mínimo de 3 pulgadas.", tags: ["vent", "pipe size", "diameter", "stack", "1¼ inch"] },
-  { id: 21, category: "Venting", title: "Vent termination clearances", titleEs: "Distancias de terminación del venteo", code: "IPC 903.2", plain: "Vent pipes must terminate at least 6 inches above the roof surface. They must be at least 10 feet horizontally from any door, window, or air intake opening when the vent terminates less than 2 feet above the opening. Many third-party inspectors measure this to the inch — don't guess.", plainEs: "Las tuberías de venteo deben terminar al menos 6 pulgadas sobre la superficie del techo. Deben estar al menos 10 pies horizontalmente de cualquier puerta, ventana o abertura de entrada de aire.", tags: ["vent", "termination", "roof", "clearance", "10 feet"], diagram: "ventClearance" },
-  { id: 22, category: "Venting", title: "Wet venting requirements", titleEs: "Requisitos de venteo húmedo", code: "IPC 908.1", plain: "A wet vent may serve as both a drain and a vent for fixtures on the same floor level. The wet vent pipe must be one pipe size larger than required for the drain alone. Wet venting is limited to bathroom groups (toilet, lavatory, bathtub/shower) — you cannot wet vent kitchen sinks.", plainEs: "Un venteo húmedo puede servir como drenaje y venteo para accesorios en el mismo nivel de piso. La tubería de venteo húmedo debe ser un tamaño de tubería más grande que el requerido solo para el drenaje. No puede hacer venteo húmedo de fregaderos de cocina.", tags: ["wet vent", "vent", "bathroom group", "drain", "pipe size"] },
-  { id: 23, category: "Venting", title: "Air admittance valves (AAV)", titleEs: "Válvulas de admisión de aire (AAV)", code: "IPC 918.1", plain: "Air admittance valves (AAVs) may be used in lieu of conventional venting for individual fixtures and branch vents. AAVs must be listed and labeled, installed in accessible locations, and have at least 4 inches of air above the trap weir. AAVs are NOT allowed as the sole vent for a drainage system — the system must still connect to open air somewhere. Not all Texas cities allow AAVs — verify locally.", plainEs: "Las válvulas de admisión de aire (AAVs) pueden usarse en lugar del venteo convencional para accesorios individuales. Las AAVs deben estar listadas y etiquetadas, instaladas en ubicaciones accesibles. No todas las ciudades de Texas permiten AAVs — verifique localmente.", tags: ["AAV", "air admittance valve", "vent", "studor", "island sink"] },
+  { id: 20, category: "Venting", title: "Minimum vent pipe diameter", titleEs: "Diámetro mínimo de tubería de venteo", code: "IPC 903.1 · UPC 901.1", plain: "No vent pipe shall be less than 1¼ inches in diameter. Main stacks require a minimum of 3 inches.\n\n🔵 IPC & 🟠 UPC: Both codes set 1¼ inch as the minimum individual vent size. Both require the main stack to be at least 3 inches. No meaningful difference for Texas field work.", plainEs: "Ninguna tubería de venteo debe tener menos de 1¼\" de diámetro. Las columnas principales requieren mínimo 3\".\n\n🔵 IPC y 🟠 UPC: Ambos establecen 1¼\" como mínimo y 3\" para la columna principal.", tags: ["vent", "pipe size", "diameter", "stack", "1¼ inch"] },
+  { id: 21, category: "Venting", title: "Vent termination clearances", titleEs: "Distancias de terminación del venteo", code: "IPC 903.2 · UPC 906.2", plain: "Vent pipes must terminate at least 6 inches above the roof surface.\n\n🔵 IPC & 🟠 UPC: Both codes require 6 inches above roof and 10 feet horizontally from any door, window, or air intake when terminating less than 2 feet above the opening. No meaningful difference. Third-party inspectors in Texas measure this to the inch.", plainEs: "Las tuberías de venteo deben terminar al menos 6\" sobre el techo y 10 pies horizontalmente de puertas, ventanas o entradas de aire.\n\n🔵 IPC y 🟠 UPC: Ambos requieren 6\" sobre el techo y 10 pies de separación horizontal.", tags: ["vent", "termination", "roof", "clearance", "10 feet"], diagram: "ventClearance" },
+  { id: 22, category: "Venting", title: "Wet venting requirements", titleEs: "Requisitos de venteo húmedo", code: "IPC 908.1 · UPC 908.0", plain: "A wet vent may serve as both a drain and a vent for fixtures on the same floor level.\n\n🔵 IPC: Wet vent pipe must be one pipe size larger than required for the drain alone. Limited to bathroom groups.\n\n🟠 UPC (Houston, Austin): UPC permits wet venting but with different sizing requirements — the UPC is generally more restrictive on fixture combinations that can share a wet vent. When working in Houston or Austin, verify your specific wet vent configuration is permitted under UPC 908.0. You cannot wet vent kitchen sinks under either code.", plainEs: "Un venteo húmedo puede servir como drenaje y venteo.\n\n🔵 IPC: La tubería debe ser un tamaño más grande. Limitado a grupos de baño.\n\n🟠 UPC (Houston, Austin): Permite venteo húmedo pero con requisitos de dimensionamiento diferentes y más restrictivos en combinaciones de accesorios.", tags: ["wet vent", "vent", "bathroom group", "drain", "pipe size"] },
+  { id: 23, category: "Venting", title: "Air admittance valves (AAV)", titleEs: "Válvulas de admisión de aire (AAV)", code: "IPC 918.1 · UPC 905.0", plain: "AAVs may be used in lieu of conventional venting for individual fixtures.\n\n🔵 IPC CITIES: AAVs are permitted for individual fixtures and branch vents. Must be listed, installed in accessible locations, with at least 4 inches of air above the trap weir.\n\n🟠 UPC CITIES (Houston, Austin): The UPC historically was more restrictive on AAVs than the IPC. AAVs are permitted in the UPC but only in specific applications. Houston and Austin may have local amendments further restricting AAV use. ALWAYS verify locally before installing an AAV in Houston or Austin.", plainEs: "Las AAVs pueden usarse en lugar del venteo convencional.\n\n🔵 CIUDADES IPC: Permitidas para accesorios individuales. Deben estar listadas y ser accesibles.\n\n🟠 CIUDADES UPC (Houston, Austin): El UPC es históricamente más restrictivo. Verifique siempre localmente antes de instalar una AAV en Houston o Austin.", tags: ["AAV", "air admittance valve", "vent", "studor", "island sink"] },
   // WATER SUPPLY
-  { id: 24, category: "Water Supply", title: "Pressure reducing valve (PRV)", titleEs: "Válvula reductora de presión (PRV)", code: "IPC 604.8", plain: "Where the water pressure supplied exceeds 80 PSI, a pressure reducing valve is required on the building water service. Set the PRV to deliver between 60–80 PSI downstream. The PRV must be accessible for service and have a union for easy replacement.", plainEs: "Cuando la presión del agua suministrada excede 80 PSI, se requiere una válvula reductora de presión en el servicio de agua del edificio. Configure la PRV para entregar entre 60–80 PSI aguas abajo.", tags: ["pressure", "PRV", "water supply", "80 PSI", "pressure reducing"] },
-  { id: 25, category: "Water Supply", title: "Individual fixture shutoff valves", titleEs: "Válvulas de cierre individuales por accesorio", code: "IPC 606.1", plain: "Accessible shutoff valves must be provided for each plumbing fixture. This includes valves on the hot and cold supply to lavatories, sinks, water closets, dishwashers, washing machines, and ice makers. Many Texas cities require isolation valves at every fixture — verify local amendments.", plainEs: "Se deben proporcionar válvulas de cierre accesibles para cada accesorio de plomería. Esto incluye válvulas en el suministro caliente y frío de lavabos, fregaderos, inodoros, lavavajillas y lavadoras.", tags: ["shutoff valve", "fixture", "isolation", "individual", "accessible"] },
-  { id: 26, category: "Water Supply", title: "Water service pipe materials", titleEs: "Materiales de tubería de servicio de agua", code: "IPC 605.3", plain: "Water service pipe from the meter to the building must be approved materials: Type K or L copper, HDPE (PE 4710), or PVC (AWWA C900). Many Texas cities restrict to copper within a set distance of the meter. PEX is generally allowed inside the structure but verify for underground service. Always check local amendments.", plainEs: "La tubería de servicio de agua desde el medidor hasta el edificio debe ser de materiales aprobados: cobre Tipo K o L, HDPE, o PVC. Muchas ciudades de Texas restringen el uso de cobre dentro de cierta distancia del medidor.", tags: ["water service", "pipe material", "copper", "HDPE", "PVC", "PEX"] },
-  { id: 27, category: "Water Supply", title: "Water hammer arrestors", titleEs: "Arrestadores de golpe de ariete", code: "IPC 604.9", plain: "Water hammer arrestors are required where quick-closing valves are used, such as dishwashers, washing machines, and solenoid valves. Arrestors must be listed per ASSE 1010. Install on both hot and cold supply lines serving the appliance. Size according to ASSE 1010 fixture unit load tables.", plainEs: "Se requieren arrestadores de golpe de ariete donde se usan válvulas de cierre rápido, como lavavajillas, lavadoras y válvulas solenoides. Los arrestadores deben estar listados según ASSE 1010.", tags: ["water hammer", "arrestor", "washing machine", "dishwasher", "solenoid", "ASSE 1010"] },
-  { id: 28, category: "Water Supply", title: "Showerhead flow rate — IPC 2024", titleEs: "Caudal de cabezal de ducha — IPC 2024", code: "IPC 2024 408.2", plain: "The 2024 IPC limits showerhead flow to a maximum of 2.0 GPM. This applies in cities on IPC 2024: Plano (Aug 2025), The Colony (Jul 2025), Flower Mound (Oct 2025), Frisco (Mar 2026), McAllen (Jan 2026), Killeen, Sugar Land, San Antonio. Verify your city before selecting fixtures.", plainEs: "El IPC 2024 limita el caudal del cabezal de ducha a un máximo de 2.0 GPM. Se aplica en ciudades con IPC 2024: Plano, The Colony, Flower Mound, Frisco, McAllen, Killeen, Sugar Land, San Antonio.", tags: ["showerhead", "flow rate", "GPM", "IPC 2024", "water conservation"] },
-  { id: 29, category: "Water Supply", title: "Hot water recirculation systems", titleEs: "Sistemas de recirculación de agua caliente", code: "IPC 607.2", plain: "Where the developed length of hot water piping from the source to any fixture exceeds 100 feet, a hot water recirculation system or heat-traced piping is required in many jurisdictions. Some Texas cities (McKinney, Frisco) require recirculation when the run exceeds 50 feet. Verify local requirements.", plainEs: "Cuando la longitud desarrollada de la tubería de agua caliente desde la fuente hasta cualquier accesorio excede 100 pies, se requiere un sistema de recirculación de agua caliente en muchas jurisdicciones. Algunas ciudades de Texas lo requieren a partir de 50 pies.", tags: ["recirculation", "hot water", "100 feet", "50 feet", "heat trace"] },
+  { id: 24, category: "Water Supply", title: "Pressure reducing valve (PRV)", titleEs: "Válvula reductora de presión (PRV)", code: "IPC 604.8 · UPC 608.2", plain: "Where supply pressure exceeds 80 PSI, a PRV is required on the building water service. Set to deliver 60–80 PSI downstream. PRV must be accessible with a union for easy replacement.\n\n🔵 IPC & 🟠 UPC: Both codes trigger the PRV requirement at 80 PSI and agree on placement and accessibility. The UPC (Section 608.2) also explicitly requires a strainer upstream of the PRV — the IPC does not mandate this, though it is good practice under both codes.", plainEs: "Cuando la presión supera 80 PSI, se requiere una PRV. Configure para entregar 60–80 PSI aguas abajo.\n\n🔵 IPC y 🟠 UPC: Ambos activan el requisito de PRV a 80 PSI. El UPC también requiere explícitamente un colador aguas arriba de la PRV.", tags: ["pressure", "PRV", "water supply", "80 PSI", "pressure reducing"] },
+  { id: 25, category: "Water Supply", title: "Individual fixture shutoff valves", titleEs: "Válvulas de cierre individuales por accesorio", code: "IPC 606.1 · UPC 605.5", plain: "Accessible shutoff valves must be provided for each plumbing fixture — lavatories, sinks, water closets, dishwashers, washing machines, and ice makers.\n\n🔵 IPC & 🟠 UPC: Both codes require individual shutoff valves at each fixture. No meaningful difference. Many Texas cities add local amendments requiring isolation valves at every fixture, including both IPC and UPC jurisdictions.", plainEs: "Se deben proporcionar válvulas de cierre accesibles para cada accesorio de plomería.\n\n🔵 IPC y 🟠 UPC: Ambos códigos requieren válvulas individuales por accesorio. Sin diferencia significativa.", tags: ["shutoff valve", "fixture", "isolation", "individual", "accessible"] },
+  { id: 26, category: "Water Supply", title: "Water service pipe materials", titleEs: "Materiales de tubería de servicio de agua", code: "IPC 605.3 · UPC 604.1", plain: "Water service pipe from meter to building must be approved materials.\n\n🔵 IPC CITIES: Type K or L copper, HDPE (PE 4710), PVC (AWWA C900), or PEX where permitted. Many Texas IPC cities restrict to copper within a set distance of the meter.\n\n🟠 UPC CITIES (Houston, Austin): Type K or L copper, HDPE, PVC. Houston is particularly strict — copper is the preferred material near the meter. PEX is allowed inside the structure under both codes but check local amendments for underground service.", plainEs: "La tubería desde el medidor hasta el edificio debe ser de materiales aprobados.\n\n🔵 CIUDADES IPC: Cobre Tipo K o L, HDPE, PVC o PEX donde esté permitido.\n\n🟠 CIUDADES UPC (Houston, Austin): Cobre Tipo K o L, HDPE, PVC. Houston prefiere cobre cerca del medidor.", tags: ["water service", "pipe material", "copper", "HDPE", "PVC", "PEX"] },
+  { id: 27, category: "Water Supply", title: "Water hammer arrestors", titleEs: "Arrestadores de golpe de ariete", code: "IPC 604.9 · UPC 609.10", plain: "Required where quick-closing valves are used — dishwashers, washing machines, solenoid valves. Arrestors must be listed per ASSE 1010. Install on both hot and cold supply lines.\n\n🔵 IPC & 🟠 UPC: Both codes require water hammer arrestors at quick-closing valves and reference ASSE 1010 for listing. Size per the ASSE 1010 fixture unit load tables under both codes.", plainEs: "Requeridos donde se usan válvulas de cierre rápido. Deben estar listados per ASSE 1010.\n\n🔵 IPC y 🟠 UPC: Ambos requieren arrestadores en válvulas de cierre rápido y referencian ASSE 1010.", tags: ["water hammer", "arrestor", "washing machine", "dishwasher", "solenoid", "ASSE 1010"] },
+  { id: 28, category: "Water Supply", title: "Showerhead flow rate", titleEs: "Caudal de cabezal de ducha", code: "IPC 2024 408.2 · UPC 402.2", plain: "🔵 IPC 2021 CITIES (most of Texas): Maximum showerhead flow is 2.5 GPM.\n\n🔵 IPC 2024 CITIES (Plano, The Colony, Flower Mound, Frisco, Killeen, McAllen, Sugar Land, San Antonio): Maximum is 2.0 GPM.\n\n🟠 UPC CITIES (Houston, Austin): UPC Section 402.2 limits showerheads to 2.0 GPM — Houston and Austin have been at 2.0 GPM longer than most IPC cities. Always verify fixture specs before purchasing.", plainEs: "🔵 CIUDADES IPC 2021 (mayoría de Texas): Caudal máximo de ducha 2.5 GPM.\n\n🔵 CIUDADES IPC 2024 (Plano, Flower Mound, Frisco, Killeen, McAllen, etc.): Máximo 2.0 GPM.\n\n🟠 CIUDADES UPC (Houston, Austin): UPC limita a 2.0 GPM — Houston y Austin ya estaban en 2.0 GPM antes que la mayoría de ciudades IPC.", tags: ["showerhead", "flow rate", "GPM", "IPC 2024", "UPC", "water conservation", "Houston", "Austin"] },
+  { id: 29, category: "Water Supply", title: "Hot water recirculation systems", titleEs: "Sistemas de recirculación de agua caliente", code: "IPC 607.2 · UPC 610.0", plain: "Where hot water piping exceeds 100 feet in developed length, a recirculation system or heat-traced piping is required in many jurisdictions.\n\n🔵 IPC & 🟠 UPC: Both codes address recirculation but treat it as a design requirement rather than a hard trigger at 100 feet in the base code. The enforcement comes from local amendments. Some Texas IPC cities (McKinney, Frisco) require recirculation at 50 feet. Austin (UPC) requires recirculation on all new residential construction.", plainEs: "Cuando la tubería de agua caliente excede 100 pies, se requiere un sistema de recirculación en muchas jurisdicciones.\n\n🔵 IPC y 🟠 UPC: Ambos abordan la recirculación. Austin (UPC) requiere recirculación en toda construcción residencial nueva.", tags: ["recirculation", "hot water", "100 feet", "50 feet", "heat trace"] },
   // BACKFLOW
-  { id: 30, category: "Backflow", title: "Irrigation backflow prevention", titleEs: "Prevención de reflujo en irrigación", code: "IPC 608.16.5", plain: "All lawn irrigation systems connected to a potable water supply must have a backflow preventer. A pressure vacuum breaker (PVB) is the minimum for residential irrigation. A reduced pressure zone (RPZ) assembly is required where chemicals, fertilizers, or pesticides are injected into the system.", plainEs: "Todos los sistemas de irrigación de césped conectados a un suministro de agua potable deben tener un preventor de reflujo. Un interruptor de vacío de presión (PVB) es el mínimo para irrigación residencial. Se requiere una zona de presión reducida (RPZ) donde se inyectan químicos.", tags: ["backflow", "irrigation", "PVB", "RPZ", "sprinkler"], diagram: "backflowPVB" },
-  { id: 31, category: "Backflow", title: "Hose bibb vacuum breaker", titleEs: "Interruptor de vacío para toma de manguera", code: "IPC 608.15.4.1", plain: "All outdoor hose connection sillcocks must have an integral or field-installed vacuum breaker. Non-removable type is required. This prevents contaminated water (from a submerged hose) from being siphoned back into the potable supply. This is one of the most commonly missed items on inspections.", plainEs: "Todos los grifos de conexión de manguera al aire libre deben tener un interruptor de vacío integral o instalado en campo. Se requiere el tipo no removible. Esto evita que el agua contaminada sea sifoneada de vuelta al suministro de agua potable.", tags: ["hose bibb", "vacuum breaker", "sillcock", "backflow", "outdoor"] },
-  { id: 32, category: "Backflow", title: "Reduced pressure zone (RPZ) assembly", titleEs: "Ensamble de zona de presión reducida (RPZ)", code: "IPC 608.13.2", plain: "An RPZ backflow preventer is required for high-hazard applications including: commercial irrigation with chemical injection, connections to industrial equipment, medical equipment connections, and in cities that require RPZ on all commercial irrigation. RPZ must be tested annually by a certified tester and installed in an accessible, above-grade location.", plainEs: "Se requiere un preventer de reflujo RPZ para aplicaciones de alto riesgo incluyendo: irrigación comercial con inyección de químicos, conexiones a equipos industriales, y en ciudades que requieren RPZ en toda irrigación comercial. El RPZ debe probarse anualmente.", tags: ["RPZ", "backflow", "commercial", "high hazard", "annual test"] },
+  { id: 30, category: "Backflow", title: "Irrigation backflow prevention", titleEs: "Prevención de reflujo en irrigación", code: "IPC 608.16.5 · UPC 603.5.7", plain: "All lawn irrigation systems connected to potable water must have a backflow preventer.\n\n🔵 IPC CITIES: PVB is the minimum for residential irrigation. RPZ required for chemical injection applications.\n\n🟠 UPC CITIES (Houston, Austin): UPC requires RPZ on all irrigation systems connected to potable water in many applications — the UPC is generally more aggressive on backflow protection for irrigation than the IPC. Houston requires RPZ on all commercial irrigation. Always check with the local water utility, as TCEQ rules also apply statewide.", plainEs: "Todos los sistemas de irrigación conectados a agua potable deben tener un preventor de reflujo.\n\n🔵 CIUDADES IPC: PVB es el mínimo para irrigación residencial.\n\n🟠 CIUDADES UPC (Houston, Austin): El UPC generalmente requiere protección más agresiva. Houston requiere RPZ en toda irrigación comercial.", tags: ["backflow", "irrigation", "PVB", "RPZ", "sprinkler", "IPC", "UPC"], diagram: "backflowPVB" },
+  { id: 31, category: "Backflow", title: "Hose bibb vacuum breaker", titleEs: "Interruptor de vacío para toma de manguera", code: "IPC 608.15.4.1 · UPC 603.4.11", plain: "All outdoor hose connection sillcocks must have an integral or field-installed vacuum breaker. Non-removable type is required.\n\n🔵 IPC & 🟠 UPC: Both codes require vacuum breakers on all hose bibbs. This is one of the most commonly missed items on inspections under both codes. Non-removable type is required under both.", plainEs: "Todos los grifos de manguera al aire libre deben tener un interruptor de vacío no removible.\n\n🔵 IPC y 🟠 UPC: Ambos códigos lo requieren. Es uno de los ítems más frecuentemente omitidos en inspecciones.", tags: ["hose bibb", "vacuum breaker", "sillcock", "backflow", "outdoor"] },
+  { id: 32, category: "Backflow", title: "Reduced pressure zone (RPZ) assembly", titleEs: "Ensamble de zona de presión reducida (RPZ)", code: "IPC 608.13.2 · UPC 603.5.9", plain: "RPZ assemblies are required for high-hazard applications. RPZ must be tested annually by a certified tester, installed in an accessible above-grade location.\n\n🔵 IPC: RPZ required for high-hazard applications — chemical injection, industrial connections, medical equipment.\n\n🟠 UPC (Houston, Austin): UPC generally requires RPZ in more situations than the IPC for irrigation and industrial connections. Houston requires RPZ on all commercial irrigation regardless. Both codes: annual testing by certified backflow tester required.", plainEs: "Los ensambles RPZ son requeridos para aplicaciones de alto riesgo y deben probarse anualmente.\n\n🔵 IPC: RPZ requerido para aplicaciones de alto riesgo — inyección de químicos, equipos industriales.\n\n🟠 UPC (Houston, Austin): El UPC requiere RPZ en más situaciones. Houston lo requiere en toda irrigación comercial.", tags: ["RPZ", "backflow", "commercial", "high hazard", "annual test"] },
   // FIXTURES
-  { id: 33, category: "Fixtures", title: "Shower pressure balance valves", titleEs: "Válvulas de balance de presión en ducha", code: "IPC 412.3", plain: "All shower and tub/shower combination controls must be pressure-balancing or thermostatic mixing valves. Maximum delivered water temperature is 120°F. Required in all new construction and replacements. These prevent scalding when someone flushes a toilet while you're showering.", plainEs: "Todos los controles de ducha y combinación tina/ducha deben ser válvulas de balance de presión o mezcla termostática. La temperatura máxima entregada es 120°F. Requerida en toda construcción nueva y reemplazos.", tags: ["shower", "valve", "scald", "pressure balance", "thermostatic", "120°F"] },
-  { id: 34, category: "Fixtures", title: "Water closet clearances", titleEs: "Espacios libres del inodoro", code: "IPC 405.3", plain: "Toilets must have a minimum of 15 inches from the center of the toilet to any side wall or obstruction, and 21 inches clear in front of the toilet. For accessible (ADA) toilets, clearances increase significantly. These measurements are checked on final inspection — rough-in placement matters.", plainEs: "Los inodoros deben tener un mínimo de 15 pulgadas desde el centro del inodoro hasta cualquier pared lateral u obstáculo, y 21 pulgadas libres al frente del inodoro.", tags: ["toilet", "water closet", "clearance", "15 inches", "21 inches", "ADA"] },
-  { id: 35, category: "Fixtures", title: "Minimum shower size", titleEs: "Tamaño mínimo de ducha", code: "IPC 417.4", plain: "Shower compartments must have a minimum finished interior dimension of 30 inches in any direction and a minimum of 900 square inches of floor area. A shower measuring 30x30 inches technically meets minimum code but is considered very small — 36x36 is more practical.", plainEs: "Los compartimentos de ducha deben tener una dimensión interior terminada mínima de 30 pulgadas en cualquier dirección y un área mínima de piso de 900 pulgadas cuadradas.", tags: ["shower", "size", "minimum", "30 inches", "900 square inches"] },
-  // GENERAL
-  { id: 36, category: "Drainage", title: "Tracer wire — buried plastic pipe (IPC 2024)", titleEs: "Alambre trazador — tubería plástica enterrada (IPC 2024)", code: "IPC 2024 305.6", plain: "The 2024 IPC requires tracer wire on all buried plastic sewer piping. Wire must be continuous and accessible at each end. This applies in cities on IPC 2024 only. Not required under IPC 2021 as a code mandate, though many cities required it locally before 2024.", plainEs: "El IPC 2024 requiere alambre trazador en toda tubería de alcantarillado plástica enterrada. El alambre debe ser continuo y accesible en cada extremo.", tags: ["tracer wire", "buried pipe", "sewer", "IPC 2024", "plastic pipe"] },
+  { id: 33, category: "Fixtures", title: "Shower pressure balance valves", titleEs: "Válvulas de balance de presión en ducha", code: "IPC 412.3 · UPC 408.3", plain: "All shower and tub/shower combination controls must be pressure-balancing or thermostatic mixing valves. Maximum delivered water temperature is 120°F.\n\n🔵 IPC & 🟠 UPC: Both codes require pressure-balance or thermostatic valves on all showers and set 120°F as the maximum delivered temperature. Required in all new construction and replacements under both codes. No meaningful difference.", plainEs: "Todos los controles de ducha deben ser válvulas de balance de presión o termostáticas. Temperatura máxima: 120°F.\n\n🔵 IPC y 🟠 UPC: Ambos requieren válvulas de balance de presión o termostáticas y establecen 120°F como temperatura máxima.", tags: ["shower", "valve", "scald", "pressure balance", "thermostatic", "120°F"] },
+  { id: 34, category: "Fixtures", title: "Water closet clearances", titleEs: "Espacios libres del inodoro", code: "IPC 405.3 · UPC 407.5", plain: "Minimum clearances from toilet centerline to walls and obstructions.\n\n🔵 IPC CITIES: 15 inches from centerline to any side wall or obstruction, 21 inches clear in front.\n\n🟠 UPC CITIES (Houston, Austin): UPC requires 15 inches from centerline to side wall AND 24 inches clear in front — 3 inches more than the IPC. If you're roughing in a toilet in Houston or Austin and you leave only 21 inches in front, it will fail. Rough-in placement matters — measure before you pour.", plainEs: "🔵 CIUDADES IPC: 15\" del centro a la pared lateral, 21\" libres al frente.\n\n🟠 CIUDADES UPC (Houston, Austin): 15\" del centro a la pared lateral, pero 24\" libres al frente — 3 pulgadas más que el IPC. Si dejas solo 21\" en Houston o Austin, fallará la inspección.", tags: ["toilet", "water closet", "clearance", "15 inches", "21 inches", "24 inches", "UPC", "IPC"] },
+  { id: 35, category: "Fixtures", title: "Minimum shower size", titleEs: "Tamaño mínimo de ducha", code: "IPC 417.4 · UPC 411.7", plain: "Shower compartments must meet minimum finished interior dimensions.\n\n🔵 IPC CITIES: Minimum 30 inches in any direction AND minimum 900 square inches of floor area.\n\n🟠 UPC CITIES (Houston, Austin): UPC requires minimum 30 inches in any direction AND minimum 1,024 square inches of floor area — roughly a 32x32 inch shower. The IPC allows a 30x30 (900 sq in) but the UPC does not. If you're tiling a shower in Houston or Austin, 30x30 will fail.", plainEs: "🔵 CIUDADES IPC: Mínimo 30\" en cualquier dirección y 900 pulgadas cuadradas de área.\n\n🟠 CIUDADES UPC (Houston, Austin): Mínimo 30\" en cualquier dirección pero 1,024 pulgadas cuadradas de área — una ducha de 32x32\". Una ducha de 30x30 pasará en ciudades IPC pero fallará en Houston o Austin.", tags: ["shower", "size", "minimum", "30 inches", "900 square inches", "1024", "UPC", "IPC"] },
+  // DRAINAGE
+  { id: 36, category: "Drainage", title: "Tracer wire — buried plastic pipe (IPC 2024)", titleEs: "Alambre trazador — tubería plástica enterrada (IPC 2024)", code: "IPC 2024 305.6", plain: "The 2024 IPC requires tracer wire on all buried plastic sewer piping. Wire must be continuous and accessible at each end.\n\n🔵 IPC 2024 CITIES ONLY (Plano, Frisco, The Colony, Flower Mound, Killeen, McAllen, Sugar Land, San Antonio): Required by code. Not required under IPC 2021 as a base code mandate, though many cities required it locally before 2024.\n\n🟠 UPC CITIES (Houston, Austin): The UPC does not have an equivalent tracer wire requirement in the base code, but Houston requires it by local amendment. Always check with the city.", plainEs: "El IPC 2024 requiere alambre trazador en toda tubería de alcantarillado plástica enterrada.\n\n🔵 SOLO CIUDADES IPC 2024 (Plano, Frisco, The Colony, etc.): Requerido por código.\n\n🟠 CIUDADES UPC (Houston, Austin): El UPC base no lo requiere, pero Houston lo exige por enmienda local.", tags: ["tracer wire", "buried pipe", "sewer", "IPC 2024", "plastic pipe"] },
 ];
 
 // ─── JURISDICTIONS (abbreviated — same as before, keeping key cities) ─────────
@@ -503,6 +545,7 @@ const Icon = ({ name, size = 20, color = "currentColor" }) => {
     bookmark: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>,
     x: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
     globe: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,
+    camera: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>,
   };
   return icons[name] || null;
 };
@@ -806,15 +849,331 @@ export default function App() {
           );
         })()}
 
+        {/* ── IDENTIFY SCREEN ── */}
+        {screen === "identify" && (
+          <IdentifyScreen t={t} lang={lang} />
+        )}
+
       </div>
 
       {/* BOTTOM NAV */}
       <div className="nb">
-        {[{ id: "home", label: t.navHome, icon: "home", color: "#7acae0" }, { id: "codes", label: t.navCodes, icon: "book", color: "#7acae0" }, { id: "jurisdiction", label: t.navCities, icon: "map", color: "#4a9a6a" }, { id: "inspectors", label: t.navInspectors, icon: "user", color: "#c8a030" }].map(item => {
+        {[
+          { id: "home", label: t.navHome, icon: "home", color: "#7acae0" },
+          { id: "codes", label: t.navCodes, icon: "book", color: "#7acae0" },
+          { id: "identify", label: t.navIdentify, icon: "camera", color: "#c85a30" },
+          { id: "jurisdiction", label: t.navCities, icon: "map", color: "#4a9a6a" },
+          { id: "inspectors", label: t.navInspectors, icon: "user", color: "#c8a030" },
+        ].map(item => {
           const active = screen === item.id;
-          return <div key={item.id} className="ni" onClick={() => navTo(item.id)}><Icon name={item.icon} size={22} color={active ? item.color : "#3a4a5a"} /><span className="nl" style={{ color: active ? item.color : "#3a4a5a" }}>{item.label}</span></div>;
+          const isCamera = item.id === "identify";
+          return (
+            <div key={item.id} className="ni" onClick={() => navTo(item.id)} style={isCamera ? { position: "relative" } : {}}>
+              {isCamera && <div style={{ position: "absolute", top: -8, left: "50%", transform: "translateX(-50%)", width: 44, height: 44, background: active ? "#c85a30" : "#1a2a3a", border: `2px solid ${active ? "#c85a30" : "#3a5a6a"}`, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: active ? "0 0 16px rgba(200,90,48,.5)" : "none" }}><Icon name="camera" size={20} color={active ? "#fff" : "#3a8a9a"} /></div>}
+              {!isCamera && <Icon name={item.icon} size={22} color={active ? item.color : "#3a4a5a"} />}
+              <span className="nl" style={{ color: active ? item.color : "#3a4a5a", marginTop: isCamera ? 10 : 0 }}>{item.label}</span>
+            </div>
+          );
         })}
       </div>
+    </div>
+  );
+}
+
+// ─── IDENTIFY SCREEN COMPONENT ───────────────────────────────
+function IdentifyScreen({ t, lang }) {
+  const [phase, setPhase] = useState("idle"); // idle | analyzing | results | detail
+  const [imageData, setImageData] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [parts, setParts] = useState([]);
+  const [selectedPart, setSelectedPart] = useState(null);
+  const [error, setError] = useState(null);
+  const fileRef = useRef(null);
+
+  const handleImage = async (file) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const dataUrl = e.target.result;
+      const base64 = dataUrl.split(",")[1];
+      setImagePreview(dataUrl);
+      setImageData(base64);
+      setPhase("analyzing");
+      setError(null);
+      await analyzeImage(base64);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const analyzeImage = async (base64) => {
+    const systemPrompt = lang === "en"
+      ? `You are an expert master plumber and parts identifier with 30+ years of experience. When shown a plumbing photo, identify every visible component. Respond ONLY with a valid JSON array, no markdown, no preamble. Each object must have these exact fields:
+{
+  "id": number,
+  "name": "short part name",
+  "category": "one of: Valve | Pipe | Fitting | Water Heater | Fixture | Gas | Backflow | Vent | Pump | Filter | Unknown",
+  "description": "2-3 sentences plain English: what it is and what it does",
+  "codeStatus": "one of: approved | grandfathered | not-approved",
+  "codeNote": "brief note about code status, which code applies",
+  "stillMade": true or false,
+  "manufacturer": "brand if visible, else common brands",
+  "whereToFind": "Home Depot, Ferguson, Grainger, etc.",
+  "estimatedCost": "price range like $8-$15",
+  "proTip": "one field tip a master plumber would share",
+  "searchTerm": "YouTube search term to find repair video",
+  "affiliateSearch": "Home Depot search URL keyword"
+}`
+      : `Eres un maestro plomero experto con más de 30 años de experiencia. Cuando se muestra una foto de plomería, identifica cada componente visible. Responde SOLO con un array JSON válido, sin markdown, sin preámbulo. Cada objeto debe tener exactamente estos campos:
+{
+  "id": número,
+  "name": "nombre corto de la parte",
+  "category": "uno de: Valve | Pipe | Fitting | Water Heater | Fixture | Gas | Backflow | Vent | Pump | Filter | Unknown",
+  "description": "2-3 oraciones en español simple: qué es y qué hace",
+  "codeStatus": "uno de: approved | grandfathered | not-approved",
+  "codeNote": "nota breve sobre el estado del código",
+  "stillMade": true o false,
+  "manufacturer": "marca si es visible, o marcas comunes",
+  "whereToFind": "Home Depot, Ferguson, Grainger, etc.",
+  "estimatedCost": "rango de precio como $8-$15",
+  "proTip": "un consejo de campo que daría un maestro plomero",
+  "searchTerm": "término de búsqueda en YouTube para encontrar video de reparación",
+  "affiliateSearch": "palabra clave para buscar en Home Depot"
+}`;
+
+    try {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 1000,
+          system: systemPrompt,
+          messages: [{
+            role: "user",
+            content: [
+              { type: "image", source: { type: "base64", media_type: "image/jpeg", data: base64 } },
+              { type: "text", text: lang === "en" ? "Identify every plumbing part you can see in this photo. Return JSON array only." : "Identifica cada parte de plomería visible en esta foto. Devuelve solo el array JSON." }
+            ]
+          }]
+        })
+      });
+      const data = await response.json();
+      const text = data.content?.map(i => i.text || "").join("") || "";
+      const clean = text.replace(/```json|```/g, "").trim();
+      const parsed = JSON.parse(clean);
+      setParts(Array.isArray(parsed) ? parsed : []);
+      setPhase("results");
+    } catch (err) {
+      setError(t.identifyError);
+      setPhase("idle");
+    }
+  };
+
+  const reset = () => { setPhase("idle"); setImageData(null); setImagePreview(null); setParts([]); setSelectedPart(null); setError(null); };
+
+  const codeColor = (status) => ({ approved: "#4a9a6a", grandfathered: "#c8a030", "not-approved": "#c85a30" }[status] || "#4a6a7a");
+  const codeLabel = (status) => ({ approved: t.identifyApproved, grandfathered: t.identifyGrandfathered, "not-approved": t.identifyNotApproved }[status] || status);
+  const catColor = { Valve: "#7acae0", Pipe: "#5a7aaa", Fitting: "#4a9a8a", "Water Heater": "#c87a20", Fixture: "#8a8a30", Gas: "#c85a30", Backflow: "#8a5aaa", Vent: "#4a9a6a", Pump: "#6a7a9a", Filter: "#7a6a8a", Unknown: "#4a5a6a" };
+
+  return (
+    <div>
+      <style>{`
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes scanLine { 0%{top:10%} 100%{top:90%} }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+        .part-card { background:#1a1f24; border:1px solid #2a3038; border-radius:12px; padding:14px 16px; margin-bottom:10px; cursor:pointer; transition:all .15s; animation: fadeUp .3s ease forwards; opacity:0; }
+        .part-card:active { background:#1f252c; transform:scale(.98); }
+        .scanner-box { position:relative; border-radius:12px; overflow:hidden; background:#0a0f14; border:1px solid #2a3038; }
+        .scan-line { position:absolute; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,#c85a30,transparent); animation: scanLine 1.8s ease-in-out infinite alternate; }
+        .corner { position:absolute; width:20px; height:20px; border-color:#c85a30; border-style:solid; }
+        .corner-tl { top:10px; left:10px; border-width:2px 0 0 2px; }
+        .corner-tr { top:10px; right:10px; border-width:2px 2px 0 0; }
+        .corner-bl { bottom:10px; left:10px; border-width:0 0 2px 2px; }
+        .corner-br { bottom:10px; right:10px; border-width:0 2px 2px 0; }
+        .upload-zone { border:2px dashed #2a3038; border-radius:14px; padding:32px 16px; text-align:center; cursor:pointer; transition:all .2s; }
+        .upload-zone:active { border-color:#c85a30; background:rgba(200,90,48,.05); }
+        .buy-btn { display:flex; align-items:center; gap:8px; background:#1a3a2a; border:1px solid #2a6a3a; border-radius:10px; padding:10px 14px; cursor:pointer; width:100%; margin-bottom:8px; transition:all .15s; }
+        .buy-btn:active { background:#2a4a3a; }
+        .yt-btn { display:flex; align-items:center; gap:8px; background:#2a1a1a; border:1px solid #6a2a2a; border-radius:10px; padding:10px 14px; cursor:pointer; width:100%; margin-bottom:8px; transition:all .15s; }
+        .yt-btn:active { background:#3a1a1a; }
+      `}</style>
+
+      {/* IDLE — upload prompt */}
+      {phase === "idle" && (
+        <div>
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 28, letterSpacing: ".06em", color: "#e0e8f0", lineHeight: 1.1 }}>{t.identifyTitle}</div>
+            <div style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 14, color: "#4a6a7a", marginTop: 6, lineHeight: 1.5 }}>{t.identifySub}</div>
+          </div>
+
+          {error && <div style={{ background: "#2a1a1a", border: "1px solid #6a2a2a", borderRadius: 10, padding: "10px 14px", marginBottom: 16, fontFamily: "'Lora',serif", fontSize: 13, color: "#c87a60" }}>{error}</div>}
+
+          <input ref={fileRef} type="file" accept="image/*" capture="environment" style={{ display: "none" }} onChange={e => handleImage(e.target.files[0])} />
+
+          {/* Main camera button */}
+          <div className="upload-zone" onClick={() => fileRef.current?.click()}>
+            <div style={{ width: 72, height: 72, background: "linear-gradient(135deg,#2a1a0f,#3a2a1a)", border: "2px solid #c85a30", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#c85a30" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                <circle cx="12" cy="13" r="4"/>
+              </svg>
+            </div>
+            <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 18, letterSpacing: ".08em", color: "#e0e8f0", marginBottom: 6 }}>{t.identifyTap}</div>
+            <div style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#3a5a6a" }}>{t.identifyOrUpload}</div>
+          </div>
+
+          {/* What it can identify */}
+          <div style={{ marginTop: 24 }}>
+            <div className="sl">What Bob can identify</div>
+            {[
+              ["🔧", "Valves", "Ball, gate, globe, check, PRV, TPR"],
+              ["🚿", "Fixtures", "Faucets, showerheads, toilets, drains"],
+              ["🔥", "Gas parts", "Sediment traps, flex connectors, regulators"],
+              ["💧", "Backflow", "PVB, RPZ, double check, vacuum breakers"],
+              ["🔩", "Fittings & pipe", "Copper, galvanized, cast iron, PVC, PEX"],
+              ["♻️", "Water heaters", "Tank, tankless, mixing valves, expansion tanks"],
+            ].map(([icon, title, sub]) => (
+              <div key={title} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 0", borderBottom: "1px solid #1e2428" }}>
+                <span style={{ fontSize: 20, width: 28, textAlign: "center" }}>{icon}</span>
+                <div>
+                  <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 600, fontSize: 14, color: "#c0d8e8" }}>{title}</div>
+                  <div style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#3a5a6a" }}>{sub}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ANALYZING */}
+      {phase === "analyzing" && (
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 20 }}>
+          {imagePreview && (
+            <div className="scanner-box" style={{ width: "100%", marginBottom: 24 }}>
+              <img src={imagePreview} alt="analyzing" style={{ width: "100%", maxHeight: 280, objectFit: "cover", display: "block", opacity: 0.7 }} />
+              <div className="scan-line" />
+              <div className="corner corner-tl" /><div className="corner corner-tr" />
+              <div className="corner corner-bl" /><div className="corner corner-br" />
+            </div>
+          )}
+          <div style={{ width: 48, height: 48, border: "3px solid #1a3a4a", borderTopColor: "#c85a30", borderRadius: "50%", animation: "spin 0.9s linear infinite", marginBottom: 16 }} />
+          <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 20, letterSpacing: ".08em", color: "#e0e8f0", marginBottom: 6 }}>{t.identifyAnalyzing}</div>
+          <div style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 13, color: "#3a5a6a" }}>{t.identifyAnalyzingSub}</div>
+        </div>
+      )}
+
+      {/* RESULTS LIST */}
+      {phase === "results" && !selectedPart && (
+        <div>
+          {imagePreview && <img src={imagePreview} alt="analyzed" style={{ width: "100%", maxHeight: 200, objectFit: "cover", borderRadius: 12, marginBottom: 16, border: "1px solid #2a3038" }} />}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+            <div>
+              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 20, color: "#e0e8f0" }}>{parts.length} {t.identifyResults}</div>
+              <div style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#3a5a6a" }}>{t.identifyTapPart}</div>
+            </div>
+            <button onClick={reset} style={{ background: "none", border: "1px solid #2a3038", borderRadius: 8, padding: "6px 12px", cursor: "pointer", fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#4a6a7a", letterSpacing: ".06em" }}>{t.identifyNewPhoto}</button>
+          </div>
+          {parts.map((part, i) => (
+            <div key={part.id} className="part-card" style={{ animationDelay: `${i * 60}ms`, borderLeftColor: catColor[part.category] || "#3a5a6a", borderLeftWidth: 3 }} onClick={() => setSelectedPart(part)}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
+                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 16, color: "#e0e8f0", flex: 1, paddingRight: 8 }}>{part.name}</div>
+                <span className="pill" style={{ color: catColor[part.category] || "#4a6a7a", background: "rgba(255,255,255,.04)", fontSize: 10, flexShrink: 0 }}>{part.category}</span>
+              </div>
+              <div style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#4a6a7a", lineHeight: 1.5, marginBottom: 8 }}>{part.description.substring(0, 80)}…</div>
+              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                <span className="pill" style={{ color: codeColor(part.codeStatus), background: "rgba(255,255,255,.04)", fontSize: 10 }}>{codeLabel(part.codeStatus)}</span>
+                {part.estimatedCost && <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, color: "#4a9a6a", letterSpacing: ".04em" }}>{part.estimatedCost}</span>}
+                <span style={{ marginLeft: "auto", color: "#3a5a6a" }}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+              </div>
+            </div>
+          ))}
+          <button onClick={reset} style={{ width: "100%", background: "none", border: "1px solid #2a3038", borderRadius: 10, padding: "12px", cursor: "pointer", fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, color: "#4a6a7a", letterSpacing: ".06em", marginTop: 8 }}>📷 {t.identifyNewPhoto}</button>
+        </div>
+      )}
+
+      {/* PART DETAIL */}
+      {phase === "results" && selectedPart && (
+        <div>
+          <button onClick={() => setSelectedPart(null)} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, color: "#7acae0", fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, fontWeight: 600, letterSpacing: ".05em", marginBottom: 16, padding: 0 }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+            BACK TO RESULTS
+          </button>
+
+          {/* Part header */}
+          <div style={{ marginBottom: 16 }}>
+            <div style={{ display: "flex", gap: 10, marginBottom: 8, flexWrap: "wrap" }}>
+              <span className="pill" style={{ color: catColor[selectedPart.category] || "#4a6a7a", background: "rgba(255,255,255,.06)", padding: "4px 12px" }}>{selectedPart.category}</span>
+              <span className="pill" style={{ color: codeColor(selectedPart.codeStatus), background: "rgba(255,255,255,.06)", padding: "4px 12px" }}>{codeLabel(selectedPart.codeStatus)}</span>
+            </div>
+            <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 26, letterSpacing: ".04em", color: "#e0e8f0", lineHeight: 1.1, marginBottom: 6 }}>{selectedPart.name.toUpperCase()}</div>
+            {selectedPart.manufacturer && <div style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#3a5a6a" }}>{selectedPart.manufacturer}</div>}
+          </div>
+
+          {/* Description */}
+          <div className="sl">What it is</div>
+          <div style={{ background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 12, padding: 16, marginBottom: 16 }}>
+            <p style={{ fontFamily: "'Lora',serif", fontSize: 15, lineHeight: 1.75, color: "#c0d0d8", margin: 0 }}>{selectedPart.description}</p>
+          </div>
+
+          {/* Code status */}
+          <div className="sl">{t.identifyCodeStatus}</div>
+          <div style={{ background: selectedPart.codeStatus === "approved" ? "#1a2a1a" : selectedPart.codeStatus === "grandfathered" ? "#2a2a1a" : "#2a1a1a", border: `1px solid ${codeColor(selectedPart.codeStatus)}40`, borderRadius: 12, padding: 14, marginBottom: 16 }}>
+            <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, fontWeight: 700, color: codeColor(selectedPart.codeStatus), marginBottom: 4 }}>{codeLabel(selectedPart.codeStatus)}</div>
+            <div style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#8a9aaa", lineHeight: 1.5 }}>{selectedPart.codeNote}</div>
+          </div>
+
+          {/* Pro tip */}
+          {selectedPart.proTip && <>
+            <div className="sl" style={{ color: "#7a6a20" }}>{t.identifyProTip}</div>
+            <div style={{ background: "#1e1a0a", border: "1px solid #3a3010", borderRadius: 12, padding: 14, marginBottom: 16 }}>
+              <div style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 14, color: "#c8b870", lineHeight: 1.6 }}>💡 {selectedPart.proTip}</div>
+            </div>
+          </>}
+
+          {/* Where to buy */}
+          <div className="sl">{t.identifyWhereToBuy}</div>
+          <div style={{ marginBottom: 16 }}>
+            {selectedPart.estimatedCost && <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, color: "#4a9a6a", letterSpacing: ".04em", marginBottom: 10 }}>Estimated cost: {selectedPart.estimatedCost}</div>}
+            <button className="buy-btn" onClick={() => window.open(`https://www.homedepot.com/s/${encodeURIComponent(selectedPart.affiliateSearch || selectedPart.name)}`, "_blank")}>
+              <span style={{ fontSize: 18 }}>🏠</span>
+              <div style={{ flex: 1, textAlign: "left" }}>
+                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, color: "#e0e8f0", fontWeight: 600 }}>Home Depot</div>
+                <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#4a6a7a" }}>{selectedPart.whereToFind?.includes("Home Depot") ? "Typically in stock" : "Check availability"}</div>
+              </div>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4a9a6a" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </button>
+            <button className="buy-btn" onClick={() => window.open(`https://www.amazon.com/s?k=${encodeURIComponent(selectedPart.affiliateSearch || selectedPart.name)}+plumbing`, "_blank")} style={{ background: "#1a2a3a", borderColor: "#2a4a6a" }}>
+              <span style={{ fontSize: 18 }}>📦</span>
+              <div style={{ flex: 1, textAlign: "left" }}>
+                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, color: "#e0e8f0", fontWeight: 600 }}>Amazon</div>
+                <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#4a6a7a" }}>Wide selection, fast shipping</div>
+              </div>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7acae0" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </button>
+            <button className="buy-btn" onClick={() => window.open(`https://www.ferguson.com/search?term=${encodeURIComponent(selectedPart.name)}`, "_blank")} style={{ background: "#1a1a2a", borderColor: "#2a2a4a" }}>
+              <span style={{ fontSize: 18 }}>🔧</span>
+              <div style={{ flex: 1, textAlign: "left" }}>
+                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, color: "#e0e8f0", fontWeight: 600 }}>Ferguson</div>
+                <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#4a6a7a" }}>Pro supply house</div>
+              </div>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8a7aaa" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </button>
+          </div>
+
+          {/* YouTube */}
+          <div className="sl">{t.identifyRelatedVideos}</div>
+          <button className="yt-btn" onClick={() => window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(selectedPart.searchTerm || selectedPart.name + " plumbing repair")}`, "_blank")}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#c85a30"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.4 19.54C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#fff"/></svg>
+            <div style={{ flex: 1, textAlign: "left" }}>
+              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, color: "#e0e8f0", fontWeight: 600 }}>{t.identifySearchVideo}</div>
+              <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#6a4a4a" }}>{selectedPart.searchTerm}</div>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c85a30" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </button>
+
+          <div style={{ height: 12 }} />
+        </div>
+      )}
     </div>
   );
 }
