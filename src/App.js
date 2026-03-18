@@ -101,37 +101,61 @@ const T = {
 // ─── SVG DIAGRAMS ────────────────────────────────────────────
 const DIAGRAMS = {
   sedimentTrap: (
-    <svg viewBox="0 0 280 220" style={{ width: "100%", maxWidth: 280, display: "block", margin: "0 auto" }}>
-      <rect width="280" height="220" fill="#1a1f24" rx="8" />
-      <text x="140" y="18" textAnchor="middle" fill="#7acae0" fontSize="11" fontFamily="sans-serif" fontWeight="bold">SEDIMENT TRAP / DIRT LEG</text>
-      {/* Gas line coming in */}
-      <line x1="20" y1="80" x2="100" y2="80" stroke="#c87a20" strokeWidth="6" />
-      <text x="55" y="70" textAnchor="middle" fill="#c87a20" fontSize="9" fontFamily="sans-serif">GAS IN →</text>
-      {/* Tee fitting */}
-      <rect x="100" y="68" width="28" height="24" fill="#4a5a6a" rx="2" />
-      <text x="114" y="85" textAnchor="middle" fill="#fff" fontSize="8" fontFamily="sans-serif">TEE</text>
-      {/* Gas line going to appliance */}
-      <line x1="128" y1="80" x2="220" y2="80" stroke="#c87a20" strokeWidth="6" />
-      <text x="170" y="70" textAnchor="middle" fill="#c87a20" fontSize="9" fontFamily="sans-serif">→ APPLIANCE</text>
-      {/* Vertical nipple down */}
-      <line x1="114" y1="92" x2="114" y2="160" stroke="#6a8a9a" strokeWidth="6" />
-      <text x="145" y="120" fill="#e0e8f0" fontSize="9" fontFamily="sans-serif">NIPPLE</text>
-      <text x="145" y="132" fill="#e0e8f0" fontSize="9" fontFamily="sans-serif">MIN 3"</text>
-      {/* Cap at bottom */}
-      <rect x="100" y="158" width="28" height="14" fill="#4a5a6a" rx="3" />
-      <text x="114" y="169" textAnchor="middle" fill="#fff" fontSize="8" fontFamily="sans-serif">CAP</text>
-      {/* Sediment collecting */}
-      <ellipse cx="114" cy="172" rx="10" ry="4" fill="#8a6a20" opacity="0.6" />
-      <text x="114" y="192" textAnchor="middle" fill="#8a6a20" fontSize="8" fontFamily="sans-serif">sediment collects here</text>
-      {/* Shutoff valve */}
-      <rect x="155" y="72" width="20" height="16" fill="#2a6a4a" rx="2" />
-      <text x="165" y="83" textAnchor="middle" fill="#fff" fontSize="7" fontFamily="sans-serif">SV</text>
-      <text x="165" y="100" textAnchor="middle" fill="#4a9a6a" fontSize="8" fontFamily="sans-serif">shutoff</text>
-      {/* Arrow showing flow */}
-      <text x="114" y="48" textAnchor="middle" fill="#4a6a7a" fontSize="8" fontFamily="sans-serif">install as close to</text>
-      <text x="114" y="58" textAnchor="middle" fill="#4a6a7a" fontSize="8" fontFamily="sans-serif">appliance inlet as practical</text>
+    <svg viewBox="0 0 280 245" style={{ width: "100%", maxWidth: 280, display: "block", margin: "0 auto" }}>
+      <rect width="280" height="245" fill="#1a1f24" rx="8" />
+      <text x="140" y="16" textAnchor="middle" fill="#7acae0" fontSize="11" fontFamily="sans-serif" fontWeight="bold">SEDIMENT TRAP — CORRECT INSTALLATION</text>
+
+      {/* ── GAS LINE ENTERING HORIZONTALLY ── */}
+      <line x1="20" y1="130" x2="108" y2="130" stroke="#c87a20" strokeWidth="6" strokeLinecap="round" />
+      <text x="60" y="120" textAnchor="middle" fill="#c87a20" fontSize="9" fontFamily="sans-serif">GAS IN →</text>
+
+      {/* ── VERTICAL TEE (run = vertical, branch = horizontal inlet) ── */}
+      {/* Vertical body of tee */}
+      <rect x="108" y="98" width="24" height="64" fill="#4a5a6a" rx="2" />
+      {/* Horizontal branch of tee (where gas enters from left) */}
+      <rect x="84" y="118" width="28" height="24" fill="#4a5a6a" rx="2" />
+      <text x="120" y="133" textAnchor="middle" fill="#fff" fontSize="8" fontFamily="sans-serif" fontWeight="bold">TEE</text>
+      <text x="120" y="143" textAnchor="middle" fill="#7acae0" fontSize="7" fontFamily="sans-serif">(vertical)</text>
+
+      {/* ── GAS EXITS UP — 90 DEGREE TURN TO APPLIANCE ── */}
+      <line x1="120" y1="98" x2="120" y2="35" stroke="#c87a20" strokeWidth="6" strokeLinecap="round" />
+      <text x="170" y="58" fill="#c87a20" fontSize="9" fontFamily="sans-serif">↑ TO APPLIANCE</text>
+      <text x="170" y="70" fill="#4a6a7a" fontSize="8" fontFamily="sans-serif">(as close to inlet</text>
+      <text x="170" y="80" fill="#4a6a7a" fontSize="8" fontFamily="sans-serif">as practical)</text>
+
+      {/* Shutoff valve on the riser */}
+      <rect x="106" y="48" width="28" height="18" fill="#2a6a4a" rx="2" />
+      <text x="120" y="60" textAnchor="middle" fill="#fff" fontSize="7" fontFamily="sans-serif" fontWeight="bold">S/V</text>
+      <text x="148" y="56" fill="#4a9a6a" fontSize="8" fontFamily="sans-serif">shutoff</text>
+      <text x="148" y="66" fill="#4a9a6a" fontSize="8" fontFamily="sans-serif">valve</text>
+
+      {/* ── 90° TURN INDICATOR ── */}
+      <path d="M 75 130 Q 95 130 95 110" fill="none" stroke="#4a9a6a" strokeWidth="1.5" strokeDasharray="3,2" />
+      <text x="22" y="110" fill="#4a9a6a" fontSize="8" fontFamily="sans-serif">gas makes</text>
+      <text x="22" y="121" fill="#4a9a6a" fontSize="8" fontFamily="sans-serif">90° turn ↑</text>
+      <text x="22" y="132" fill="#4a9a6a" fontSize="8" fontFamily="sans-serif">sediment</text>
+      <text x="22" y="143" fill="#4a9a6a" fontSize="8" fontFamily="sans-serif">drops down</text>
+
+      {/* ── DIRT LEG DROPS STRAIGHT DOWN FROM BOTTOM OF TEE ── */}
+      <line x1="120" y1="162" x2="120" y2="210" stroke="#6a8a9a" strokeWidth="6" strokeLinecap="round" />
+
+      {/* Min 3" measurement on dirt leg */}
+      <line x1="150" y1="163" x2="150" y2="208" stroke="#c8a030" strokeWidth="1" />
+      <line x1="145" y1="163" x2="155" y2="163" stroke="#c8a030" strokeWidth="1" />
+      <line x1="145" y1="208" x2="155" y2="208" stroke="#c8a030" strokeWidth="1" />
+      <text x="165" y="183" fill="#c8a030" fontSize="9" fontFamily="sans-serif" fontWeight="bold">MIN 3"</text>
+      <text x="165" y="194" fill="#c8a030" fontSize="8" fontFamily="sans-serif">nipple</text>
+
+      {/* ── CAP AT BOTTOM ── */}
+      <rect x="106" y="209" width="28" height="13" fill="#4a5a6a" rx="3" />
+      <text x="120" y="219" textAnchor="middle" fill="#fff" fontSize="8" fontFamily="sans-serif">CAP</text>
+
+      {/* Sediment collects */}
+      <ellipse cx="120" cy="222" rx="11" ry="3" fill="#8a6a20" opacity="0.7" />
+      <text x="120" y="236" textAnchor="middle" fill="#8a6a20" fontSize="8" fontFamily="sans-serif">sediment collects here</text>
+
       {/* Code ref */}
-      <text x="140" y="210" textAnchor="middle" fill="#3a5a6a" fontSize="8" fontFamily="sans-serif">IFGC 408.4 · IRC G2419.4</text>
+      <text x="140" y="244" textAnchor="middle" fill="#3a5a6a" fontSize="7" fontFamily="sans-serif">IFGC 408.4 · IRC G2419.4</text>
     </svg>
   ),
   tprValve: (
@@ -343,7 +367,7 @@ const DIAGRAMS = {
 // ─── CODES DATA ──────────────────────────────────────────────
 const CODES = [
   // GAS
-  { id: 1, category: "Gas", title: "Sediment trap (dirt leg)", titleEs: "Trampa de sedimentos (dirt leg)", code: "IFGC 408.4", plain: "A sediment trap must be installed downstream of the appliance shutoff valve, as close to the appliance inlet as practical. Use a tee fitting with a capped nipple (minimum 3 inches long) installed vertically in the bottommost opening. Required for furnaces, water heaters, boilers, and clothes dryers. NOT required for ranges, cooktops, outdoor grills, decorative gas logs, or gas lights.", plainEs: "Se debe instalar una trampa de sedimentos aguas abajo de la válvula de cierre del aparato, lo más cerca posible a la entrada del aparato. Se usa un accesorio en T con un niple tapado (mínimo 3 pulgadas de largo) instalado verticalmente en la abertura inferior. Requerido para hornos, calentadores de agua, calderas y secadoras. NO requerido para estufas, parrillas exteriores, registros decorativos de gas o lámparas de gas.", tags: ["gas", "sediment trap", "dirt leg", "drip leg", "appliance"], diagram: "sedimentTrap" },
+  { id: 1, category: "Gas", title: "Sediment trap (dirt leg)", titleEs: "Trampa de sedimentos (dirt leg)", code: "IFGC 408.4 · UPC 1212.9", plain: "A sediment trap must be installed downstream of the appliance shutoff valve, as close to the appliance inlet as practical. The tee MUST be oriented vertically — the nipple hangs straight down and is capped at the bottom. Gas cannot flow straight through; it must make a 90-degree turn, which is what forces sediment to drop into the leg.\n\n⚠ IPC vs UPC — CHECK YOUR CITY:\n\n🔵 IPC CITIES (Dallas, Fort Worth, Plano, San Antonio, most of Texas): Two valid tee orientations — gas can enter from the top flowing down and exit the horizontal tap, OR gas can enter the horizontal tap and exit upward. Either way the nipple hangs straight down. Nipple length: \"any length\" per code, though 3 inches is the field standard.\n\n🟠 UPC CITIES (Houston, Austin): The UPC figure specifically shows gas entering from the TOP of the tee, flowing down, and exiting the horizontal tap to the appliance. Only this orientation matches the UPC figure. Additionally, the UPC explicitly requires the trap to be installed BEFORE the flex connector — between the shutoff valve and the flex. Nipple minimum: 3 inches, explicitly stated.\n\nRequired on: furnaces, water heaters, boilers. NOT required on: ranges, cooktops, outdoor grills, decorative gas logs, gas fireplaces, gas lights.", plainEs: "Se debe instalar una trampa de sedimentos aguas abajo de la válvula de cierre del aparato. El accesorio en T DEBE estar orientado verticalmente — el niple cuelga recto hacia abajo y está tapado en el fondo. El gas no puede fluir directo; debe hacer un giro de 90 grados, lo que obliga al sedimento a caer en la pata.\n\n⚠ IPC vs UPC — VERIFICA TU CIUDAD:\n\n🔵 CIUDADES IPC (Dallas, Fort Worth, Plano, San Antonio, la mayoría de Texas): Dos orientaciones válidas — el gas puede entrar por arriba y salir por la salida horizontal, O puede entrar por la salida horizontal y salir hacia arriba. El niple siempre cuelga hacia abajo. Longitud mínima del niple: cualquier longitud según el código, aunque 3 pulgadas es el estándar de campo.\n\n🟠 CIUDADES UPC (Houston, Austin): La figura del UPC muestra específicamente el gas entrando POR ARRIBA del T, fluyendo hacia abajo y saliendo por la salida horizontal hacia el aparato. Además, el UPC requiere que la trampa se instale ANTES del conector flexible — entre la válvula de cierre y el flex. Mínimo del niple: 3 pulgadas, indicado explícitamente.\n\nRequerido en: hornos, calentadores de agua, calderas. NO requerido en: estufas, parrillas exteriores, registros decorativos de gas, chimeneas de gas, lámparas de gas.", tags: ["gas", "sediment trap", "dirt leg", "drip leg", "appliance", "IPC", "UPC", "Houston", "Austin", "flex connector"], diagram: "sedimentTrap" },
   { id: 2, category: "Gas", title: "Appliance shutoff valve", titleEs: "Válvula de cierre del aparato", code: "IFGC 409.5", plain: "Each gas appliance must have its own shutoff valve located in the same room as the appliance, no more than 6 feet from the appliance, upstream of any union or connector. The valve must be accessible. Exception: decorative vented appliances may have remote shutoffs if they have ready access.", plainEs: "Cada aparato de gas debe tener su propia válvula de cierre ubicada en el mismo cuarto que el aparato, a no más de 6 pies del aparato, aguas arriba de cualquier unión o conector. La válvula debe ser accesible.", tags: ["gas", "shutoff valve", "appliance", "6 feet"] },
   { id: 3, category: "Gas", title: "CSST bonding requirement", titleEs: "Requisito de bonding para CSST", code: "NFPA 54 7.13", plain: "Corrugated Stainless Steel Tubing (CSST) must be electrically bonded to the building's grounding electrode system. Many Texas cities require a bonding clamp every 6 feet along the run. Always check local amendments — this varies by city.", plainEs: "La tubería corrugada de acero inoxidable (CSST) debe estar eléctricamente unida al sistema de electrodo de tierra del edificio. Muchas ciudades de Texas requieren una abrazadera de bonding cada 6 pies a lo largo del recorrido.", tags: ["CSST", "gas", "bonding", "grounding"], diagram: "csst" },
   { id: 4, category: "Gas", title: "Gas pressure test requirements", titleEs: "Requisitos de prueba de presión de gas", code: "IFGC 406.4", plain: "Gas piping systems must be tested with air, nitrogen, or CO2 at a minimum of 10 PSI for a minimum of 15 minutes. Many Texas cities require 30 minutes. Never test with gas. Document start and end pressures. Inspector may require witnessed test.", plainEs: "Los sistemas de tuberías de gas deben probarse con aire, nitrógeno o CO2 a un mínimo de 10 PSI por un mínimo de 15 minutos. Muchas ciudades de Texas requieren 30 minutos. Nunca pruebe con gas. Documente las presiones de inicio y fin.", tags: ["gas", "pressure test", "10 PSI", "leak test"] },
