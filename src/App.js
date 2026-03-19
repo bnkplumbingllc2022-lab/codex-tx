@@ -671,6 +671,101 @@ const THIRD_PARTY = {
   "Veritas Inspections": { strictAreas: ["Gas documentation — requires manufacturer spec sheets physically on site", "Water service depth — they probe with a rod for minimum 12\" cover", "Shower pan liner — flood test required for full 24 hours before sign-off", "TPR valve discharge — checks material, size, length, and termination point"], tips: ["Most thorough of the major third-party firms operating in Texas", "Submit digital as-builts 48 hours before they arrive on commercial jobs", "Common fail: TPR discharge pipe wrong material or terminates too high", "They will re-inspect failed items at no charge if corrected within 48 hours"], builders: ["Toll Brothers", "Highland Homes", "David Weekley"], region: "Austin, DFW, San Antonio, Houston" },
 };
 
+// ─── TEXAS REGIONAL SUPPLIERS ────────────────────────────────
+const REGIONAL_SUPPLIERS = {
+  "Austin": [
+    { name: "Moore Supply Co. — Austin", phone: "(512) 442-8271", address: "507 W. Cesar Chavez St, Austin TX 78701", url: "mooresupply.com", specialty: "Full-line plumbing, commercial & residential" },
+    { name: "Dealers Supply — Austin", phone: "(512) 444-3521", address: "4600 S Congress Ave, Austin TX 78745", url: "dealerssupply.com", specialty: "Wholesale plumbing & HVAC" },
+    { name: "Ferguson — Austin (North)", phone: "(512) 836-9555", address: "8700 Research Blvd, Austin TX 78758", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+    { name: "Ferguson — Austin (South)", phone: "(512) 444-8881", address: "4107 S Congress Ave, Austin TX 78704", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+    { name: "Hajoca — Austin", phone: "(512) 459-4551", address: "1015 S Lamar Blvd, Austin TX 78704", url: "hajoca.com", specialty: "Wholesale plumbing, hydronic heating" },
+  ],
+  "Houston": [
+    { name: "Moore Supply Co. — Houston", phone: "(713) 869-4461", address: "2502 N. Shepherd Dr, Houston TX 77008", url: "mooresupply.com", specialty: "Full-line plumbing, commercial & residential" },
+    { name: "Ferguson — Houston (Multiple)", phone: "(713) 869-5555", address: "2100 N. Shepherd Dr, Houston TX 77008", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+    { name: "Dealers Supply — Houston", phone: "(713) 672-3486", address: "7100 Navigation Blvd, Houston TX 77011", url: "dealerssupply.com", specialty: "Wholesale plumbing & HVAC" },
+    { name: "Hajoca — Houston", phone: "(713) 681-6566", address: "4600 N Shepherd Dr, Houston TX 77018", url: "hajoca.com", specialty: "Wholesale plumbing" },
+    { name: "Stock & Field — Houston", phone: "(713) 869-1311", address: "1919 N Shepherd Dr, Houston TX 77008", url: "stockandfield.com", specialty: "Commercial plumbing, industrial" },
+  ],
+  "Dallas": [
+    { name: "Ferguson — Dallas", phone: "(214) 638-5500", address: "3030 Irving Blvd, Dallas TX 75247", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+    { name: "Moore Supply Co. — Dallas", phone: "(214) 631-3500", address: "2929 Canton St, Dallas TX 75226", url: "mooresupply.com", specialty: "Full-line plumbing, commercial & residential" },
+    { name: "Hajoca — Dallas", phone: "(214) 637-7200", address: "2727 Stemmons Fwy, Dallas TX 75207", url: "hajoca.com", specialty: "Wholesale plumbing" },
+    { name: "Hughes Supply — Dallas", phone: "(214) 638-0700", address: "2801 Harry Hines Blvd, Dallas TX 75201", url: "ferguson.com", specialty: "Commercial plumbing, industrial valves" },
+  ],
+  "San Antonio": [
+    { name: "Moore Supply Co. — San Antonio", phone: "(210) 227-9631", address: "1402 S. Alamo St, San Antonio TX 78210", url: "mooresupply.com", specialty: "Full-line plumbing, commercial & residential" },
+    { name: "Ferguson — San Antonio", phone: "(210) 349-3381", address: "5702 Bandera Rd, San Antonio TX 78238", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+    { name: "Hajoca — San Antonio", phone: "(210) 224-6163", address: "1503 S Alamo St, San Antonio TX 78210", url: "hajoca.com", specialty: "Wholesale plumbing" },
+    { name: "Dealers Supply — San Antonio", phone: "(210) 432-7621", address: "2727 Pleasanton Rd, San Antonio TX 78221", url: "dealerssupply.com", specialty: "Wholesale plumbing & HVAC" },
+  ],
+  "Fort Worth": [
+    { name: "Moore Supply Co. — Fort Worth", phone: "(817) 335-5481", address: "1500 E Rosedale St, Fort Worth TX 76104", url: "mooresupply.com", specialty: "Full-line plumbing" },
+    { name: "Ferguson — Fort Worth", phone: "(817) 332-5533", address: "4200 Camp Bowie Blvd, Fort Worth TX 76107", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+    { name: "Hajoca — Fort Worth", phone: "(817) 332-5200", address: "3201 S Freeway, Fort Worth TX 76104", url: "hajoca.com", specialty: "Wholesale plumbing" },
+  ],
+  "Lubbock": [
+    { name: "Moore Supply Co. — Lubbock", phone: "(806) 762-0301", address: "1402 Avenue K, Lubbock TX 79401", url: "mooresupply.com", specialty: "Full-line plumbing" },
+    { name: "Ferguson — Lubbock", phone: "(806) 744-5551", address: "5034 50th St, Lubbock TX 79414", url: "ferguson.com", specialty: "Full-line plumbing" },
+  ],
+  "El Paso": [
+    { name: "Ferguson — El Paso", phone: "(915) 779-0822", address: "7500 Gateway Blvd E, El Paso TX 79915", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+    { name: "Moore Supply Co. — El Paso", phone: "(915) 779-5551", address: "7530 Gateway Blvd E, El Paso TX 79915", url: "mooresupply.com", specialty: "Full-line plumbing" },
+  ],
+  "Corpus Christi": [
+    { name: "Moore Supply Co. — Corpus Christi", phone: "(361) 883-2671", address: "2401 S Port Ave, Corpus Christi TX 78405", url: "mooresupply.com", specialty: "Full-line plumbing, coastal-rated materials" },
+    { name: "Ferguson — Corpus Christi", phone: "(361) 884-0336", address: "4033 S Port Ave, Corpus Christi TX 78415", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+  ],
+  "McAllen": [
+    { name: "Moore Supply Co. — McAllen", phone: "(956) 682-5551", address: "1001 N Main St, McAllen TX 78501", url: "mooresupply.com", specialty: "Full-line plumbing" },
+    { name: "Ferguson — McAllen", phone: "(956) 631-5551", address: "4401 N 10th St, McAllen TX 78504", url: "ferguson.com", specialty: "Full-line plumbing" },
+  ],
+};
+
+// Get suppliers for a city — falls back to nearest major metro
+const getSuppliersForCity = (cityName) => {
+  if (REGIONAL_SUPPLIERS[cityName]) return REGIONAL_SUPPLIERS[cityName];
+  const metroMap = {
+    "Georgetown": "Austin", "Round Rock": "Austin", "Cedar Park": "Austin",
+    "Leander": "Austin", "Pflugerville": "Austin", "Hutto": "Austin",
+    "Kyle": "Austin", "Buda": "Austin", "San Marcos": "Austin",
+    "New Braunfels": "San Antonio", "Schertz": "San Antonio", "Converse": "San Antonio",
+    "Boerne": "San Antonio", "Cibolo": "San Antonio", "Seguin": "San Antonio",
+    "Plano": "Dallas", "Frisco": "Dallas", "McKinney": "Dallas", "Allen": "Dallas",
+    "Garland": "Dallas", "Irving": "Dallas", "Carrollton": "Dallas",
+    "Richardson": "Dallas", "Mesquite": "Dallas", "Grand Prairie": "Dallas",
+    "Arlington": "Fort Worth", "Mansfield": "Fort Worth", "Burleson": "Fort Worth",
+    "Flower Mound": "Dallas", "Lewisville": "Dallas", "Denton": "Dallas",
+    "Southlake": "Fort Worth", "Keller": "Fort Worth",
+    "Pearland": "Houston", "Sugar Land": "Houston", "League City": "Houston",
+    "Missouri City": "Houston", "Baytown": "Houston", "Pasadena": "Houston",
+    "Beaumont": "Houston", "Texas City": "Houston", "Galveston": "Houston",
+    "Waco": "Austin", "Temple": "Austin", "Killeen": "Austin",
+    "Lubbock": "Lubbock", "Amarillo": "Lubbock",
+    "Midland": "El Paso", "Odessa": "El Paso",
+    "Corpus Christi": "Corpus Christi",
+  };
+  const metro = metroMap[cityName];
+  if (metro && REGIONAL_SUPPLIERS[metro]) return REGIONAL_SUPPLIERS[metro];
+  return REGIONAL_SUPPLIERS["Dallas"]; // default fallback
+};
+
+// Smart buy store ordering based on part type
+const getBuyStores = (part) => {
+  const partType = (part.partType || "").toLowerCase();
+  const name = (part.name || "").toLowerCase();
+  const isIndustrial = partType === "industrial" || name.includes("industrial") || name.includes("commercial") || name.includes("grooved") || name.includes("victaulic") || name.includes("cast iron") || name.includes("ductile");
+  const isGas = partType === "gas" || part.category === "Gas" || name.includes("gas") || name.includes("csst") || name.includes("regulator") || name.includes("sediment trap");
+  const isSpecialty = partType === "specialty" || name.includes("backflow") || name.includes("rpz") || name.includes("pvb") || name.includes("pressure vacuum");
+  const isCommon = partType === "residential_common" || name.includes("hose bib") || name.includes("p-trap") || name.includes("shut off") || name.includes("supply line") || name.includes("toilet") || name.includes("faucet");
+
+  if (isIndustrial) return ["Ferguson", "Grainger", "Amazon"];
+  if (isGas) return ["Ferguson", "Home Depot", "Amazon"];
+  if (isSpecialty) return ["Ferguson", "Amazon", "Home Depot"];
+  if (isCommon) return ["Home Depot", "Amazon", "Ferguson"];
+  return ["Home Depot", "Ferguson", "Amazon"];
+};
+
 // ─── ICON COMPONENT ─────────────────────────────────────────
 const Icon = ({ name, size = 20, color = "currentColor" }) => {
   const icons = {
@@ -764,7 +859,7 @@ export default function App() {
         .cc{background:#1a1f24;border:1px solid #2a3038;border-radius:12px;padding:16px;margin-bottom:10px}
         .jc{background:#1a1f24;border:1px solid #2a3038;border-radius:12px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
         .jc:active{background:#1f252c}
-        .pill{display:inline-flex;align-items:center;background:rgba(255,255,255,.06);border-radius:20px;padding:3px 10px;font-size:11px;font-family:'Barlow Condensed',sans-serif;letter-spacing:.05em;font-weight:600}
+        .pill{display:inline-flex;align-items:center;background:rgba(255,255,255,.06);border-radius:20px;padding:3px 10px;font-size:11px;font-family:'Barlow Condensed',sans-serif;letter-spacing:.05em;font-weight:600;pointer-events:none;user-select:none}
         .sw{position:relative;margin-bottom:14px}
         .si{width:100%;background:#1a1f24;border:1px solid #2a3038;border-radius:10px;padding:12px 48px 12px 42px;color:#e0e8f0;font-family:'Lora',serif;font-size:15px;outline:none;transition:border-color .2s}
         .si:focus{border-color:#3a8a9a}
@@ -841,9 +936,8 @@ export default function App() {
             <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, color: "#7acae0", fontWeight: 700, letterSpacing: ".08em" }}>{lang === "en" ? "ES" : "EN"}</span>
           </button>
           {/* VOICE BUTTON */}
-          <button onClick={isListening ? stopVoice : startVoice} style={{ background: isListening ? "rgba(200,90,48,.2)" : "rgba(58,138,154,.15)", border: `1px solid ${isListening ? "#c85a30" : "#3a8a9a"}`, borderRadius: 8, padding: "5px 9px", display: "flex", alignItems: "center", gap: 4, cursor: "pointer" }}>
-            <Icon name="mic" size={14} color={isListening ? "#c85a30" : "#7acae0"} />
-            <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 10, color: isListening ? "#c85a30" : "#7acae0", fontWeight: 700, letterSpacing: ".06em" }}>{isListening ? "STOP" : "VOZ"}</span>
+          <button onClick={isListening ? stopVoice : startVoice} style={{ background: isListening ? "rgba(200,90,48,.2)" : "rgba(58,138,154,.15)", border: "1px solid " + (isListening ? "#c85a30" : "#3a8a9a"), borderRadius: 8, padding: "5px 8px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }} title={isListening ? "Stop" : "Voice Search"}>
+            <Icon name="mic" size={16} color={isListening ? "#c85a30" : "#7acae0"} />
           </button>
         </div>
       </div>
@@ -1017,6 +1111,37 @@ export default function App() {
               <div className="sl">{t.amendments}</div>
               <div className="ib" style={{ marginBottom: 16 }}>{j.amendments.map((a, i) => <div key={i} className="ar"><div className="dot" /><div style={{ fontFamily: "'Lora',serif", fontSize: 14, color: "#b0c8d8", lineHeight: 1.6 }}>{a}</div></div>)}</div>
               {j.thirdParty && j.thirdParty.length > 0 && <><div className="sl">{t.thirdParty}</div><div style={{ display: "flex", flexWrap: "wrap", marginBottom: 16 }}>{j.thirdParty.map(tp => <div key={tp} className="tc p" onClick={() => { setSelectedThirdParty(tp); setScreen("inspectors"); }}><span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, color: "#4a9a6a", fontWeight: 600 }}>{tp}</span><Icon name="chevron" size={12} color="#2a6a2a" /></div>)}</div></>}
+
+              {/* REGIONAL SUPPLIERS */}
+              {(function() {
+                var suppliers = getSuppliersForCity(selectedJurisdiction);
+                if (!suppliers || suppliers.length === 0) return null;
+                return (
+                  <div style={{ marginBottom: 16 }}>
+                    <div className="sl">{lang === "en" ? "Local Supply Houses" : "Distribuidores Locales"}</div>
+                    {suppliers.map(function(s, i) {
+                      return (
+                        <div key={i} style={{ background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "12px 14px", marginBottom: 8 }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
+                            <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 14, color: "#c0d8e8", flex: 1 }}>{s.name}</div>
+                          </div>
+                          <div style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#4a6a7a", marginBottom: 8 }}>{s.specialty}</div>
+                          <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#3a5a6a", marginBottom: 8 }}>📍 {s.address}</div>
+                          <div style={{ display: "flex", gap: 8 }}>
+                            <button onClick={function() { window.open("tel:" + s.phone.replace(/[^0-9]/g, ""), "_blank"); }} style={{ flex: 1, background: "#1a3a2a", border: "1px solid #2a6a3a", borderRadius: 8, padding: "8px 10px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+                              <Icon name="phone" size={13} color="#4a9a6a" />
+                              <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, color: "#4a9a6a", fontWeight: 700 }}>{s.phone}</span>
+                            </button>
+                            <button onClick={function() { window.open("https://" + s.url, "_blank"); }} style={{ background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 8, padding: "8px 12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4a6a7a" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })()}
             </div>
           );
         })()}
@@ -1647,21 +1772,64 @@ function IdentifyScreen({ t, lang }) {
               )}
               <div className="sl">{t.identifyWhereToBuy}</div>
               <div style={{ marginBottom: 16 }}>
-                <button className="buy-btn" onClick={() => window.open("https://www.homedepot.com/s/" + encodeURIComponent(selectedPart.name), "_blank")}>
-                  <span style={{ fontSize: 18 }}>🏠</span>
-                  <div style={{ flex: 1, textAlign: "left" }}><div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, color: "#e0e8f0", fontWeight: 600 }}>Home Depot</div></div>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4a9a6a" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                </button>
-                <button className="buy-btn" onClick={() => window.open("https://www.amazon.com/s?k=" + encodeURIComponent(selectedPart.name) + "+plumbing", "_blank")} style={{ background: "#1a2a3a", borderColor: "#2a4a6a" }}>
-                  <span style={{ fontSize: 18 }}>📦</span>
-                  <div style={{ flex: 1, textAlign: "left" }}><div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, color: "#e0e8f0", fontWeight: 600 }}>Amazon</div></div>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7acae0" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                </button>
-                <button className="buy-btn" onClick={() => window.open("https://www.ferguson.com/search?term=" + encodeURIComponent(selectedPart.name), "_blank")} style={{ background: "#1a1a2a", borderColor: "#2a2a4a" }}>
-                  <span style={{ fontSize: 18 }}>🔧</span>
-                  <div style={{ flex: 1, textAlign: "left" }}><div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, color: "#e0e8f0", fontWeight: 600 }}>Ferguson</div></div>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8a7aaa" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                </button>
+                {(function() {
+                  var stores = getBuyStores(selectedPart);
+                  var zip = "";
+                  try { zip = localStorage.getItem("codex_zip") || ""; } catch(e) {}
+                  var zipParam = zip ? "&zip=" + zip : "";
+                  var storeConfigs = {
+                    "Home Depot": {
+                      icon: "🏠",
+                      color: "#4a9a6a",
+                      bg: "#1a3a2a",
+                      border: "#2a6a3a",
+                      label: "Home Depot",
+                      sub: lang === "en" ? "Common parts, same-day pickup" : "Partes comunes, recoger el mismo dia",
+                      url: "https://www.homedepot.com/s/" + encodeURIComponent(selectedPart.name) + "?zip=" + zip
+                    },
+                    "Ferguson": {
+                      icon: "🔧",
+                      color: "#8a7aaa",
+                      bg: "#1a1a2a",
+                      border: "#2a2a4a",
+                      label: "Ferguson",
+                      sub: lang === "en" ? "Pro supply house" : "Distribuidor profesional",
+                      url: "https://www.ferguson.com/search?term=" + encodeURIComponent(selectedPart.name)
+                    },
+                    "Amazon": {
+                      icon: "📦",
+                      color: "#7acae0",
+                      bg: "#1a2a3a",
+                      border: "#2a4a6a",
+                      label: "Amazon",
+                      sub: lang === "en" ? "Wide selection, fast shipping" : "Amplia seleccion, envio rapido",
+                      url: "https://www.amazon.com/s?k=" + encodeURIComponent(selectedPart.name) + "+plumbing"
+                    },
+                    "Grainger": {
+                      icon: "⚙️",
+                      color: "#c8a030",
+                      bg: "#2a2a1a",
+                      border: "#4a4a2a",
+                      label: "Grainger",
+                      sub: lang === "en" ? "Industrial & commercial" : "Industrial y comercial",
+                      url: "https://www.grainger.com/search?searchQuery=" + encodeURIComponent(selectedPart.name)
+                    },
+                  };
+                  return stores.map(function(storeName) {
+                    var cfg = storeConfigs[storeName];
+                    if (!cfg) return null;
+                    return (
+                      <button key={storeName} className="buy-btn" onClick={function() { window.open(cfg.url, "_blank"); }} style={{ background: cfg.bg, borderColor: cfg.border }}>
+                        <span style={{ fontSize: 18 }}>{cfg.icon}</span>
+                        <div style={{ flex: 1, textAlign: "left" }}>
+                          <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, color: "#e0e8f0", fontWeight: 600 }}>{cfg.label}</div>
+                          <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#4a6a7a" }}>{cfg.sub}</div>
+                        </div>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={cfg.color} strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                      </button>
+                    );
+                  });
+                })()}
               </div>
               <div className="sl">{t.identifyRelatedVideos}</div>
               <button className="yt-btn" onClick={() => window.open("https://www.youtube.com/results?search_query=" + encodeURIComponent((selectedPart.searchTerm || selectedPart.name) + " plumbing repair"), "_blank")}>
