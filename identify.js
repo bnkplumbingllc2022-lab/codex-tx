@@ -1,5 +1,27 @@
 {
-  "buildCommand": "DISABLE_ESLINT_PLUGIN=true react-scripts build",
-  "outputDirectory": "build",
-  "framework": "create-react-app"
+  "name": "codex-tx",
+  "version": "2.0.0",
+  "private": true,
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1"
+  },
+  "scripts": {
+    "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start",
+    "build": "DISABLE_ESLINT_PLUGIN=true react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": ["react-app"],
+    "rules": {
+      "no-unused-vars": "off",
+      "jsx-a11y/alt-text": "off"
+    }
+  },
+  "browserslist": {
+    "production": [">0.2%", "not dead", "not op_mini all"],
+    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+  }
 }
