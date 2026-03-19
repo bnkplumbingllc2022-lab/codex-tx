@@ -772,7 +772,6 @@ export default function App() {
         .sic{position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none;color:#4a5a6a}
         .mb{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:6px;border-radius:50%;display:flex;align-items:center;justify-content:center}
         .mb.on{animation:pulse 1s infinite}
-        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
         .cs{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;margin-bottom:16px}
         .cb{flex-shrink:0;background:#1a1f24;border:1px solid #2a3038;border-radius:20px;padding:6px 14px;color:#6a8a9a;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:.05em;cursor:pointer;transition:all .15s;white-space:nowrap}
         .cb.active{background:#1a3a4a;border-color:#3a8a9a;color:#7acae0}
@@ -802,9 +801,6 @@ export default function App() {
         .lang-btn{background:rgba(58,138,154,.15);border:1px solid #3a8a9a;border-radius:8px;padding:5px 10px;cursor:pointer;display:flex;align-items:center;gap:4px}
         .tab-btn{flex:1;padding:8px;border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;border-radius:6px;transition:all .15s}
         .diagram-box{background:#1a1f24;border:1px solid #2a3038;border-radius:12px;padding:16px;margin-bottom:16px}
-        @keyframes spin{to{transform:rotate(360deg)}}
-        @keyframes scanLine{0%{top:10%}100%{top:90%}}
-        @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
         .part-card{background:#1a1f24;border:1px solid #2a3038;border-radius:12px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:all .15s;animation:fadeUp .3s ease forwards;opacity:0}
         .part-card:active{background:#1f252c;transform:scale(.98)}
         .scanner-box{position:relative;border-radius:12px;overflow:hidden;background:#0a0f14;border:1px solid #2a3038}
@@ -820,7 +816,6 @@ export default function App() {
         .buy-btn:active{background:#2a4a3a}
         .yt-btn{display:flex;align-items:center;gap:8px;background:#2a1a1a;border:1px solid #6a2a2a;border-radius:10px;padding:10px 14px;cursor:pointer;width:100%;margin-bottom:8px;transition:all .15s}
         .yt-btn:active{background:#3a1a1a}
-        @keyframes speakBar{from{transform:scaleY(.4)}to{transform:scaleY(1)}}
       `}</style>
 
       {/* HEADER */}
