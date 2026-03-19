@@ -1623,9 +1623,9 @@ function IdentifyScreen({ t, lang }) {
                   <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, color: "#4a9a6a", fontWeight: 600, letterSpacing: ".06em" }}>{lang === "en" ? "BOB IS SPEAKING..." : "BOB ESTÁ HABLANDO..."}</span>
                 </div>
               )}
-              {/* Send to Job Mode button */}
+              {/* Send to Estimate tab button */}
               {parts.length > 0 && (
-                <div onClick={() => { const jobParts = buildJobPartsList ? null : null; setActiveTab("estimate"); setEstimateParts(parts.map(p => ({ ...p, qty: 1 }))); }} style={{ display: "flex", alignItems: "center", gap: 8, background: "#0a1a10", border: "1px solid #1a4a2a", borderRadius: 10, padding: "10px 14px", marginBottom: 14, cursor: "pointer" }}>
+                <div onClick={() => { setActiveTab("estimate"); setEstimateParts(parts.map(p => ({ ...p, qty: 1 }))); }} style={{ display: "flex", alignItems: "center", gap: 8, background: "#0a1a10", border: "1px solid #1a4a2a", borderRadius: 10, padding: "10px 14px", marginBottom: 14, cursor: "pointer" }}>
                   <span style={{ fontSize: 16 }}>💰</span>
                   <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, color: "#4a9a6a", fontWeight: 700, letterSpacing: ".04em" }}>{lang === "en" ? "ESTIMATE THIS JOB" : "ESTIMAR ESTE TRABAJO"}</div>
                 </div>
