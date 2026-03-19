@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 // ─── TRANSLATIONS ────────────────────────────────────────────
 const T = {
@@ -69,6 +69,34 @@ const T = {
     identifyRelatedVideos: "Related Repair Videos",
     identifySearchVideo: "Search on YouTube",
     identifyProTip: "Pro Tip",
+    jobModeTitle: "JOB MODE",
+    jobModeSub: "Take up to 10 photos — Bob builds your parts list",
+    jobModeStart: "START NEW JOB",
+    jobModeAddress: "Job Address (optional)",
+    jobModeAddressPlaceholder: "123 Main St, City, TX",
+    jobModePhoto: "ADD PHOTO",
+    jobModePhotoCount: "photos taken",
+    jobModeAnalyzing: "Analyzing photo",
+    jobModeDone: "BUILD PARTS LIST",
+    jobModeReset: "START OVER",
+    jobModePartsTitle: "JOB PARTS LIST",
+    jobModeTotal: "Estimated Total",
+    jobModeShareReport: "SHARE REPORT",
+    jobModeCopyReport: "COPY REPORT",
+    jobModeNoIssues: "All parts code approved",
+    jobModeIssues: "issues need attention",
+    jobModeEstimate: "ESTIMATE",
+    estimateTitle: "JOB ESTIMATOR",
+    estimateSub: "Material + labor estimate for this job",
+    estimateMaterial: "Materials",
+    estimateLabor: "Labor (est.)",
+    estimatePermit: "Permit Fee (est.)",
+    estimateMarkup: "Markup",
+    estimateTotal: "Total Bid",
+    estimateMarkupLabel: "Markup %",
+    estimateLaborHours: "Labor Hours",
+    estimateLaborRate: "Labor Rate / hr",
+    estimateDisclaimer: "Estimates based on current market rates. Verify locally before bidding.",
   },
   es: {
     appSub: "CÓDIGO DE PLOMERÍA TEXAS",
@@ -137,6 +165,34 @@ const T = {
     identifyRelatedVideos: "Videos de Reparación",
     identifySearchVideo: "Buscar en YouTube",
     identifyProTip: "Consejo Pro",
+    jobModeTitle: "MODO TRABAJO",
+    jobModeSub: "Toma hasta 10 fotos — Bob construye tu lista de partes",
+    jobModeStart: "INICIAR TRABAJO",
+    jobModeAddress: "Dirección del Trabajo (opcional)",
+    jobModeAddressPlaceholder: "123 Calle Principal, Ciudad, TX",
+    jobModePhoto: "AGREGAR FOTO",
+    jobModePhotoCount: "fotos tomadas",
+    jobModeAnalyzing: "Analizando foto",
+    jobModeDone: "CREAR LISTA DE PARTES",
+    jobModeReset: "EMPEZAR DE NUEVO",
+    jobModePartsTitle: "LISTA DE PARTES",
+    jobModeTotal: "Total Estimado",
+    jobModeShareReport: "COMPARTIR REPORTE",
+    jobModeCopyReport: "COPIAR REPORTE",
+    jobModeNoIssues: "Todas las partes aprobadas",
+    jobModeIssues: "problemas necesitan atención",
+    jobModeEstimate: "ESTIMAR",
+    estimateTitle: "ESTIMADOR DE TRABAJO",
+    estimateSub: "Estimado de material + mano de obra",
+    estimateMaterial: "Materiales",
+    estimateLabor: "Mano de Obra (est.)",
+    estimatePermit: "Costo de Permiso (est.)",
+    estimateMarkup: "Markup",
+    estimateTotal: "Precio Total",
+    estimateMarkupLabel: "Markup %",
+    estimateLaborHours: "Horas de Trabajo",
+    estimateLaborRate: "Tarifa / hr",
+    estimateDisclaimer: "Estimados basados en precios actuales del mercado. Verifica localmente antes de cotizar.",
   }
 };
 
@@ -458,35 +514,35 @@ const CODES = [
 const JURISDICTIONS = {
   "Allen": { code: "IPC 2021", population: "107K", region: "North Texas (DFW)", amendments: ["NCTCOG regional amendments apply", "All permits through CSS (Citizen Self-Service) portal before work begins", "Call (214) 509-4130 between 8–9 AM on day of inspection to get time window", "Cancel before 8:30 AM: call (214) 509-4130 | After 8:30 AM: use CSS or IVR", "IVR 24-hour hotline: (844) 381-8759", "Backflow prevention required — irrigation backflow tester must be licensed", "Virtual inspections available — schedule at inspections.oncamino.com/allen-tx"], inspector: "Allen Building & Permitting", phone: "(214) 509-4130", directLine: "(214) 509-4130", scheduleHours: "8–9 AM day of inspection for time window | IVR 24hrs: (844) 381-8759", permitRequired: true, permitUrl: "cityofallen.org/departments/community_development/building_and_permitting", staffDirectory: "cityofallen.org/departments/community_development/building_and_permitting", inspectorContacts: [{ name: "Building & Permitting Main", title: "Permits, Inspections, Registration", office: "(214) 509-4130", email: "permits@allentx.gov" }, { name: "Plan Review Questions", title: "Add/Remove Inspection from Workflow", office: "(214) 509-4130", email: "bpplanreview@allentx.gov" }, { name: "IVR Hotline", title: "24-Hour Schedule/Cancel/Status", office: "(844) 381-8759", email: "" }, { name: "Virtual Inspection Scheduling", title: "Video inspection option available", office: "(214) 509-4130 or 4132 by 3PM prior day", email: "" }], thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
   "Amarillo": { code: "IPC 2021", population: "200K", region: "Texas Panhandle", amendments: ["Roof vents must terminate with a listed and labeled cap per manufacturer specs", "Clothes dryer exhaust: no screens at termination, backdraft damper required", "Pressure test required — document start and end PSI", "Review Ordinance 7101 for all local amendments"], inspector: "Amarillo Building Safety", phone: "(806) 378-3033", directLine: "(806) 378-3033", scheduleHours: "Mon–Fri 7:30AM–5PM", permitRequired: true, permitUrl: "amarillo.gov/building-safety", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
-  "Arlington": { code: "IPC 2021", population: "394K", region: "North Texas (DFW)", amendments: ["All permits through Accela online portal — required before work begins", "Inspection requests must be submitted before 7AM on the day needed", "NCTCOG regional amendments apply"], inspector: "Arlington Development Services", phone: "(817) 459-6502", directLine: "(817) 459-6504", scheduleHours: "Submit before 7AM for same-day inspection", emergency: "(817) 459-6502", permitRequired: true, permitUrl: "arlingtontx.gov/permits", thirdParty: ["Crossroads Inspections", "Master Code", "Code Solutions Inc.", "Bureau Veritas"] },
+  "Arlington": { code: "IPC 2021", population: "394K", region: "North Texas (DFW)", amendments: ["All permits through Accela online portal — required before work begins", "Inspection requests must be submitted before 7AM on the day needed", "After-hours inspection: $90/hr flat rate effective October 1, 2025 — 2hr minimum", "NCTCOG regional amendments apply", "Thermal expansion tank required on all closed water systems"], inspector: "Arlington Planning & Development Services", phone: "(817) 459-6502", directLine: "(817) 459-6504", scheduleHours: "Submit before 7AM for same-day inspection | After-hours available at $90/hr", emergency: "(817) 459-6502", permitRequired: true, permitUrl: "arlingtontx.gov/Business/Planning-Development/Permitting-Inspections", inspectorContacts: [{ name: "Planning & Development Services", title: "Permits, Inspections, Scheduling", office: "(817) 459-6502", email: "planning@arlingtontx.gov" }, { name: "After-Hours Inspections", title: "Flat rate $90/hr effective Oct 1 2025", office: "(817) 459-6502", email: "" }], thirdParty: ["Crossroads Inspections", "Master Code", "Code Solutions Inc.", "Bureau Veritas"] },
   "Austin": { code: "UPC 2021 ⚠", population: "978K", region: "Central Texas", amendments: ["⚠ Austin uses the UPC — NOT the IPC", "⚠ Austin also uses the 2024 IBC and 2024 IRC for building — but PLUMBING is UPC", "Reclaimed water rough-in required on all new construction", "Low-flow fixtures: 1.28 GPF max on toilets", "Green building code overlay applies in designated zones", "After-hours inspections available — contact assigned inspector directly", "Austin Water: water meter inspections (610/611) — call (512) 972-1000 option 3"], inspector: "Austin Development Services — Building Inspections", phone: "(512) 974-2000", directLine: "(512) 974-9405", scheduleHours: "Schedule via AB+C Portal or IVR (512) 974-9405 | Inspections 24hrs after scheduling", permitRequired: true, permitUrl: "austintexas.gov/page/building-inspections", staffDirectory: "austintexas.gov/page/building-inspections — use Find Your Inspector tool", inspectorContacts: [{ name: "Building Inspections Email", title: "General Questions & Emergency Inspections", office: "(512) 974-2000", email: "building.inspections@austintexas.gov" }, { name: "IVR Scheduling Line", title: "Schedule/Cancel/Status 24hrs", office: "(512) 974-9405", email: "" }, { name: "Austin 3-1-1", title: "General City Services", office: "311 or (512) 974-2000", email: "" }, { name: "Austin Water — Taps Office", title: "Water Meter Inspections (610/611)", office: "(512) 972-1000 option 3", email: "AWTaps@austintexas.gov" }, { name: "Hyatt Dunn", title: "After-Hours Electrical Shutdown Inspections", office: "Contact via building.inspections@austintexas.gov", email: "" }], thirdParty: ["Veritas Inspections", "Crossroads Inspections", "Fox Energy Specialists"], warning: "Austin uses the UPC, not the IPC. Plumbing code is UPC 2021. Surrounding cities use the IPC. Always confirm before pulling a permit near Austin city limits." },
   "Bedford": { code: "IPC 2021", population: "49K", region: "North Texas (HEB Area)", amendments: ["NCTCOG regional amendments apply", "HEB area — Hurst, Euless, Bedford share similar code environment", "Thermal expansion tank required on all closed water systems", "Water heater elevation required in garage — 18\" minimum"], inspector: "Bedford Building Inspections", phone: "(817) 952-2200", directLine: "(817) 952-2200", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "bedfordtx.gov/permits", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
   "Burleson": { code: "IPC 2021", population: "50K", region: "North Texas (Fort Worth suburb)", amendments: ["NCTCOG regional amendments apply", "Johnson/Tarrant county line — verify which county governs your address", "Fire code review required before Fire Marshal submittal", "Thermal expansion tank required on all closed water systems"], inspector: "Burleson Building Permits & Inspections", phone: "(817) 426-9600", directLine: "(817) 426-9600", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "burlesontx.com/building", thirdParty: ["Crossroads Inspections", "Code Solutions Inc.", "Bureau Veritas"] },
   "Carrollton": { code: "IPC 2021", population: "135K", region: "North Texas (DFW)", amendments: ["NCTCOG regional amendments apply", "Permits required for MEP system repairs and replacements", "Thermal expansion tank required on all closed water systems", "CSST bonding required per NFPA 54"], inspector: "Carrollton Building Inspection", phone: "(972) 466-3016", directLine: "(972) 466-3016", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "cityofcarrollton.com/building-inspection", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
-  "Cedar Park": { code: "IPC 2021", population: "82K", region: "Central Texas", amendments: ["IPC adopted — switched from UPC", "CPPID utility pre-approval required for new water service connections", "Thermal expansion tank required on all water heater installs", "Backflow prevention required on all irrigation connections"], inspector: "Cedar Park Development Services", phone: "(512) 401-5000", directLine: "(512) 401-5000", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "cedarparktexas.gov/permits", thirdParty: ["Fox Energy Specialists", "Crossroads Inspections", "Bureau Veritas"] },
+  "Cedar Park": { code: "IPC 2021", population: "82K", region: "Central Texas", amendments: ["IPC 2021 adopted June 1, 2022 — switched from UPC", "Permits and scheduling via MGO Connect portal (mgoconnect.org)", "CPPID utility pre-approval required for new water service connections", "Thermal expansion tank required on all water heater installs", "Backflow prevention required on all irrigation connections", "Two free inspections per permit type; additional inspections $75 each"], inspector: "Cedar Park Building Permits & Inspections", phone: "(512) 401-5100", directLine: "(512) 401-5100", scheduleHours: "Mon–Fri 8AM–5PM | Schedule via MGO Connect", permitRequired: true, permitUrl: "cedarparktexas.gov/163/Building-Permits-Inspections", staffDirectory: "cedarparktexas.gov/672", inspectorContacts: [{ name: "Ken Crow, C.B.O.", title: "Chief Building Official", office: "512-401-5106", email: "kcrow@cedarparktexas.gov" }, { name: "Chad McTeer", title: "Deputy Building Official", office: "512-401-5108", email: "cmcteer@cedarparktexas.gov" }, { name: "John Wilkinson", title: "Building Inspector I", office: "512-401-5113", email: "jwilkinson@cedarparktexas.gov" }, { name: "Bob Thomas", title: "Plans Examiner", office: "512-401-5110", email: "bthomas@cedarparktexas.gov" }, { name: "Permits & Inspections Main", title: "General Permits & Inspections", office: "(512) 401-5100", email: "permits@cedarparktexas.gov" }], thirdParty: ["Fox Energy Specialists", "Crossroads Inspections", "Bureau Veritas"] },
   "Conroe": { code: "IPC 2021", population: "106K", region: "Greater Houston", amendments: ["All permits and inspections through OpenGov portal (effective Dec 8, 2025)", "Morning inspections: schedule before 7AM same day", "Afternoon inspections: schedule 7AM–noon same day", "Montgomery County MUD rules may apply in outer areas"], inspector: "Conroe Building Inspections", phone: "(936) 522-3610", directLine: "(936) 522-3616", scheduleHours: "AM inspections before 7AM | PM inspections 7AM–noon", permitRequired: true, permitUrl: "cityofconroe.org/building-inspections", thirdParty: ["Fox Energy Specialists", "Bureau Veritas", "Burgess Construction Consultants"] },
   "Dallas": { code: "IPC 2021", population: "1.3M", region: "North Texas", amendments: ["Thermal expansion tanks mandatory on all closed water systems", "PEX-A only for in-slab (PEX-B not allowed)", "Isolation valve required at each individual fixture", "Water heater must be elevated 18\" off floor in garage", "CSST bonding required per NFPA 54", "Dallas operates multiple district offices — your inspector depends on job address"], inspector: "Dallas Development Services", phone: "(214) 948-4480", directLine: "(214) 948-4480", scheduleHours: "Mon–Fri 7:30AM–4:30PM", permitRequired: true, permitUrl: "dallascityhall.com/permits", staffDirectory: "dallascityhall.com/departments/sustainabledevelopment/buildinginspection/Pages/contact_us.aspx", inspectorContacts: [{ name: "Oscar Smith", title: "Sr. Plumbing/Mechanical Inspector — NW District", office: "(214) 671-1509", email: "oscar.smith@dallascityhall.com" }, { name: "Reggie Slagle", title: "Plumbing/Mechanical Inspector — NW District", office: "(214) 671-1507", email: "reggie.slagle@dallascityhall.com" }, { name: "Randall McLemore", title: "Plumbing/Mechanical Inspector — NW District", office: "(214) 671-0268", email: "randall.mclemore@dallascityhall.com" }, { name: "Jonathan Petti", title: "Plumbing/Mechanical Inspector — NW District", office: "(214) 671-0217", email: "jonathan.petti@dallascityhall.com" }, { name: "Shar Blatnick", title: "Sr. Plumbing/Mechanical Inspector — SW District", office: "(214) 671-1539", email: "shar.blatnick@dallascityhall.com" }, { name: "Troy Letz", title: "Plumbing/Mechanical Inspector — SW District", office: "(214) 671-1536", email: "tory.letz@dallascityhall.com" }, { name: "Jeffrey Tate", title: "Plumbing/Mechanical Inspector — SW District", office: "(214) 671-1535", email: "Jeffery.Tate@dallascityhall.com" }, { name: "NW District Office", title: "7610 N. Stemmons Frwy Suite 190", office: "(214) 671-0720", email: "" }, { name: "SW District Office (OCMC)", title: "320 E. Jefferson Blvd.", office: "(214) 671-1531", email: "" }], thirdParty: ["Crossroads Inspections", "Roadrunner Inspections", "Master Code", "Bureau Veritas"] },
-  "Denton": { code: "IPC 2021", population: "148K", region: "North Texas", amendments: ["NCTCOG regional amendments apply", "Thermal expansion tank required on all closed water systems", "CSST must be bonded per NFPA 54", "Underground plastic sewer piping requires tracer wire"], inspector: "Denton Development Services", phone: "(940) 349-8360", directLine: "(940) 349-8360", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "cityofdenton.com/permits", thirdParty: ["Crossroads Inspections", "Bureau Veritas", "Master Code"] },
+  "Denton": { code: "IPC 2021", population: "148K", region: "North Texas", amendments: ["NCTCOG regional amendments apply", "Thermal expansion tank required on all closed water systems", "CSST must be bonded per NFPA 54", "Underground plastic sewer piping requires tracer wire", "Hours: Mon-Thu 7:30AM-5:30PM, Fri 7:30-11:30AM"], inspector: "Denton Development Services Building Safety", phone: "(940) 349-8600", directLine: "(940) 349-8600", scheduleHours: "Mon-Thu 7:30AM-5:30PM | Fri 7:30-11:30AM | 401 N Elm St", permitRequired: true, permitUrl: "cityofdenton.com/238/Building-Safety", staffDirectory: "cityofdenton.com/building-safety", inspectorContacts: [{ name: "Scott A. McDonald", title: "Director of Development Services / Chief Building Official", office: "(940) 349-8600", email: "building@cityofdenton.com" }, { name: "Building Safety Division", title: "Permits, Inspections, Scheduling", office: "(940) 349-8600", email: "building@cityofdenton.com" }, { name: "Certificate of Occupancy", title: "CO Questions and Submittals", office: "(940) 349-8600", email: "coa@cityofdenton.com" }], thirdParty: ["Crossroads Inspections", "Bureau Veritas", "Master Code"] },
   "El Paso": { code: "IPC 2021", population: "678K", region: "Far West Texas", amendments: ["Water conservation fixtures mandatory on all new construction", "Seismic zone — water heater strapping required", "El Paso Water approval required before water service connections", "Gas pressure test: 10 PSI minimum, witnessed by inspector"], inspector: "El Paso Development Services", phone: "(915) 212-0104", directLine: "(915) 212-0104", scheduleHours: "Mon–Fri 7:30AM–4:30PM", permitRequired: true, permitUrl: "elpasotexas.gov/development-services", thirdParty: ["Bureau Veritas", "ECS Limited", "Texas Third Party Inspections LLC"] },
   "Euless": { code: "IPC 2021", population: "56K", region: "North Texas (HEB Area)", amendments: ["NCTCOG regional amendments apply", "HEB area — Hurst, Euless, Bedford share similar code environment", "Thermal expansion tank required on all closed water systems", "Backflow prevention required on all irrigation systems"], inspector: "Euless Building Inspections", phone: "(817) 685-1400", directLine: "(817) 685-1400", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "eulesscityhall.com/permits", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
-  "Flower Mound": { code: "IPC 2024 ⚠", population: "82K", region: "North Texas (DFW)", amendments: ["⚠ IPC 2024 adopted effective October 1, 2025", "Emergency permits: call (972) 874-6355 before 3:30PM — inspector arrives within 1 hour", "Water heater pan required wherever leakage could cause property damage", "Showerhead flow limited to 2.0 GPM — IPC 2024"], inspector: "Flower Mound Building Inspections", phone: "(972) 874-6355", directLine: "(972) 874-6355", scheduleHours: "Inspector office hours 7:30–8:30AM Mon–Fri | Emergency: call before 3:30PM", emergency: "(972) 874-6355 (before 3:30PM)", permitRequired: true, permitUrl: "flowermound.gov/building", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"], warning: "Flower Mound is on IPC 2024 effective October 1, 2025. Key changes: 2.0 GPM max showerheads, tracer wire on buried plastic sewer." },
+  "Flower Mound": { code: "IPC 2024 ⚠", population: "82K", region: "North Texas (DFW)", amendments: ["⚠ IPC 2024 adopted effective October 1, 2025", "Emergency permits: call (972) 874-6355 before 3:30PM — inspector arrives within 1 hour", "Water heater pan required wherever leakage could cause property damage", "Showerhead flow limited to 2.0 GPM — IPC 2024", "Plans Examiner walk-in hours: 8–9AM or 4–5PM Mon–Fri"], inspector: "Flower Mound Building Inspections", phone: "(972) 874-6355", directLine: "(972) 874-6355", scheduleHours: "Inspector office hours 7:30-8:30AM Mon-Fri | Emergency: call before 3:30PM", emergency: "(972) 874-6355 (before 3:30PM)", permitRequired: true, permitUrl: "flowermound.gov/119/Building-Inspections", staffDirectory: "flowermound.gov/2084/Building-and-Inspections-Services-Staff", inspectorContacts: [{ name: "Joelle Hainley, CBO", title: "Building Official", office: "(972) 874-6355", email: "joelle.hainley@flowermound.gov" }, { name: "Tasha Coates, CBO", title: "Asst. Building Official - Plan Review", office: "972-874-6367", email: "tasha.coates@flowermound.gov" }, { name: "Brace Dunham", title: "Asst. Building Official - Inspections", office: "972-874-6360", email: "brace.dunham@flowermound.gov" }, { name: "Cody Stricker", title: "Chief Building Inspector", office: "972-874-6365", email: "cody.stricker@flowermound.gov" }, { name: "Emily Chapman", title: "Building Inspections Supervisor", office: "972-874-6356", email: "emily.chapman@flowermound.gov" }, { name: "Building Inspections Main", title: "Permits and Scheduling", office: "(972) 874-6355", email: "buildinginspections@flowermound.gov" }], thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"], warning: "Flower Mound is on IPC 2024 effective October 1, 2025. Key changes: 2.0 GPM max showerheads, tracer wire on buried plastic sewer." },
   "Fort Worth": { code: "IPC 2021", population: "935K", region: "North Texas", amendments: ["Copper or CPVC only for water service pipe inside slab", "Water heater pan and drain required in all locations", "Shower valve must be pressure-balance or thermostatic", "Cleanout required within 5 ft of building foundation", "Inspectors arrive separately — keep building unlocked until ALL four trades inspect", "Max 5 buildings inspected per day per permit", "Re-inspection fee: $50 per inspector per failed trade"], inspector: "Fort Worth Development Services", phone: "(817) 392-2222", directLine: "(817) 392-2222", scheduleHours: "IVR 24hrs: (817) 392-2222 | Administration: (817) 392-7820", permitRequired: true, permitUrl: "fortworthtexas.gov/departments/development-services", staffDirectory: "fortworthtexas.gov/departments/development-services/inspections", inspectorContacts: [{ name: "Customer Service", title: "Permits, Inspections, Scheduling", office: "(817) 392-2222", email: "" }, { name: "Administration", title: "Development Services Admin", office: "(817) 392-7820", email: "" }, { name: "IVR Hotline", title: "24-Hour Schedule/Cancel/Status", office: "(817) 392-2222", email: "" }], thirdParty: ["Code Solutions Inc.", "Master Code", "Bureau Veritas", "Crossroads Inspections"] },
   "Frisco": { code: "IPC 2024 ⚠", population: "230K", region: "North Texas (DFW)", amendments: ["⚠ IPC 2024 adopted effective March 1, 2026", "Showerhead flow limited to 2.0 GPM", "Tracer wire required on buried plastic sewer piping", "Thermal expansion tank required on all water heater installs", "Inspections scheduled via eTRAKiT — NOT by phone", "Cancel inspections by contacting your assigned inspector directly", "Journeyman plumber must be on site at all times during work"], inspector: "Frisco Building Inspections", phone: "(972) 292-5301", directLine: "(972) 292-5301", scheduleHours: "Schedule via eTRAKiT before 7AM for same-day | After 7AM = next day", permitRequired: true, permitUrl: "friscotexas.gov/395/Building-Inspections", staffDirectory: "friscotexas.gov/directory.aspx?did=53", inspectorContacts: [{ name: "Mike Trotter", title: "Plumbing Inspection Supervisor", office: "(972) 292-5378", mobile: "(972) 670-4679", email: "mtrotter@friscotexas.gov" }, { name: "James Smith", title: "Building Inspection Supervisor (Elec)", office: "(972) 292-5399", mobile: "(469) 446-6369", email: "jsmith@friscotexas.gov" }, { name: "Jeffrey Rodriguez", title: "Building Inspection Supervisor", office: "(972) 292-5349", mobile: "(469) 714-9708", email: "jrodriguez2@friscotexas.gov" }, { name: "Gilbert Urvina", title: "Building Official", office: "(972) 292-5329", email: "gurvina@friscotexas.gov" }, { name: "Jon Worley", title: "Assistant Building Official", office: "(972) 292-5375", mobile: "(972) 670-4288", email: "jworley@friscotexas.gov" }, { name: "Customer Service", title: "Permits & General Questions", office: "(972) 292-5301", email: "bicsr@friscotexas.gov" }], thirdParty: ["Crossroads Inspections", "Bureau Veritas", "Master Code"], warning: "Frisco moved to IPC 2024 on March 1, 2026. Journeyman must be on site during all plumbing work. Inspections via eTRAKiT only — no phone scheduling." },
-  "Garland": { code: "IPC 2021", population: "238K", region: "North Texas (DFW)", amendments: ["NCTCOG regional amendments apply", "Thermal expansion tanks required on all closed systems", "CSST bonding required", "Water heater elevated 18\" in garage — strictly enforced"], inspector: "Garland Building Inspections", phone: "(972) 205-2350", directLine: "(972) 205-2350", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "garlandtx.gov/building", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
-  "Georgetown": { code: "IPC 2021", population: "90K", region: "Central Texas", amendments: ["IPC adopted — switched from UPC", "Williamson County MUD rules may apply in outer areas", "Thermal expansion tank required on all water heater installs", "Backflow prevention required on all irrigation connections"], inspector: "Georgetown Development Services", phone: "(512) 930-3456", directLine: "(512) 930-3456", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "georgetown.org/permits", thirdParty: ["Fox Energy Specialists", "Bureau Veritas", "Crossroads Inspections"] },
+  "Garland": { code: "IPC 2021", population: "238K", region: "North Texas (DFW)", amendments: ["NCTCOG regional amendments apply", "24-hour inspection request line — cut-off 7AM for same day", "Inspector office hours 7:30–8:30AM and 3–4PM Mon–Fri", "Field inspections 8:30AM–3PM Mon–Fri", "Thermal expansion tanks required on all closed systems", "CSST bonding required", "Water heater elevated 18 inches in garage — strictly enforced"], inspector: "Garland Building Inspections", phone: "(972) 205-2300", directLine: "(972) 205-2300", scheduleHours: "24-hr request line (972) 205-2300 | Inspector office hrs 7:30-8:30AM and 3-4PM", permitRequired: true, permitUrl: "garlandtx.gov/221/Building-Inspection", staffDirectory: "garlandtx.gov/Directory.aspx?DID=12", inspectorContacts: [{ name: "Jim Olk", title: "Building Official", office: "972-205-2300", email: "buildinginspections@garlandtx.gov" }, { name: "Jonathan Reynolds", title: "Asst Building Official - Field Operations", office: "972-205-2313", email: "buildinginspections@garlandtx.gov" }, { name: "Brad Barker", title: "Chief Inspector", office: "972-205-2315", email: "" }, { name: "Don Wall", title: "Building Inspector", office: "972-205-2323", email: "" }, { name: "Robert Pauken", title: "Building Inspector", office: "972-205-2306", email: "" }, { name: "Samantha Morrow", title: "Office Manager / Permit Supervisor", office: "972-205-2895", email: "" }, { name: "Abdul Ali", title: "Commercial Plans Examiner", office: "972-205-2320", email: "" }, { name: "Inspection Request Line", title: "24-Hour Schedule Inspections", office: "(972) 205-2300", email: "permits@garlandtx.gov" }], thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
+  "Georgetown": { code: "IPC 2021", population: "90K", region: "Central Texas", amendments: ["IPC 2021 adopted — switched from UPC", "All permits and inspections through MGO Connect portal (mgoconnect.org)", "Schedule inspections by 3PM for next available business day", "Georgetown Utility (GUS) pre-approval required for new water service connections", "Thermal expansion tank required on all water heater installs", "Backflow prevention required on all irrigation connections", "All pools engineered required effective Aug. 1, 2024"], inspector: "Georgetown Inspection Services (Permits)", phone: "(512) 930-2550", directLine: "(512) 930-2550", scheduleHours: "Mon–Fri 8AM–5PM | Schedule via mgoconnect.org by 3PM for next day", permitRequired: true, permitUrl: "georgetowntexas.gov/development_services/permits", staffDirectory: "georgetowntexas.gov/government/city_management/contact_us.php", inspectorContacts: [{ name: "Travis", title: "Plumbing Field Inspector — verified by local master plumber", office: "(512) 507-8204", mobile: "(512) 507-8204", email: "" }, { name: "Inspection Services Main", title: "Permits, Scheduling, General Questions", office: "(512) 930-2550", email: "permits@georgetowntexas.gov" }, { name: "Plan Review Questions", title: "Permits Under Review or Issued", office: "(512) 930-2550", email: "planreview@georgetowntexas.gov" }, { name: "MGO Connect Support", title: "Portal Help — Schedule Inspections", office: "(866) 957-3764", email: "" }, { name: "After Hours Utilities", title: "Water/Electric Emergencies", office: "(512) 930-3640", email: "" }], thirdParty: ["Fox Energy Specialists", "Bureau Veritas", "Crossroads Inspections"] },
   "Grand Prairie": { code: "IPC 2021", population: "196K", region: "North Texas (DFW)", amendments: ["NCTCOG regional amendments apply", "Straddles Dallas and Tarrant counties — confirm jurisdiction before pulling permit", "Thermal expansion tank required on closed water systems"], inspector: "Grand Prairie Building Inspections", phone: "(972) 237-8255", directLine: "(972) 237-8255", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "gptx.org/permits", thirdParty: ["Crossroads Inspections", "Code Solutions Inc.", "Bureau Veritas"], warning: "Grand Prairie spans Dallas and Tarrant counties. Always confirm the exact jurisdiction for your job address." },
   "Grapevine": { code: "IPC 2021", population: "55K", region: "North Texas (DFW)", amendments: ["IPC 2021 adopted effective January 1, 2024", "NCTCOG regional amendments apply", "Thermal expansion tank required on all closed water systems", "Water heater elevated 18\" in garage"], inspector: "Grapevine Building Inspections", phone: "(817) 410-3165", directLine: "(817) 410-3165", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "grapevinetexas.gov/permits", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
   "Houston": { code: "UPC 2021 ⚠", population: "2.3M", region: "Gulf Coast", amendments: ["⚠ Houston uses the UPC — NOT the IPC", "Effective January 1, 2024 per Ordinance No. 2023-907", "Backflow preventer required on all irrigation systems", "Thermal expansion tank required on all water heater installs", "Gas pressure test: 10 PSI minimum hold for 30 minutes", "300+ field inspectors — no individual numbers published", "Plumbing inspections: call (832) 394-8870 to schedule"], inspector: "Houston Permitting Center", phone: "(832) 394-8800", directLine: "(832) 394-8870", scheduleHours: "Mon–Fri 8AM–5PM | Online 24/7 via hpceservices.org", permitRequired: true, permitUrl: "houstonpermittingcenter.org", staffDirectory: "houstonpermittingcenter.org/building-code-enforcement/plumbing-inspections", inspectorContacts: [{ name: "Plumbing Inspection Scheduling", title: "Schedule All Plumbing Inspections", office: "(832) 394-8870", email: "" }, { name: "Houston Permitting Center", title: "Main Line — All Inquiries", office: "(832) 394-8800", email: "" }, { name: "Online Services", title: "Permits & Inspection Scheduling 24/7", office: "", email: "houston.permittingcenter@houstontx.gov" }], thirdParty: ["Crossroads Inspections", "Veritas Inspections", "Bureau Veritas", "Burgess Construction Consultants", "Fox Energy Specialists"], warning: "Houston uses the UPC, not the IPC. Codes differ significantly from surrounding cities." },
   "Hurst": { code: "IPC 2021", population: "39K", region: "North Texas (HEB Area)", amendments: ["NCTCOG regional amendments apply", "HEB area code environment", "Thermal expansion tank required on all closed water systems", "Water heater pan required where leakage could cause damage"], inspector: "Hurst Building Inspections", phone: "(817) 788-7025", directLine: "(817) 788-7025", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "hursttx.gov/permits", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
-  "Irving": { code: "IPC 2021", population: "240K", region: "North Texas (DFW)", amendments: ["NCTCOG regional amendments apply", "Permits required before any work begins", "Thermal expansion tank required on all closed water systems", "Water heater elevation: 18\" minimum in garage"], inspector: "Irving Building Inspections", phone: "(972) 721-2371", directLine: "(972) 721-2371", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "cityofirving.org/permits", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
+  "Irving": { code: "IPC 2021", population: "240K", region: "North Texas (DFW)", amendments: ["IPC 2021 adopted — considering 2024 codes as of March 2026", "NCTCOG regional amendments apply", "Permits and scheduling via MGO Connect portal", "Validate trade onto building permit via email — cannot use MGO portal", "Schedule inspections by 6AM same day requested; after 6AM = next business day", "Thermal expansion tank required on all closed water systems", "Water heater elevation: 18 inch minimum in garage"], inspector: "Irving Inspections Department", phone: "(972) 721-2600", directLine: "(972) 721-2600", scheduleHours: "Schedule via MGO Connect by 6AM same day", permitRequired: true, permitUrl: "irvingtx.gov/building-inspections", staffDirectory: "directory.tml.org/profile/city/981", inspectorContacts: [{ name: "Wayne K. Snell Jr., MPA, CPM, CBO", title: "Inspections Director", office: "(972) 721-2600", email: "inspections@irvingtx.gov" }, { name: "Herb Gilliland, CBO, CPM", title: "Asst. Director of Inspections", office: "(972) 721-2600", email: "" }, { name: "Albert Pearson", title: "Sr. Plumbing & Mechanical Inspector", office: "(972) 721-2600", email: "" }, { name: "Clint Sparks", title: "Chief Plumbing & Mechanical Inspector", office: "(972) 721-2600", email: "" }, { name: "Marino Enriquez", title: "Sr. Electrical Inspector", office: "(972) 721-2600", email: "" }, { name: "Inspections Dept Main", title: "Permits, Scheduling, Trade Validation", office: "(972) 721-2600", email: "inspections@irvingtx.gov" }], thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
   "Katy": { code: "IPC 2021", population: "22K", region: "Greater Houston", amendments: ["Harris County MUD rules apply outside city limits — verify jurisdiction", "Expansion tank required on all water heater replacements", "Gas test: 10 PSI for 30 min — inspector must witness", "Water service: copper only within 5 ft of meter"], inspector: "Katy Building Department", phone: "(281) 391-4800", directLine: "(281) 391-4800", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "cityofkaty.com", thirdParty: ["Crossroads Inspections", "Roadrunner Inspections", "Bureau Veritas", "Fox Energy Specialists"] },
   "Keller": { code: "IPC 2021", population: "48K", region: "North Texas (DFW)", amendments: ["IPC 2021 adopted", "⚠ Customer service inspection REQUIRED before Final on any project affecting water supply or irrigation", "NCTCOG regional amendments apply", "Thermal expansion tank required on all closed water systems", "Inspections for home-occupied repairs (water heater, gas line) performed 8AM–1PM same day", "Friday inspections available — request by 12PM Thursday"], inspector: "Keller Building Services", phone: "(817) 743-4110", directLine: "(817) 743-4110", scheduleHours: "Mon–Thu 7:30AM–5:30PM | Fri inspections: request by 12PM Thursday", permitRequired: true, permitUrl: "cityofkeller.com/services/community-development/building-inspections", staffDirectory: "cityofkeller.com/Home/Components/StaffDirectory/StaffDirectory/391", inspectorContacts: [{ name: "Payne Randell", title: "Building Official", office: "(817) 743-4110", email: "prandell@cityofkeller.com" }, { name: "Building Services Main", title: "Permits, Inspections, Registration", office: "(817) 743-4110", email: "buildingservices@cityofkeller.com" }, { name: "Fax", title: "Building Services Fax", office: "(817) 743-4195", email: "" }], thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"], warning: "Keller requires a customer service inspection before scheduling final on any project affecting water supply or irrigation." },
   "Killeen": { code: "IPC 2024 ⚠", population: "155K", region: "Central Texas", amendments: ["⚠ IPC 2024 adopted", "MGO Connect portal for permits", "Showerhead flow limited to 2.0 GPM", "Tracer wire required on buried plastic sewer", "5 PSI air test allowed during wet weather only"], inspector: "Killeen Building Inspections", phone: "(254) 501-7640", directLine: "(254) 501-7640", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "killeentexas.gov/building-inspections", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"], warning: "Killeen is on IPC 2024. Key changes: 2.0 GPM max showerheads, tracer wire on buried plastic sewer." },
   "Laredo": { code: "IPC 2021", population: "255K", region: "South Texas (Border)", amendments: ["Laredo Water (LWWD-DC) pre-approval required for water service connections", "Backflow prevention required on all commercial and irrigation connections", "High mineral content — additional water heater protection recommended", "Gas pressure test: 10 PSI hold for 15 minutes minimum"], inspector: "Laredo Building Development Services", phone: "(956) 794-1620", directLine: "(956) 794-1620", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "ci.laredo.tx.us/building", thirdParty: ["Bureau Veritas", "ECS Limited", "Texas Third Party Inspections LLC"] },
   "League City": { code: "IPC 2021", population: "117K", region: "Greater Houston", amendments: ["Galveston County jurisdiction — verify MUD rules", "Thermal expansion tank required on all water heater installs", "Backflow prevention required on all irrigation connections", "Gas pressure test: 10 PSI minimum for 30 minutes"], inspector: "League City Inspections", phone: "(281) 554-1060", directLine: "(281) 554-1060", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "leaguecitytx.gov/permits", thirdParty: ["Fox Energy Specialists", "Bureau Veritas", "Crossroads Inspections"] },
-  "Lewisville": { code: "IPC 2021", population: "115K", region: "North Texas (DFW)", amendments: ["NCTCOG regional amendments apply", "Water softener loop rough-in required on new construction", "CSST bonding required and verified at rough-in", "Underground plastic sewer requires tracer wire"], inspector: "Lewisville Development Services", phone: "(972) 219-3500", directLine: "(972) 219-3500", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "cityoflewisville.com/permits", thirdParty: ["Crossroads Inspections", "Bureau Veritas", "Master Code"] },
+  "Lewisville": { code: "IPC 2021", population: "115K", region: "North Texas (DFW)", amendments: ["NCTCOG regional amendments apply", "Water softener loop rough-in required on new construction", "CSST bonding required and verified at rough-in", "Underground plastic sewer requires tracer wire", "Inspector hours: Mon-Thu 7:30AM-5:30PM, Fri 7:30-11:30AM"], inspector: "Lewisville Development Services", phone: "(972) 219-3500", directLine: "(972) 219-3500", scheduleHours: "Mon-Thu 7:30AM-5:30PM | Fri 7:30-11:30AM", permitRequired: true, permitUrl: "cityoflewisville.com/permits", inspectorContacts: [{ name: "Building Inspections Main", title: "Permits, Scheduling, Contractor Registration", office: "(972) 219-3500", email: "building@cityoflewisville.com" }], thirdParty: ["Crossroads Inspections", "Bureau Veritas", "Master Code"] },
   "Longview": { code: "IPC 2021", population: "82K", region: "East Texas", amendments: ["All inspection requests through automated line: (903) 239-5598", "Plan review required for all commercial and residential construction", "Gas pressure test required — document results for inspector"], inspector: "Longview Building Inspection", phone: "(903) 239-5598", directLine: "(903) 239-5598", scheduleHours: "Automated request line 24/7", permitRequired: true, permitUrl: "longviewtexas.gov/building-inspection", thirdParty: ["Bureau Veritas", "ECS Limited", "Texas Third Party Inspections LLC"] },
-  "Lubbock": { code: "IPC 2021", population: "258K", region: "West Texas", amendments: ["Adopted IPC 2021 via Ordinance 2024-O0026", "Backflow prevention: all connections must comply with 30 TAC 290.44(h)", "Backflow assembly tester must be certified", "Slab inspection required before concrete pour"], inspector: "Lubbock Building Safety", phone: "(806) 775-2087", directLine: "(806) 775-2087", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "ci.lubbock.tx.us/departments/building-safety", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
+  "Lubbock": { code: "IPC 2021", population: "258K", region: "West Texas", amendments: ["Adopted IPC 2021 via Ordinance 2024-O0026", "Backflow prevention: all connections must comply with 30 TAC 290.44(h)", "Backflow assembly tester must be certified", "Slab inspection required before concrete pour", "Permit valid 180 days from issuance"], inspector: "Lubbock Building Safety", phone: "(806) 775-2087", directLine: "(806) 775-3159", scheduleHours: "Mon-Fri 8AM-5PM | Inspector line: (806) 775-3159", permitRequired: true, permitUrl: "ci.lubbock.tx.us/departments/building-safety", staffDirectory: "ci.lubbock.tx.us/departments/building-safety", inspectorContacts: [{ name: "Building Safety Main", title: "Permits and General Questions", office: "(806) 775-2087", email: "buildingsafety@mylubbock.us" }, { name: "Inspector Line", title: "Schedule Inspections / Credit Card Payments", office: "(806) 775-3159", email: "" }], thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
   "Mansfield": { code: "IPC 2018 ⚠", population: "77K", region: "North Texas (DFW)", amendments: ["⚠ Mansfield is on IPC 2018 — older than most surrounding DFW cities", "Inspection requests submitted by 4PM are inspected the next business day", "Backflow testers must register with Vepo LLC", "Single trade permits submitted via MyGov system"], inspector: "Mansfield Building Safety", phone: "(817) 276-4200", directLine: "(817) 276-4200", scheduleHours: "Submit by 4PM for next-day inspection | After 4PM Fri = Tuesday", permitRequired: true, permitUrl: "mansfieldtexas.gov/building", thirdParty: ["Crossroads Inspections", "Code Solutions Inc.", "Bureau Veritas"], warning: "Mansfield is on IPC 2018 — older than most surrounding DFW cities. Verify code edition requirements carefully." },
   "McAllen": { code: "IPC 2024 ⚠", population: "143K", region: "Rio Grande Valley", amendments: ["⚠ IPC 2024 adopted effective January 1, 2026", "Saturday inspections: 8:30AM–4:30PM — request Friday 12–4PM", "Showerhead flow limited to 2.0 GPM", "Tracer wire required on buried plastic sewer"], inspector: "McAllen Building Permits & Inspections", phone: "(956) 681-1300", directLine: "(956) 681-1328", scheduleHours: "Mon–Fri 8AM–5PM | Saturday 8:30AM–4:30PM", permitRequired: true, permitUrl: "mcallen.net/permits", thirdParty: ["Bureau Veritas", "ECS Limited"], warning: "McAllen moved to IPC 2024 effective January 1, 2026. Saturday inspections now available." },
   "McKinney": { code: "IPC 2021", population: "222K", region: "North Texas", amendments: ["⚠ IPC 2024 adopted effective October 1, 2025", "Recirculation required on hot water systems over 50 ft on new residential", "Water softener loop required on all new construction", "Dual check backflow required on all irrigation systems", "Underground gas: PE pipe only with tracer wire", "All inspections must be scheduled through Citizen Self Service (CSS)", "Cancel before 9AM: call (469) 617-4800 | After 9AM: call inspector directly", "Backflow test reports for all devices picked up by Plumbing Inspector at inspection"], inspector: "McKinney Building Inspections", phone: "(469) 617-4800", directLine: "(972) 547-7400", scheduleHours: "Mon–Fri 8AM–5PM | Sa 8AM–5PM | Su 1–5PM for inspections", permitRequired: true, permitUrl: "mckinneytexas.org/243/Building-Inspections", staffDirectory: "mckinneytexas.org/263/Notices — click Contact List/Org Chart", inspectorContacts: [{ name: "Building Inspections Main", title: "Permits & Inspections", office: "(469) 617-4800", email: "" }, { name: "Legacy Permit Line", title: "Forms & Code Questions", office: "(972) 547-7400", email: "" }, { name: "Fire Marshal Office", title: "Fire Code Questions", office: "(972) 547-2862", email: "fmo@mckinneytexas.org" }], thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
@@ -497,17 +553,18 @@ const JURISDICTIONS = {
   "Odessa": { code: "IPC 2021", population: "114K", region: "West Texas (Permian Basin)", amendments: ["Permian Basin: expansive soil — granular bedding required", "Water heater strapping required at all locations", "Industrial connections: RPZ backflow required"], inspector: "Odessa Building Inspections", phone: "(432) 335-3265", directLine: "(432) 335-3265", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "odessatx.gov/permits", thirdParty: ["Bureau Veritas", "ECS Limited", "Texas Third Party Inspections LLC"] },
   "Pasadena": { code: "IPC 2021", population: "151K", region: "Greater Houston", amendments: ["Harris County — verify MUD jurisdiction before pulling permit", "UPC used by neighboring Houston — confirm which code governs your job", "Thermal expansion tank required on all water heater installs"], inspector: "Pasadena Building Inspections", phone: "(713) 475-5560", directLine: "(713) 475-5560", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "ci.pasadena.tx.us/permits", thirdParty: ["Fox Energy Specialists", "Bureau Veritas", "Crossroads Inspections"], warning: "Pasadena borders Houston which uses the UPC. Confirm which code governs your address." },
   "Pearland": { code: "IPC 2021", population: "125K", region: "Greater Houston", amendments: ["Brazoria County MUD rules may apply — verify jurisdiction", "Thermal expansion tank required on all water heater installs", "Backflow prevention required on all irrigation systems"], inspector: "Pearland Community Development", phone: "(281) 652-1600", directLine: "(281) 652-1600", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "pearlandtx.gov/departments/community-development", thirdParty: ["Fox Energy Specialists", "Bureau Veritas", "Burgess Construction Consultants"] },
-  "Pflugerville": { code: "IPC 2021", population: "74K", region: "Central Texas", amendments: ["Tap fees paid to Pflugerville MUD before permit issuance", "Backflow test report required within 30 days of installation", "MUD inspection required separately from city inspection", "Call 811 required and documentation submitted with permit"], inspector: "Pflugerville Building Inspections", phone: "(512) 990-6100", directLine: "(512) 990-6100", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "cityofpflugerville.com/permits", thirdParty: ["Fox Energy Specialists", "Burgess Construction Consultants", "Crossroads Inspections"] },
+  "Pflugerville": { code: "IPC 2021", population: "74K", region: "Central Texas", amendments: ["Pflugerville MUD tap fees paid before permit issuance", "Backflow test report required within 30 days of installation", "MUD inspection required separately from city inspection", "Call 811 required — documentation submitted with permit"], inspector: "Pflugerville Building Inspections", phone: "(512) 990-6100", directLine: "(512) 990-6100", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "cityofpflugerville.com/permits", staffDirectory: "pflugervilletx.gov/city-government/people-and-culture/staff-directory", inspectorContacts: [{ name: "Building Inspections Main", title: "Permits & Scheduling", office: "(512) 990-6100", email: "building@pflugervilletx.gov" }], thirdParty: ["Fox Energy Specialists", "Burgess Construction Consultants", "Crossroads Inspections"] },
+  "Hutto": { code: "IPC 2021", population: "32K", region: "Central Texas", amendments: ["IPC 2021 adopted", "All permits and payments processed through GovWell portal", "Williamson County MUD coordination may be required for new connections", "HOA deed restrictions may apply independent of city permit requirements"], inspector: "Hutto Building Inspections", phone: "(512) 759-5973", directLine: "(512) 759-5973", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "huttotx.gov/158/Building", staffDirectory: "huttotx.gov/directory.aspx?did=6", inspectorContacts: [{ name: "Matthew Reyna", title: "Building Inspector", office: "737-244-2061", email: "" }, { name: "Aaron Gillum", title: "Building Inspector", office: "512-365-9345", email: "" }, { name: "Tyler Wiggins", title: "Building Inspector", office: "737-325-7818", email: "" }, { name: "Building Inspections Main", title: "Permits & Scheduling", office: "(512) 759-5973", email: "building@huttotx.gov" }], thirdParty: ["Fox Energy Specialists", "Crossroads Inspections"] },
   "Plano": { code: "IPC 2024 ⚠", population: "285K", region: "North Texas (DFW)", amendments: ["⚠ IPC 2024 adopted effective August 1, 2025", "Showerhead flow limited to 2.0 GPM", "Tracer wire required on buried plastic sewer", "Water softener loop required on all new residential construction", "Permits through Accela portal"], inspector: "Plano Building Inspections", phone: "(972) 941-7151", directLine: "(972) 941-7151", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "plano.gov/permits", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"], warning: "Plano moved to IPC 2024 on August 1, 2025. 2.0 GPM max showerheads, tracer wire on buried plastic sewer." },
   "Prosper": { code: "IPC 2021", population: "42K", region: "North Texas (DFW)", amendments: ["CSS portal for permits", "Permits expire 180 days from issuance", "General contractor pulls main permit and lists all subcontractors", "Subcontractors must be registered to work in Prosper"], inspector: "Prosper Building Inspections", phone: "(972) 346-3502", directLine: "(972) 346-3502", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "prospertx.gov/building", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
-  "Richardson": { code: "IPC 2021", population: "121K", region: "North Texas (DFW)", amendments: ["NCTCOG regional amendments apply", "Thermal expansion tank required", "CSST bonding required per NFPA 54", "Backflow prevention required on all irrigation connections"], inspector: "Richardson Building Inspections", phone: "(972) 744-4150", directLine: "(972) 744-4150", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "cor.net/permits", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
+  "Richardson": { code: "IPC 2021", population: "121K", region: "North Texas (DFW)", amendments: ["NCTCOG regional amendments apply", "All contractors must be registered before permit issued", "Thermal expansion tank required", "CSST bonding required per NFPA 54", "Backflow prevention required on all irrigation connections", "After-hours inspections available for storm repairs"], inspector: "Richardson Building Inspection", phone: "(972) 744-4180", directLine: "(972) 744-4180", scheduleHours: "Mon-Fri 8AM-5PM | Inspection requests via portal or (972) 744-4180", permitRequired: true, permitUrl: "cor.net/departments/building-inspection", staffDirectory: "cor.net/departments/building-inspection/contact-us-faq", inspectorContacts: [{ name: "Jennifer Patrick", title: "Building Inspection Manager", office: "972-744-4195", email: "Jennifer.Patrick@cor.gov" }, { name: "Building Inspection Main", title: "Permits, Inspections, Contractor Registration", office: "(972) 744-4180", email: "permits@cor.gov" }, { name: "Permit Questions", title: "Permit Submittal and Status", office: "(972) 744-4164", email: "permits@cor.gov" }, { name: "Express Permitting", title: "3-business-day plan review for qualifying projects", office: "972-744-4195", email: "permits@cor.gov" }], thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
   "Rockwall": { code: "IPC 2021", population: "51K", region: "North Texas (DFW)", amendments: ["Rockwall County seat — verify ETJ if working near city limits", "Thermal expansion tank required", "CSST bonding required per NFPA 54", "Backflow prevention required on all irrigation connections"], inspector: "Rockwall Building Inspections", phone: "(972) 771-7700", directLine: "(972) 771-7700", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "rockwall.com/buildinginspections", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
-  "Round Rock": { code: "IPC 2021", population: "133K", region: "Central Texas", amendments: ["Strict one-permit system — all trades on same permit", "All contractors must be registered before permit issued", "Permit invalid if work not started within 6 months", "Chandler Creek and Vista Oaks MUD: same permits as city"], inspector: "Round Rock Building Inspections", phone: "(512) 218-5550", directLine: "(512) 218-5550", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "roundrocktexas.gov/building-inspection", thirdParty: ["Fox Energy Specialists", "Burgess Construction Consultants", "Bureau Veritas"] },
+  "Round Rock": { code: "IPC 2021", population: "133K", region: "Central Texas", amendments: ["Strict one-permit system — all trades on same permit", "All contractors must be registered before permit issued", "Permit invalid if work not started within 6 months", "Chandler Creek and Vista Oaks MUD: same permits as city", "Schedule inspections by 4PM for next day — not guaranteed", "Two free inspections per permit type; $75 re-inspection fee after that"], inspector: "Round Rock Building Inspections", phone: "(512) 218-5550", directLine: "(512) 218-5550", scheduleHours: "Mon–Fri 8AM–3PM field | Schedule by 4PM for next day via Permit Portal", permitRequired: true, permitUrl: "roundrocktexas.gov/building-inspection", staffDirectory: "roundrocktexas.gov/city-departments/planning-and-development-services/pdsorgchart-current/", inspectorContacts: [{ name: "James Shine", title: "Building Official", office: "512-470-9543", email: "jshine@roundrocktexas.gov" }, { name: "Bryan Fails", title: "Chief Plumbing Inspector", office: "512-845-6249", email: "bfails@roundrocktexas.gov" }, { name: "Roger Gonzalez", title: "Commercial Plumbing Inspector", office: "737-423-5203", email: "rgonzales@roundrocktexas.gov" }, { name: "Jorge Scott", title: "Assistant Building Official", office: "512-218-7029", email: "jscott@roundrocktexas.gov" }, { name: "Jake Morrison", title: "Chief Residential Inspector", office: "737-376-0954", email: "jmorrison@roundrocktexas.gov" }, { name: "Jimmy Spencer", title: "Chief Electrical Inspector", office: "512-470-9507", email: "jimmyspencer@roundrocktexas.gov" }, { name: "Amos Harrison", title: "Chief Structural Inspector", office: "512-639-0218", email: "aharrison@roundrocktexas.gov" }, { name: "Matt Krueger", title: "Chief Civil Inspector", office: "512-748-9092", email: "mkrueger@roundrocktexas.gov" }, { name: "Building Permits Main", title: "Permits & Scheduling", office: "(512) 218-5550", email: "buildingpermits@roundrocktexas.gov" }], thirdParty: ["Fox Energy Specialists", "Burgess Construction Consultants", "Bureau Veritas"] },
   "Rowlett": { code: "IPC 2021", population: "66K", region: "North Texas (DFW)", amendments: ["NCTCOG regional amendments apply", "Thermal expansion tank required", "CSST bonding required", "Water heater elevated 18\" in garage"], inspector: "Rowlett Building Inspections", phone: "(972) 412-6100", directLine: "(972) 412-6100", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "rowlett.com/permits", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
   "Sachse": { code: "IPC 2021", population: "30K", region: "North Texas (DFW)", amendments: ["NCTCOG regional amendments apply", "Collin/Dallas county line — verify which county governs your address", "Thermal expansion tank required", "CSST bonding required per NFPA 54"], inspector: "Sachse Building Inspections", phone: "(972) 495-1212", directLine: "(972) 495-1212", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "cityofsachse.com/permits", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
   "San Antonio": { code: "IPC 2024", population: "1.4M", region: "South Texas", amendments: ["SAWS approval required before any water service connection", "RPZ backflow required on all commercial irrigation systems", "Gas line pressure test: 10 PSI hold for 15 minutes minimum", "Water heater pan and drain required in all install locations", "Grease trap required on all food service establishments", "Field inspector office hours: 7:45–9AM and 3–4:30PM (inspectors in field rest of day)"], inspector: "SA Development Services", phone: "(210) 207-1111", directLine: "(210) 207-1111", scheduleHours: "Mon–Fri 7:30AM–4:30PM | Inspector office hours 7:45–9AM & 3–4:30PM", permitRequired: true, permitUrl: "sanantonio.gov/DSD", staffDirectory: "docsonline.sanantonio.gov/FileUploads/dsd/InspectorsContactInfo.pdf", inspectorContacts: [{ name: "Manuel Rodriguez", title: "Sr. Plumbing Inspector — School Team", office: "(210) 260-5152", email: "" }, { name: "Tony Frye", title: "Plumbing Inspector", office: "(210) 760-7306", email: "" }, { name: "Daniel Flores", title: "Plumbing Inspector", office: "(210) 313-4375", email: "" }, { name: "Jerome Truss", title: "Plumbing Inspector", office: "(210) 260-5359", email: "" }, { name: "Joe Hernandez", title: "Plumbing Inspector", office: "(210) 237-9720", email: "" }, { name: "Kenneth Cordes", title: "Plumbing Inspector", office: "(210) 760-7295", email: "" }, { name: "Santos Dimas", title: "Plumbing Inspector", office: "(210) 845-8358", email: "" }, { name: "Ramiro Carrillo", title: "Development Services Manager", office: "(210) 207-8314", mobile: "(210) 294-1326", email: "" }, { name: "Inspectors FAX", title: "Field Services Fax", office: "(210) 207-6073", email: "" }, { name: "Main DSD Line", title: "General & Scheduling", office: "(210) 207-1111", email: "" }], thirdParty: ["Roadrunner Inspections", "Veritas Inspections", "Bureau Veritas", "ECS Limited"] },
   "Schertz": { code: "IPC 2021", population: "43K", region: "San Antonio Suburb (3 Counties)", amendments: ["Spans Comal, Guadalupe, and Bexar counties — verify which governs your address", "CityView portal for all permits and inspections", "Permits required for water heaters, water softeners, and irrigation backflow"], inspector: "Schertz Building Inspections", phone: "(210) 619-1750", directLine: "(210) 619-1750", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "schertz.com/building", thirdParty: ["Roadrunner Inspections", "Bureau Veritas", "Texas Third Party Inspections LLC"], warning: "Schertz spans three counties. Always confirm which county governs your specific job address." },
-  "Southlake": { code: "IPC 2021", population: "32K", region: "North Texas (DFW)", amendments: ["Emergency plumbing work allowed without permit — get permit next business day", "FOG worksheet required for food service plumbing — must be sealed by engineer", "CSST bonding required per NFPA 54", "Thermal expansion tank required"], inspector: "Southlake Building Inspections", phone: "(817) 748-8236", directLine: "(817) 748-8237", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "cityofsouthlake.com/permits", thirdParty: ["Crossroads Inspections", "Code Solutions Inc.", "Bureau Veritas"] },
+  "Southlake": { code: "IPC 2021", population: "32K", region: "North Texas (DFW)", amendments: ["Emergency plumbing work allowed without permit — get permit next business day", "FOG worksheet required for food service plumbing — must be sealed by engineer", "CSST bonding required per NFPA 54", "Thermal expansion tank required", "Photo documentation option available in lieu of on-site inspections for water heaters, roofs, windows, certain mechanical equipment"], inspector: "Southlake Building Inspections", phone: "(817) 748-8236", directLine: "(817) 748-8237", scheduleHours: "Mon-Fri 8AM-5PM | Schedule via EP&L Civic Access portal", permitRequired: true, permitUrl: "cityofsouthlake.com/111/Building-Inspections-Code-Enforcement", staffDirectory: "cityofsouthlake.com/2734/Staff-Contacts", inspectorContacts: [{ name: "Charles Wright", title: "Deputy Building Official - Inspections", office: "(817) 748-8969", email: "cwright@cityofsouthlake.com" }, { name: "Susan Hernandez", title: "Deputy Building Official - Administration", office: "(817) 748-8238", email: "shernandez@cityofsouthlake.com" }, { name: "Taylor Markle", title: "Building Inspector", office: "817-748-8048", email: "tmarkle@cityofsouthlake.com" }, { name: "Ernie Aguilar", title: "Building Inspector", office: "(817) 748-8226", email: "eaguilar@cityofsouthlake.com" }, { name: "Skip Vandergrifft", title: "Plans Examiner", office: "(817) 748-8390", email: "svandergrifft@cityofsouthlake.com" }, { name: "Carol Nemoto", title: "Plans Examiner", office: "(817) 748-8040", email: "cnemoto@cityofsouthlake.com" }, { name: "Denia Reyes", title: "Permit Technician", office: "817-748-8256", email: "dreyes@cityofsouthlake.com" }, { name: "Building Inspections Main", title: "Permits and Scheduling", office: "(817) 748-8236", email: "buildinginspections@cityofsouthlake.com" }], thirdParty: ["Crossroads Inspections", "Code Solutions Inc.", "Bureau Veritas"] },
   "Sugar Land": { code: "IPC 2024 ⚠", population: "111K", region: "Greater Houston", amendments: ["⚠ IPC 2024 adopted via Ordinance 2395", "Showerhead flow limited to 2.0 GPM", "Tracer wire required on buried plastic sewer", "Fort Bend County MUD rules may apply in outer areas"], inspector: "Sugar Land Building Inspections", phone: "(281) 275-2400", directLine: "(281) 275-2400", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "sugarlandtx.gov/building", thirdParty: ["Fox Energy Specialists", "Bureau Veritas", "Burgess Construction Consultants"], warning: "Sugar Land is on IPC 2024. 2.0 GPM max showerheads, tracer wire on buried plastic sewer." },
   "Temple": { code: "IPC 2021", population: "82K", region: "Central Texas", amendments: ["Permits required for all plumbing work", "Gas pressure test: 10 PSI minimum hold", "Thermal expansion tank required on all closed water systems", "Water heater pan required in all interior locations"], inspector: "Temple Building Inspections", phone: "(254) 298-5640", directLine: "(254) 298-5640", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "templetx.gov/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
   "The Colony": { code: "IPC 2024 ⚠", population: "50K", region: "North Texas (DFW)", amendments: ["⚠ IPC 2024 adopted effective July 17, 2025", "Showerhead flow limited to 2.0 GPM", "Tracer wire required on buried plastic sewer", "Permits now required for roof, siding, and foundation repair (Oct 1, 2025)"], inspector: "The Colony Building Inspections", phone: "(972) 625-1106", directLine: "(972) 625-1106", scheduleHours: "Mon–Fri 8AM–5PM | Inspections via ETrakIt", permitRequired: true, permitUrl: "thecolonytx.gov/building-inspections", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"], warning: "The Colony moved to IPC 2024 on July 17, 2025. Also: permits now required for roof replacement, siding, and foundation repair." },
@@ -563,7 +620,41 @@ const JURISDICTIONS = {
   "Texas City": { code: "IPC 2021", population: "51K", region: "Greater Houston (Galveston County)", amendments: ["Galveston County coastal area — corrosion protection required on exposed piping", "Wind-driven rain protection required on vent terminations", "Thermal expansion tank required on all water heater installs", "Backflow prevention required on all connections"], inspector: "Texas City Building Inspections", phone: "(409) 643-5600", directLine: "(409) 643-5600", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "texascity-tx.gov/permits", thirdParty: ["Fox Energy Specialists", "Bureau Veritas"] },
   "Victoria": { code: "IPC 2021", population: "67K", region: "South Texas (Crossroads)", amendments: ["Victoria County seat — verify county rules for unincorporated areas", "Thermal expansion tank required on all closed water systems", "Backflow prevention required on all irrigation connections", "Gas pressure test: 10 PSI minimum hold for 15 minutes"], inspector: "Victoria Building Inspections", phone: "(361) 485-3010", directLine: "(361) 485-3010", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "victoriatx.gov/permits", thirdParty: ["Bureau Veritas", "ECS Limited", "Texas Third Party Inspections LLC"] },
   "Weatherford": { code: "IPC 2021", population: "38K", region: "North Texas (Parker County)", amendments: ["Parker County seat — verify ETJ boundaries", "NCTCOG regional amendments apply", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum"], inspector: "Weatherford Building Inspections", phone: "(817) 598-4298", directLine: "(817) 598-4298", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "weatherfordtx.gov/permits", thirdParty: ["Code Solutions Inc.", "Bureau Veritas", "Crossroads Inspections"] },
-  "Wylie": { code: "IPC 2021", population: "60K", region: "North Texas (DFW)", amendments: ["NCTCOG regional amendments apply", "Collin County — verify ETJ for addresses near city limits", "Thermal expansion tank required", "CSST bonding required per NFPA 54"], inspector: "Wylie Building Inspections", phone: "(972) 516-6340", directLine: "(972) 516-6340", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "wylietexas.gov/permits", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
+  "Wylie": { code: "IPC 2021", population: "60K", region: "North Texas (DFW)", amendments: ["NCTCOG regional amendments apply", "Collin County — verify ETJ for addresses near city limits", "Thermal expansion tank required", "CSST bonding required per NFPA 54"], inspector: "Wylie Building Inspections", phone: "(972) 516-6340", directLine: "(972) 516-6340", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "wylietexas.gov/permits", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
+  "Waxahachie": { code: "IPC 2021", population: "43K", region: "North Texas (Ellis County)", amendments: ["Ellis County seat — verify ETJ boundaries carefully", "NCTCOG regional amendments apply", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum hold"], inspector: "Waxahachie Building Inspections", phone: "(972) 937-7330", directLine: "(972) 937-7330", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "waxahachietx.gov/building", thirdParty: ["Crossroads Inspections", "Code Solutions Inc.", "Bureau Veritas"] },
+  "Forney": { code: "IPC 2021", population: "40K", region: "North Texas (DFW)", amendments: ["Fast-growing Kaufman County suburb", "NCTCOG regional amendments apply", "Thermal expansion tank required on all closed water systems", "Underground plastic sewer requires tracer wire"], inspector: "Forney Building Inspections", phone: "(972) 552-6474", directLine: "(972) 552-6474", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "forneytx.gov/permits", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
+  "Granbury": { code: "IPC 2021", population: "12K", region: "North Texas (Hood County)", amendments: ["Hood County seat — historic district overlays may apply downtown", "Parker/Hood county line areas — verify jurisdiction", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum"], inspector: "Granbury Building Inspections", phone: "(817) 573-1114", directLine: "(817) 573-1114", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "granburytx.gov/permits", thirdParty: ["Code Solutions Inc.", "Bureau Veritas"] },
+  "Lockhart": { code: "IPC 2021", population: "16K", region: "Central Texas (Caldwell County)", amendments: ["Caldwell County seat — BBQ capital of Texas", "Verify MUD district if working outside city limits", "Thermal expansion tank required on all closed water systems", "Backflow prevention required on all irrigation connections"], inspector: "Lockhart Building Department", phone: "(512) 398-3461", directLine: "(512) 398-3461", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "lockhart-tx.com/permits", thirdParty: ["Fox Energy Specialists", "Bureau Veritas"] },
+  "Seguin": { code: "IPC 2021", population: "30K", region: "Central Texas (Guadalupe County)", amendments: ["Guadalupe County seat — verify ETJ boundaries", "High growth area — permit volume increasing", "Thermal expansion tank required on all closed water systems", "Backflow prevention required on all irrigation connections"], inspector: "Seguin Building Inspections", phone: "(830) 401-2484", directLine: "(830) 401-2484", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "seguintexas.gov/permits", thirdParty: ["Roadrunner Inspections", "Bureau Veritas", "Texas Third Party Inspections LLC"] },
+  "Converse": { code: "IPC 2021", population: "30K", region: "San Antonio Suburb (Bexar County)", amendments: ["Bexar County suburb — fast growing", "San Antonio Building Code environment — verify IPC vs local amendments", "Thermal expansion tank required on all closed water systems", "Backflow prevention required on all irrigation systems"], inspector: "Converse Building Inspections", phone: "(210) 659-5031", directLine: "(210) 659-5031", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "conversetx.net/permits", thirdParty: ["Roadrunner Inspections", "Bureau Veritas", "Texas Third Party Inspections LLC"] },
+  "Cibolo": { code: "IPC 2021", population: "31K", region: "San Antonio Suburb (Guadalupe County)", amendments: ["One of fastest growing cities in Texas", "Guadalupe County — verify MUD/ETJ boundaries", "CityView portal for permits and inspections", "Thermal expansion tank required on all closed water systems"], inspector: "Cibolo Building Inspections", phone: "(210) 566-9700", directLine: "(210) 566-9700", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "cibolotx.gov/permits", thirdParty: ["Roadrunner Inspections", "Bureau Veritas", "Texas Third Party Inspections LLC"] },
+  "Harker Heights": { code: "IPC 2021", population: "32K", region: "Central Texas (Fort Hood area)", amendments: ["Coryell/Bell county area — near Fort Cavazos", "Military community — verify civilian permit requirements vs on-base work", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum hold"], inspector: "Harker Heights Building Inspections", phone: "(254) 953-5635", directLine: "(254) 953-5635", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "hhtx.com/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
+  "Belton": { code: "IPC 2021", population: "25K", region: "Central Texas (Bell County)", amendments: ["Bell County seat", "Adjacent to Temple and Killeen — verify jurisdiction on border addresses", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum"], inspector: "Belton Building Inspections", phone: "(254) 933-5820", directLine: "(254) 933-5820", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "beltontexas.gov/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
+  "Galveston": { code: "IPC 2021", population: "53K", region: "Gulf Coast (Galveston County)", amendments: ["Coastal zone — all exposed piping must be corrosion resistant", "Wind-driven rain protection required on all vent terminations", "Elevated structure requirements — piping support on piers", "Flood zone: all water heaters and HVAC elevated above base flood elevation"], inspector: "Galveston Building Inspection Division", phone: "(409) 797-3660", directLine: "(409) 797-3660", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "galvestontx.gov/permits", thirdParty: ["Bureau Veritas", "ECS Limited", "Texas Third Party Inspections LLC"], warning: "Galveston is a coastal flood zone. All plumbing equipment must be elevated above base flood elevation. Corrosion-resistant materials required on all exposed exterior piping." },
+  "Dickinson": { code: "IPC 2021", population: "24K", region: "Greater Houston (Galveston County)", amendments: ["Galveston County coastal area", "Flood zone considerations — verify base flood elevation", "Thermal expansion tank required on all water heater installs", "Backflow prevention required on all irrigation connections"], inspector: "Dickinson Building Inspections", phone: "(281) 337-6200", directLine: "(281) 337-6200", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "dickinsontexas.gov/permits", thirdParty: ["Fox Energy Specialists", "Bureau Veritas"] },
+  "Alvin": { code: "IPC 2021", population: "28K", region: "Greater Houston (Brazoria County)", amendments: ["Brazoria County — MUD districts common, verify jurisdiction", "Thermal expansion tank required on all water heater installs", "Backflow prevention required on all irrigation and commercial connections", "Gas pressure test: 10 PSI minimum"], inspector: "Alvin Building Inspections", phone: "(281) 388-4200", directLine: "(281) 388-4200", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "cityofalvin.com/permits", thirdParty: ["Fox Energy Specialists", "Bureau Veritas"] },
+  "Angleton": { code: "IPC 2021", population: "19K", region: "Greater Houston (Brazoria County)", amendments: ["Brazoria County seat", "Verify MUD district rules if working in unincorporated areas", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum hold"], inspector: "Angleton Building Department", phone: "(979) 849-4364", directLine: "(979) 849-4364", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "angleton.tx.us/permits", thirdParty: ["Fox Energy Specialists", "Bureau Veritas", "Burgess Construction Consultants"] },
+  "Nederland": { code: "IPC 2021", population: "17K", region: "Southeast Texas (Jefferson County)", amendments: ["Jefferson County — industrial area near Port Arthur", "Petrochemical corridor — gas line requirements strictly enforced", "Thermal expansion tank required on all closed water systems", "Backflow prevention required on all connections"], inspector: "Nederland Building Inspections", phone: "(409) 723-1503", directLine: "(409) 723-1503", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "ci.nederland.tx.us/permits", thirdParty: ["Bureau Veritas", "ECS Limited"] },
+  "Lumberton": { code: "IPC 2021", population: "14K", region: "Southeast Texas (Hardin County)", amendments: ["Hardin County — growing suburban area", "Verify county vs city jurisdiction on permits", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum"], inspector: "Lumberton Building Department", phone: "(409) 755-0581", directLine: "(409) 755-0581", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "cityoflumberton.com/permits", thirdParty: ["Bureau Veritas", "ECS Limited"] },
+  "Pharr": { code: "IPC 2021", population: "78K", region: "Rio Grande Valley (Hidalgo County)", amendments: ["Hidalgo County — high growth Valley area", "High mineral content water — water softener loop recommended on new construction", "Backflow prevention required on all irrigation and commercial connections", "Thermal expansion tank required on all closed water systems"], inspector: "Pharr Building Inspections", phone: "(956) 402-4200", directLine: "(956) 402-4200", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "pharr-tx.com/permits", thirdParty: ["Bureau Veritas", "ECS Limited", "Texas Third Party Inspections LLC"] },
+  "Mission": { code: "IPC 2021", population: "87K", region: "Rio Grande Valley (Hidalgo County)", amendments: ["Hidalgo County — fast-growing Valley city", "High mineral content water — additional water heater protection recommended", "Backflow prevention required on all irrigation connections", "Gas pressure test: 10 PSI minimum"], inspector: "Mission Building Department", phone: "(956) 580-8700", directLine: "(956) 580-8700", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "missiontexas.us/permits", thirdParty: ["Bureau Veritas", "ECS Limited", "Texas Third Party Inspections LLC"] },
+  "Brownsville": { code: "IPC 2021", population: "182K", region: "Rio Grande Valley (Cameron County)", amendments: ["Southernmost major Texas city — Cameron County seat", "High humidity coastal environment — corrosion protection recommended", "Backflow prevention required on all irrigation and commercial connections", "High mineral content water — water softener loop recommended on new construction"], inspector: "Brownsville Building Safety", phone: "(956) 548-6030", directLine: "(956) 548-6030", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "brownsvilletx.gov/permits", thirdParty: ["Bureau Veritas", "ECS Limited", "Texas Third Party Inspections LLC"] },
+  "Weslaco": { code: "IPC 2021", population: "42K", region: "Rio Grande Valley (Hidalgo County)", amendments: ["Hidalgo County — Valley area", "High mineral content water — water softener loop recommended", "Backflow prevention required on all irrigation connections", "Thermal expansion tank required on all closed water systems"], inspector: "Weslaco Building Department", phone: "(956) 968-3181", directLine: "(956) 968-3181", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "weslacotx.gov/permits", thirdParty: ["Bureau Veritas", "ECS Limited"] },
+  "San Juan": { code: "IPC 2021", population: "37K", region: "Rio Grande Valley (Hidalgo County)", amendments: ["Hidalgo County — Valley area growing suburb", "High mineral content water — additional protection recommended", "Backflow prevention required on all irrigation and commercial connections", "Thermal expansion tank required"], inspector: "San Juan Building Department", phone: "(956) 223-2200", directLine: "(956) 223-2200", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "cityofsanjuan.com/permits", thirdParty: ["Bureau Veritas", "ECS Limited"] },
+  "Longview": { code: "IPC 2021", population: "82K", region: "East Texas", amendments: ["All inspection requests through automated line: (903) 239-5598", "Plan review required for all commercial and residential construction", "Gas pressure test required — document results for inspector", "Thermal expansion tank required on all closed water systems"], inspector: "Longview Building Inspection", phone: "(903) 239-5598", directLine: "(903) 239-5598", scheduleHours: "Automated request line 24/7", permitRequired: true, permitUrl: "longviewtexas.gov/building-inspection", thirdParty: ["Bureau Veritas", "ECS Limited", "Texas Third Party Inspections LLC"] },
+  "Midlothian": { code: "IPC 2021", population: "38K", region: "North Texas (Ellis County)", amendments: ["Fast-growing Ellis County suburb", "NCTCOG regional amendments apply", "Thermal expansion tank required on all closed water systems", "Underground plastic sewer requires tracer wire"], inspector: "Midlothian Building Inspections", phone: "(972) 775-7120", directLine: "(972) 775-7120", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "midlothian.tx.us/permits", thirdParty: ["Crossroads Inspections", "Code Solutions Inc.", "Bureau Veritas"] },
+  "Red Oak": { code: "IPC 2021", population: "16K", region: "North Texas (Ellis County)", amendments: ["Ellis County growing suburb south of Dallas", "NCTCOG regional amendments apply", "Thermal expansion tank required", "Gas pressure test: 10 PSI minimum hold"], inspector: "Red Oak Building Inspections", phone: "(972) 617-3638", directLine: "(972) 617-3638", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "redoaktexas.gov/permits", thirdParty: ["Crossroads Inspections", "Bureau Veritas"] },
+  "Ennis": { code: "IPC 2021", population: "20K", region: "North Texas (Ellis County)", amendments: ["Ellis County — Bluebonnet city", "Verify ETJ boundaries for addresses near city limits", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum"], inspector: "Ennis Building Inspections", phone: "(972) 878-1234", directLine: "(972) 878-1234", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "ennisgov.com/permits", thirdParty: ["Crossroads Inspections", "Bureau Veritas"] },
+  "Corsicana": { code: "IPC 2021", population: "23K", region: "North Texas (Navarro County)", amendments: ["Navarro County seat", "Verify county rules for addresses outside city limits", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum hold"], inspector: "Corsicana Building Department", phone: "(903) 654-4800", directLine: "(903) 654-4800", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "corsicanatx.gov/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
+  "Athens": { code: "IPC 2021", population: "13K", region: "East Texas (Henderson County)", amendments: ["Henderson County seat", "East Texas expansive soil — granular bedding under slab recommended", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum"], inspector: "Athens Building Department", phone: "(903) 675-2341", directLine: "(903) 675-2341", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "athenstexas.net/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
+  "Jacksonville": { code: "IPC 2021", population: "14K", region: "East Texas (Cherokee County)", amendments: ["Cherokee County seat", "Verify county rules if working outside city limits", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum hold"], inspector: "Jacksonville Building Department", phone: "(903) 586-1511", directLine: "(903) 586-1511", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "jacksonvilletexas.com/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
+  "Marshall": { code: "IPC 2021", population: "23K", region: "East Texas (Harrison County)", amendments: ["Harrison County seat", "East Texas industrial and commercial growth area", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum"], inspector: "Marshall Building Department", phone: "(903) 935-4406", directLine: "(903) 935-4406", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "marshalltexas.net/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
+  "Kerrville": { code: "IPC 2021", population: "25K", region: "Central Texas (Hill Country)", amendments: ["Kerr County seat — Hill Country resort and retirement area", "Expansive limestone soils — granular bedding under slab strongly recommended", "Water conservation amendments — low-flow fixtures required", "Thermal expansion tank required on all closed water systems"], inspector: "Kerrville Building Inspections", phone: "(830) 258-1010", directLine: "(830) 258-1010", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "kerrvilletx.gov/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
+  "Fredericksburg": { code: "IPC 2021", population: "12K", region: "Central Texas (Hill Country)", amendments: ["Gillespie County seat — heavy wine country tourism growth", "Historic district overlay applies downtown", "Expansive limestone soils — granular bedding under slab required", "Water conservation amendments — low-flow fixtures required"], inspector: "Fredericksburg Building Department", phone: "(830) 997-7521", directLine: "(830) 997-7521", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "fbgtx.org/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
+  "Marble Falls": { code: "IPC 2021", population: "7K", region: "Central Texas (Hill Country / Burnet County)", amendments: ["Burnet County — verify ETJ if working near city limits", "Highland Lakes area — water conservation strictly enforced", "Limestone soils — granular bedding under slab required", "Thermal expansion tank required on all closed water systems"], inspector: "Marble Falls Building Inspections", phone: "(830) 693-3615", directLine: "(830) 693-3615", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "marblefalls.org/permits", thirdParty: ["Fox Energy Specialists", "Bureau Veritas"] },
+  "Elgin": { code: "IPC 2021", population: "10K", region: "Central Texas (Bastrop County)", amendments: ["Fast-growing Bastrop County suburb east of Austin", "Verify MUD district if working outside city limits", "Thermal expansion tank required on all water heater installs", "Backflow prevention required on all irrigation connections"], inspector: "Elgin Building Department", phone: "(512) 285-5413", directLine: "(512) 285-5413", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "elgintx.com/permits", thirdParty: ["Fox Energy Specialists", "Bureau Veritas"] },
+  "Taylor": { code: "IPC 2021", population: "17K", region: "Central Texas (Williamson County)", amendments: ["Williamson County — Samsung megafab industrial growth corridor", "High permit volume in 2024-2026 due to Samsung development nearby", "Thermal expansion tank required on all water heater installs", "Backflow prevention required on all irrigation connections"], inspector: "Taylor Building Department", phone: "(512) 352-3675", directLine: "(512) 352-3675", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "taylortx.gov/permits", thirdParty: ["Fox Energy Specialists", "Bureau Veritas"] },
+  "Liberty Hill": { code: "IPC 2021", population: "15K", region: "Central Texas (Williamson County)", amendments: ["One of fastest growing small cities in Texas", "Williamson County — verify ETJ boundaries carefully", "Thermal expansion tank required on all water heater installs", "Backflow prevention required on all irrigation connections"], inspector: "Liberty Hill Building Inspections", phone: "(512) 778-5449", directLine: "(512) 778-5449", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "libertyhilltexas.gov/permits", thirdParty: ["Fox Energy Specialists", "Crossroads Inspections", "Bureau Veritas"] },
 };
 
 const THIRD_PARTY = {
@@ -1000,6 +1091,7 @@ export default function App() {
 
 // ─── IDENTIFY SCREEN COMPONENT ───────────────────────────────
 function IdentifyScreen({ t, lang }) {
+  const [activeTab, setActiveTab] = useState("bob"); // "bob" | "job" | "estimate"
   const [phase, setPhase] = useState("idle");
   const [imagePreview, setImagePreview] = useState(null);
   const [partsEn, setPartsEn] = useState([]);
@@ -1009,9 +1101,84 @@ function IdentifyScreen({ t, lang }) {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voiceEnabled, setVoiceEnabled] = useState(true);
   const [lastBase64, setLastBase64] = useState(null);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [recentHistory, setRecentHistory] = useState(() => {
+    try {
+      const saved = localStorage.getItem("codex_recent_history");
+      return saved ? JSON.parse(saved) : [];
+    } catch { return []; }
+  });
+  const [showHistory, setShowHistory] = useState(false);
+
+  // JOB MODE state
+  const [jobAddress, setJobAddress] = useState("");
+  const [jobPhotos, setJobPhotos] = useState([]); // [{preview, partsEn, partsEs, status}]
+  const [jobPhase, setJobPhase] = useState("setup"); // "setup" | "shooting" | "analyzing" | "results"
+  const [jobAnalyzingIdx, setJobAnalyzingIdx] = useState(null);
+  const [jobReport, setJobReport] = useState(null);
+
+  // ESTIMATE state
+  const [estimateParts, setEstimateParts] = useState([]);
+  const [laborHours, setLaborHours] = useState(4);
+  const [laborRate, setLaborRate] = useState(95);
+  const [markupPct, setMarkupPct] = useState(20);
+  const [permitFee, setPermitFee] = useState(150);
+  const [showEstimate, setShowEstimate] = useState(false);
+
+  // Material cost lookup — realistic 2025 supply house pricing
+  const MATERIAL_COSTS = {
+    "Ball Valve": 18, "Gate Valve": 22, "Check Valve": 28, "Pressure Reducing Valve": 85,
+    "Pressure Relief Valve": 45, "TPR Valve": 38, "Thermostatic Mixing Valve": 95,
+    "Backflow Preventer": 120, "Pressure Vacuum Breaker": 65, "Double Check Valve": 145,
+    "Reduced Pressure Zone": 280, "Irrigation Backflow": 85,
+    "Water Heater": 650, "Tankless Water Heater": 1100, "Electric Water Heater": 480,
+    "Water Heater Expansion Tank": 55, "Thermal Expansion Tank": 55,
+    "PVC Pipe": 8, "CPVC Pipe": 12, "PEX Pipe": 15, "Copper Pipe": 38,
+    "ABS Pipe": 9, "Cast Iron Pipe": 42, "Galvanized Pipe": 28,
+    "CSST Gas Line": 65, "Black Iron Pipe": 22,
+    "PVC Fitting": 4, "CPVC Fitting": 5, "PEX Fitting": 8, "Copper Fitting": 14,
+    "ABS Fitting": 5, "Wye Fitting": 6, "Tee Fitting": 5, "Elbow": 4,
+    "P-Trap": 18, "S-Trap": 12, "Bottle Trap": 22,
+    "Cleanout": 24, "Floor Drain": 45, "Roof Drain": 85,
+    "Vent Cap": 12, "Air Admittance Valve": 28, "Studor Vent": 35,
+    "Sediment Trap": 22, "Drip Leg": 18,
+    "Toilet": 180, "Flange": 22, "Wax Ring": 8,
+    "Faucet": 95, "Kitchen Faucet": 145, "Shower Valve": 185, "Tub Spout": 28,
+    "Shower Head": 45, "Hose Bib": 22, "Sillcock": 22,
+    "Garbage Disposal": 165, "Dishwasher Connection": 25,
+    "Water Softener": 650, "Water Filter": 185,
+    "Sump Pump": 185, "Sewage Pump": 280,
+    "Gas Valve": 35, "Gas Regulator": 55, "Gas Meter": 0,
+    "Shut Off Valve": 18, "Stop Valve": 16, "Angle Stop": 14,
+    "Supply Line": 12, "Flexible Connector": 18,
+    "default": 35
+  };
+
+  const getPartCost = (partName) => {
+    if (!partName) return MATERIAL_COSTS.default;
+    const name = partName.toLowerCase();
+    for (const [key, val] of Object.entries(MATERIAL_COSTS)) {
+      if (name.includes(key.toLowerCase())) return val;
+    }
+    return MATERIAL_COSTS.default;
+  };
+
   const fileRef = useRef(null);
   const galleryRef = useRef(null);
+  const jobFileRef = useRef(null);
   const synthRef = useRef(window.speechSynthesis);
+
+  // Track online/offline status
+  useEffect(() => {
+    const goOnline = () => setIsOnline(true);
+    const goOffline = () => setIsOnline(false);
+    window.addEventListener("online", goOnline);
+    window.addEventListener("offline", goOffline);
+    return () => {
+      window.removeEventListener("online", goOnline);
+      window.removeEventListener("offline", goOffline);
+    };
+  }, []);
 
   // Current parts based on active language — no API call needed to switch
   const parts = lang === "es" ? partsEs : partsEn;
@@ -1152,6 +1319,7 @@ function IdentifyScreen({ t, lang }) {
       setPartsEn(enParts);
       setPartsEs(esParts);
       setPhase("results");
+      saveToHistory(enParts, esParts, imagePreview);
       // Speak in whichever language is active
       speak(buildSpeech(useLang === "es" ? esParts : enParts));
 
@@ -1165,8 +1333,130 @@ function IdentifyScreen({ t, lang }) {
     }
   };
 
-  const reset = () => { stopSpeaking(); setPhase("idle"); setImagePreview(null); setPartsEn([]); setPartsEs([]); setSelectedPart(null); setError(null); setLastBase64(null);
- };
+  const saveToHistory = (enParts, esParts, preview) => {
+    try {
+      const entry = {
+        id: Date.now(),
+        timestamp: new Date().toLocaleString(),
+        imagePreview: preview,
+        partsEn: enParts,
+        partsEs: esParts,
+        summary: enParts.slice(0, 3).map(p => p.name).join(", ") + (enParts.length > 3 ? ` +${enParts.length - 3} more` : "")
+      };
+      setRecentHistory(prev => {
+        const updated = [entry, ...prev].slice(0, 10);
+        try { localStorage.setItem("codex_recent_history", JSON.stringify(updated)); } catch {}
+        return updated;
+      });
+    } catch {}
+  };
+
+  // JOB MODE — add a photo and analyze it
+  const handleJobPhoto = async (file) => {
+    if (!file || jobPhotos.length >= 10) return;
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const dataUrl = e.target.result;
+      const compressed = await compressImage(dataUrl);
+      const base64 = compressed.split(",")[1];
+      const idx = jobPhotos.length;
+      setJobPhotos(prev => [...prev, { preview: dataUrl, partsEn: [], partsEs: [], status: "analyzing" }]);
+      setJobAnalyzingIdx(idx);
+      setJobPhase("analyzing");
+      try {
+        const [resEn, resEs] = await Promise.all([
+          fetch("/api/identify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ base64, lang: "en" }) }),
+          fetch("/api/identify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ base64, lang: "es" }) })
+        ]);
+        const [dataEn, dataEs] = await Promise.all([resEn.json(), resEs.json()]);
+        setJobPhotos(prev => {
+          const updated = [...prev];
+          updated[idx] = { preview: dataUrl, partsEn: dataEn.parts || [], partsEs: dataEs.parts || [], status: "done" };
+          return updated;
+        });
+      } catch {
+        setJobPhotos(prev => {
+          const updated = [...prev];
+          updated[idx] = { preview: dataUrl, partsEn: [], partsEs: [], status: "error" };
+          return updated;
+        });
+      }
+      setJobAnalyzingIdx(null);
+      setJobPhase("shooting");
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Consolidate all job parts into a deduplicated list with quantities
+  const buildJobPartsList = () => {
+    const allParts = jobPhotos.flatMap(p => lang === "es" ? p.partsEs : p.partsEn);
+    const map = {};
+    allParts.forEach(part => {
+      const key = part.name.toLowerCase().trim();
+      if (map[key]) {
+        map[key].qty += 1;
+      } else {
+        map[key] = { ...part, qty: 1 };
+      }
+    });
+    return Object.values(map).sort((a, b) => b.qty - a.qty);
+  };
+
+  const buildJobReport = () => {
+    const parts = buildJobPartsList();
+    const issues = parts.filter(p => p.codeStatus !== "approved");
+    const address = jobAddress.trim() || (lang === "en" ? "Job Site" : "Sitio de Trabajo");
+    const date = new Date().toLocaleDateString();
+    let report = lang === "en"
+      ? `CODEX TX — JOB REPORT\n${address}\n${date}\n${"=".repeat(40)}\n\nPARTS IDENTIFIED (${parts.length} types, ${jobPhotos.length} photos):\n`
+      : `CODEX TX — REPORTE DE TRABAJO\n${address}\n${date}\n${"=".repeat(40)}\n\nPARTES IDENTIFICADAS (${parts.length} tipos, ${jobPhotos.length} fotos):\n`;
+    parts.forEach(p => {
+      const status = p.codeStatus === "approved" ? "✅" : p.codeStatus === "grandfathered" ? "⚠" : "❌";
+      report += `${status} ${p.name} x${p.qty}\n`;
+    });
+    if (issues.length > 0) {
+      report += lang === "en"
+        ? `\n⚠ CODE ISSUES (${issues.length}):\n`
+        : `\n⚠ PROBLEMAS DE CÓDIGO (${issues.length}):\n`;
+      issues.forEach(p => { report += `• ${p.name}: ${p.codeNote || ""}\n`; });
+    }
+    report += lang === "en"
+      ? `\nGenerated by CODEX TX — codex-tx.vercel.app`
+      : `\nGenerado por CODEX TX — codex-tx.vercel.app`;
+    setJobReport(report);
+    return report;
+  };
+
+  const copyJobReport = () => {
+    const report = buildJobReport();
+    navigator.clipboard.writeText(report).catch(() => {});
+  };
+
+  const resetJob = () => {
+    setJobAddress("");
+    setJobPhotos([]);
+    setJobPhase("setup");
+    setJobReport(null);
+    setJobAnalyzingIdx(null);
+  };
+
+  // ESTIMATE calculations
+  const calcEstimate = (partsList) => {
+    const materialCost = partsList.reduce((sum, p) => sum + (getPartCost(p.name) * (p.qty || 1)), 0);
+    const laborCost = laborHours * laborRate;
+    const subtotal = materialCost + laborCost + permitFee;
+    const markupAmt = subtotal * (markupPct / 100);
+    return {
+      material: materialCost,
+      labor: laborCost,
+      permit: permitFee,
+      subtotal,
+      markup: markupAmt,
+      total: subtotal + markupAmt
+    };
+  };
+
+  const reset = () => { stopSpeaking(); setPhase("idle"); setImagePreview(null); setPartsEn([]); setPartsEs([]); setSelectedPart(null); setError(null); setLastBase64(null); };
 
   const codeColor = (status) => ({ approved: "#4a9a6a", grandfathered: "#c8a030", "not-approved": "#c85a30" }[status] || "#4a6a7a");
   const codeLabel = (status) => ({ approved: t.identifyApproved, grandfathered: t.identifyGrandfathered, "not-approved": t.identifyNotApproved }[status] || status);
@@ -1174,13 +1464,556 @@ function IdentifyScreen({ t, lang }) {
 
   return (
     <div>
-      {/* IDLE — upload prompt */}
-      {phase === "idle" && (
+
+      {/* ── TAB SWITCHER ── */}
+      <div style={{ display: "flex", gap: 6, marginBottom: 18, background: "#111518", borderRadius: 12, padding: 4 }}>
+        {[
+          { id: "bob", label: lang === "en" ? "BOB" : "BOB", icon: "📷" },
+          { id: "job", label: lang === "en" ? "JOB MODE" : "MODO TRABAJO", icon: "🔧" },
+          { id: "estimate", label: lang === "en" ? "ESTIMATE" : "ESTIMAR", icon: "💰" },
+        ].map(tab => (
+          <div
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            style={{
+              flex: 1, textAlign: "center", padding: "8px 4px", borderRadius: 9, cursor: "pointer",
+              background: activeTab === tab.id ? (tab.id === "bob" ? "#c85a30" : tab.id === "job" ? "#1a3a2a" : "#1a2a1a") : "transparent",
+              border: activeTab === tab.id ? "none" : "1px solid #1a2028",
+              transition: "all .2s"
+            }}
+          >
+            <div style={{ fontSize: 14 }}>{tab.icon}</div>
+            <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: ".06em", color: activeTab === tab.id ? "#fff" : "#3a5a6a", marginTop: 2 }}>{tab.label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* ══════════════════════════════════════════ */}
+      {/* BOB TAB — single photo identifier         */}
+      {/* ══════════════════════════════════════════ */}
+      {activeTab === "bob" && (
+        <div>
+          {/* IDLE */}
+          {phase === "idle" && (
+            <div>
+              <div style={{ marginBottom: 20 }}>
+                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 28, letterSpacing: ".06em", color: "#e0e8f0", lineHeight: 1.1 }}>{t.identifyTitle}</div>
+                <div style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 14, color: "#4a6a7a", marginTop: 6, lineHeight: 1.5 }}>{t.identifySub}</div>
+              </div>
+
+              {!isOnline && (
+                <div style={{ background: "#1a1a2a", border: "1px solid #4a4a8a", borderRadius: 12, padding: "14px 16px", marginBottom: 16, display: "flex", gap: 12, alignItems: "flex-start" }}>
+                  <span style={{ fontSize: 22, flexShrink: 0 }}>📵</span>
+                  <div>
+                    <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 15, color: "#9a9ae0", letterSpacing: ".04em", marginBottom: 4 }}>
+                      {lang === "en" ? "BOB NEEDS A SIGNAL" : "BOB NECESITA SEÑAL"}
+                    </div>
+                    <div style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#6a6a9a", lineHeight: 1.5 }}>
+                      {lang === "en"
+                        ? "No internet detected. Photo ID requires a connection. All cities, codes, and contacts work offline."
+                        : "Sin internet. La identificación requiere conexión. Ciudades, códigos y contactos funcionan sin conexión."}
+                    </div>
+                    {recentHistory.length > 0 && (
+                      <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, color: "#7a7ab0", marginTop: 8, letterSpacing: ".04em" }}>
+                        {lang === "en" ? `↓ ${recentHistory.length} recent saved below` : `↓ ${recentHistory.length} recientes guardadas`}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {error && <div style={{ background: "#2a1a1a", border: "1px solid #6a2a2a", borderRadius: 10, padding: "10px 14px", marginBottom: 16, fontFamily: "'Lora',serif", fontSize: 13, color: "#c87a60" }}>{error}</div>}
+
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "10px 14px", marginBottom: 16 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <span style={{ fontSize: 18 }}>🔊</span>
+                  <div>
+                    <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, fontWeight: 600, color: "#e0e8f0" }}>{lang === "en" ? "Voice Readout" : "Lectura por Voz"}</div>
+                    <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#3a5a6a" }}>{lang === "en" ? "Bob speaks results aloud" : "Bob lee los resultados en voz alta"}</div>
+                  </div>
+                </div>
+                <div onClick={() => setVoiceEnabled(v => !v)} style={{ width: 44, height: 24, background: voiceEnabled ? "#c85a30" : "#2a3038", borderRadius: 12, position: "relative", cursor: "pointer", transition: "background .2s" }}>
+                  <div style={{ position: "absolute", top: 2, left: voiceEnabled ? 22 : 2, width: 20, height: 20, background: "#fff", borderRadius: "50%", transition: "left .2s" }} />
+                </div>
+              </div>
+
+              <input ref={fileRef} type="file" accept="image/*" capture="environment" style={{ display: "none" }} onChange={e => handleImage(e.target.files[0])} />
+              <input ref={galleryRef} type="file" accept="image/*" style={{ display: "none" }} onChange={e => handleImage(e.target.files[0])} />
+
+              <div className="upload-zone" onClick={() => { if (!isOnline) return; unlockAudio(); fileRef.current?.click(); }} style={{ opacity: isOnline ? 1 : 0.4, cursor: isOnline ? "pointer" : "not-allowed" }}>
+                <div style={{ width: 72, height: 72, background: "linear-gradient(135deg,#2a1a0f,#3a2a1a)", border: "2px solid #c85a30", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#c85a30" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>
+                  </svg>
+                </div>
+                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 18, letterSpacing: ".08em", color: "#e0e8f0", marginBottom: 6 }}>{t.identifyTap}</div>
+              </div>
+
+              <div onClick={() => { if (!isOnline) return; unlockAudio(); galleryRef.current?.click(); }} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 12, padding: "12px 16px", marginTop: 10, cursor: isOnline ? "pointer" : "not-allowed", opacity: isOnline ? 1 : 0.4, transition: "all .15s" }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7acae0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+                </svg>
+                <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 600, fontSize: 15, letterSpacing: ".06em", color: "#7acae0" }}>{lang === "en" ? "UPLOAD FROM CAMERA ROLL" : "SUBIR DESDE LA GALERÍA"}</span>
+              </div>
+
+              {recentHistory.length > 0 && (
+                <div style={{ marginTop: 24 }}>
+                  <div onClick={() => setShowHistory(h => !h)} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer", marginBottom: 10 }}>
+                    <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 13, letterSpacing: ".08em", color: "#4a6a7a", textTransform: "uppercase" }}>
+                      {lang === "en" ? `Recent (${recentHistory.length})` : `Recientes (${recentHistory.length})`}
+                    </div>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4a6a7a" strokeWidth="2" strokeLinecap="round" style={{ transform: showHistory ? "rotate(180deg)" : "none", transition: "transform .2s" }}><polyline points="6 9 12 15 18 9"/></svg>
+                  </div>
+                  {showHistory && (
+                    <div>
+                      {recentHistory.map((entry) => (
+                        <div key={entry.id} onClick={() => { setPartsEn(entry.partsEn); setPartsEs(entry.partsEs); setImagePreview(entry.imagePreview); setPhase("results"); }} style={{ display: "flex", gap: 12, alignItems: "center", background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "10px 12px", marginBottom: 8, cursor: "pointer" }}>
+                          {entry.imagePreview && <img src={entry.imagePreview} alt="" style={{ width: 44, height: 44, objectFit: "cover", borderRadius: 6, flexShrink: 0 }} />}
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, fontWeight: 600, color: "#c0d0d8", letterSpacing: ".03em", marginBottom: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{entry.summary}</div>
+                            <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#3a5a6a" }}>{entry.timestamp}</div>
+                          </div>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3a5a6a" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </div>
+                      ))}
+                      <div onClick={() => { setRecentHistory([]); try { localStorage.removeItem("codex_recent_history"); } catch {} }} style={{ textAlign: "center", padding: "6px", cursor: "pointer", fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#3a4a5a", letterSpacing: ".06em" }}>
+                        {lang === "en" ? "CLEAR HISTORY" : "BORRAR HISTORIAL"}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ANALYZING */}
+          {phase === "analyzing" && (
+            <div style={{ textAlign: "center", padding: "40px 20px" }}>
+              {imagePreview && <img src={imagePreview} alt="" style={{ width: "100%", maxHeight: 220, objectFit: "cover", borderRadius: 12, marginBottom: 24, opacity: 0.7 }} />}
+              <div style={{ width: 48, height: 48, border: "3px solid #c85a30", borderTopColor: "transparent", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 16px" }} />
+              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 18, color: "#e0e8f0", letterSpacing: ".06em" }}>{t.identifyAnalyzing}</div>
+              <div style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#4a6a7a", marginTop: 6 }}>{t.identifyAnalyzingSub}</div>
+            </div>
+          )}
+
+          {/* RESULTS */}
+          {phase === "results" && !selectedPart && (
+            <div>
+              {imagePreview && <img src={imagePreview} alt="" style={{ width: "100%", maxHeight: 180, objectFit: "cover", borderRadius: 12, marginBottom: 16 }} />}
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 18, color: "#e0e8f0", letterSpacing: ".04em" }}>{t.identifyResults}</div>
+                <div style={{ display: "flex", gap: 8 }}>
+                  {isSpeaking && (
+                    <button onClick={stopSpeaking} style={{ background: "#2a1a1a", border: "1px solid #c85a30", borderRadius: 8, padding: "6px 12px", cursor: "pointer", fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#c85a30", letterSpacing: ".06em" }}>STOP</button>
+                  )}
+                  {!isSpeaking && voiceEnabled && parts.length > 0 && (
+                    <button onClick={() => speak(buildSpeech(parts))} style={{ background: "none", border: "1px solid #2a3038", borderRadius: 8, padding: "6px 10px", cursor: "pointer", display: "flex", alignItems: "center", gap: 4 }}>
+                      <span style={{ fontSize: 14 }}>🔊</span>
+                      <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#7acae0", fontWeight: 700, letterSpacing: ".06em" }}>REPLAY</span>
+                    </button>
+                  )}
+                  <button onClick={reset} style={{ background: "none", border: "1px solid #2a3038", borderRadius: 8, padding: "6px 12px", cursor: "pointer", fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#4a6a7a", letterSpacing: ".06em" }}>{t.identifyNewPhoto}</button>
+                </div>
+              </div>
+              {isSpeaking && (
+                <div style={{ background: "#1a2a1a", border: "1px solid #2a5a2a", borderRadius: 10, padding: "10px 14px", marginBottom: 14, display: "flex", alignItems: "center", gap: 10 }}>
+                  <div style={{ display: "flex", gap: 3, alignItems: "center" }}>
+                    {[0,1,2,3].map(i => <div key={i} style={{ width: 3, background: "#4a9a6a", borderRadius: 2, animation: "speakBar .6s ease-in-out infinite alternate", animationDelay: i * 0.15 + "s", height: [12,18,14,10][i] }} />)}
+                  </div>
+                  <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, color: "#4a9a6a", fontWeight: 600, letterSpacing: ".06em" }}>{lang === "en" ? "BOB IS SPEAKING..." : "BOB ESTÁ HABLANDO..."}</span>
+                </div>
+              )}
+              {/* Send to Job Mode button */}
+              {parts.length > 0 && (
+                <div onClick={() => { const jobParts = buildJobPartsList ? null : null; setActiveTab("estimate"); setEstimateParts(parts.map(p => ({ ...p, qty: 1 }))); }} style={{ display: "flex", alignItems: "center", gap: 8, background: "#0a1a10", border: "1px solid #1a4a2a", borderRadius: 10, padding: "10px 14px", marginBottom: 14, cursor: "pointer" }}>
+                  <span style={{ fontSize: 16 }}>💰</span>
+                  <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, color: "#4a9a6a", fontWeight: 700, letterSpacing: ".04em" }}>{lang === "en" ? "ESTIMATE THIS JOB" : "ESTIMAR ESTE TRABAJO"}</div>
+                </div>
+              )}
+              {parts.map((part, i) => (
+                <div key={part.id} className="part-card" style={{ animationDelay: `${i * 60}ms`, borderLeftColor: catColor[part.category] || "#3a5a6a", borderLeftWidth: 3 }} onClick={() => setSelectedPart(part)}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
+                    <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 16, color: "#e0e8f0", flex: 1, paddingRight: 8 }}>{part.name}</div>
+                    <span className="pill" style={{ color: catColor[part.category] || "#4a6a7a", background: "rgba(255,255,255,.04)", fontSize: 10, flexShrink: 0 }}>{part.category}</span>
+                  </div>
+                  <div style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#4a6a7a", lineHeight: 1.5, marginBottom: 8 }}>{part.description.substring(0, 80)}…</div>
+                  <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                    <span className="pill" style={{ color: codeColor(part.codeStatus), background: "rgba(255,255,255,.04)", fontSize: 10 }}>{codeLabel(part.codeStatus)}</span>
+                    {part.estimatedCost && <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, color: "#4a9a6a", letterSpacing: ".04em" }}>{part.estimatedCost}</span>}
+                    <span style={{ marginLeft: "auto", color: "#3a5a6a" }}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+                  </div>
+                </div>
+              ))}
+              <button onClick={reset} style={{ width: "100%", background: "none", border: "1px solid #2a3038", borderRadius: 10, padding: "12px", cursor: "pointer", fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, color: "#4a6a7a", letterSpacing: ".06em", marginTop: 8 }}>📷 {t.identifyNewPhoto}</button>
+            </div>
+          )}
+
+          {/* PART DETAIL */}
+          {phase === "results" && selectedPart && (
+            <div>
+              <button onClick={() => setSelectedPart(null)} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, color: "#7acae0", fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, fontWeight: 600, letterSpacing: ".05em", marginBottom: 16, padding: 0 }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+                BACK TO RESULTS
+              </button>
+              <div style={{ marginBottom: 16 }}>
+                <div style={{ display: "flex", gap: 10, marginBottom: 8, flexWrap: "wrap" }}>
+                  <span className="pill" style={{ color: catColor[selectedPart.category] || "#4a6a7a", background: "rgba(255,255,255,.06)", padding: "4px 12px" }}>{selectedPart.category}</span>
+                  <span className="pill" style={{ color: codeColor(selectedPart.codeStatus), background: "rgba(255,255,255,.06)", padding: "4px 12px" }}>{codeLabel(selectedPart.codeStatus)}</span>
+                </div>
+                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 26, letterSpacing: ".04em", color: "#e0e8f0", lineHeight: 1.1, marginBottom: 6 }}>{selectedPart.name.toUpperCase()}</div>
+                {selectedPart.manufacturer && <div style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#3a5a6a" }}>{selectedPart.manufacturer}</div>}
+              </div>
+              <div className="sl">What it is</div>
+              <div style={{ background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 12, padding: 16, marginBottom: 16 }}>
+                <p style={{ fontFamily: "'Lora',serif", fontSize: 15, lineHeight: 1.75, color: "#c0d0d8", margin: 0 }}>{selectedPart.description}</p>
+              </div>
+              <div className="sl">{t.identifyCodeStatus}</div>
+              <div style={{ background: selectedPart.codeStatus === "approved" ? "#1a2a1a" : selectedPart.codeStatus === "grandfathered" ? "#2a2a1a" : "#2a1a1a", border: `1px solid ${codeColor(selectedPart.codeStatus)}40`, borderRadius: 12, padding: 14, marginBottom: 16 }}>
+                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, fontWeight: 700, color: codeColor(selectedPart.codeStatus), marginBottom: 4 }}>{codeLabel(selectedPart.codeStatus)}</div>
+                <div style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#8a9aaa", lineHeight: 1.5 }}>{selectedPart.codeNote}</div>
+              </div>
+              {selectedPart.proTip && <>
+                <div className="sl" style={{ color: "#7a6a20" }}>{t.identifyProTip}</div>
+                <div style={{ background: "#1e1a0a", border: "1px solid #3a3010", borderRadius: 12, padding: 14, marginBottom: 16 }}>
+                  <div style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 14, color: "#c8b870", lineHeight: 1.6 }}>💡 {selectedPart.proTip}</div>
+                </div>
+              </>}
+              <div className="sl">{t.identifyWhereToBuy}</div>
+              <div style={{ marginBottom: 16 }}>
+                {selectedPart.estimatedCost && <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, color: "#4a9a6a", letterSpacing: ".04em", marginBottom: 10 }}>Estimated cost: {selectedPart.estimatedCost}</div>}
+                <button className="buy-btn" onClick={() => window.open(`https://www.homedepot.com/s/${encodeURIComponent(selectedPart.affiliateSearch || selectedPart.name)}`, "_blank")}>
+                  <span style={{ fontSize: 18 }}>🏠</span>
+                  <div style={{ flex: 1, textAlign: "left" }}>
+                    <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, color: "#e0e8f0", fontWeight: 600 }}>Home Depot</div>
+                    <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#4a6a7a" }}>{selectedPart.whereToFind?.includes("Home Depot") ? "Typically in stock" : "Check availability"}</div>
+                  </div>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4a9a6a" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </button>
+                <button className="buy-btn" onClick={() => window.open(`https://www.amazon.com/s?k=${encodeURIComponent(selectedPart.affiliateSearch || selectedPart.name)}+plumbing`, "_blank")} style={{ background: "#1a2a3a", borderColor: "#2a4a6a" }}>
+                  <span style={{ fontSize: 18 }}>📦</span>
+                  <div style={{ flex: 1, textAlign: "left" }}>
+                    <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, color: "#e0e8f0", fontWeight: 600 }}>Amazon</div>
+                    <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#4a6a7a" }}>Wide selection, fast shipping</div>
+                  </div>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7acae0" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </button>
+                <button className="buy-btn" onClick={() => window.open(`https://www.ferguson.com/search?term=${encodeURIComponent(selectedPart.name)}`, "_blank")} style={{ background: "#1a1a2a", borderColor: "#2a2a4a" }}>
+                  <span style={{ fontSize: 18 }}>🔧</span>
+                  <div style={{ flex: 1, textAlign: "left" }}>
+                    <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, color: "#e0e8f0", fontWeight: 600 }}>Ferguson</div>
+                    <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#4a6a7a" }}>Pro supply house</div>
+                  </div>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8a7aaa" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </button>
+              </div>
+              <div className="sl">{t.identifyRelatedVideos}</div>
+              <button className="yt-btn" onClick={() => window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(selectedPart.searchTerm || selectedPart.name + " plumbing repair")}`, "_blank")}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#c85a30"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.4 19.54C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#fff"/></svg>
+                <div style={{ flex: 1, textAlign: "left" }}>
+                  <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, color: "#e0e8f0", fontWeight: 600 }}>{t.identifySearchVideo}</div>
+                  <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#6a4a4a" }}>{selectedPart.searchTerm}</div>
+                </div>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c85a30" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </button>
+              <div style={{ height: 12 }} />
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ══════════════════════════════════════════ */}
+      {/* JOB MODE TAB                               */}
+      {/* ══════════════════════════════════════════ */}
+      {activeTab === "job" && (
+        <div>
+          <input ref={jobFileRef} type="file" accept="image/*" capture="environment" style={{ display: "none" }} onChange={e => handleJobPhoto(e.target.files[0])} />
+
+          {/* HEADER */}
+          <div style={{ marginBottom: 18 }}>
+            <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 26, letterSpacing: ".06em", color: "#e0e8f0", lineHeight: 1.1 }}>{t.jobModeTitle}</div>
+            <div style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 13, color: "#4a6a7a", marginTop: 4 }}>{t.jobModeSub}</div>
+          </div>
+
+          {/* OFFLINE WARNING */}
+          {!isOnline && (
+            <div style={{ background: "#1a1a2a", border: "1px solid #4a4a8a", borderRadius: 10, padding: "10px 14px", marginBottom: 14, fontFamily: "'Lora',serif", fontSize: 13, color: "#6a6a9a" }}>
+              📵 {lang === "en" ? "Offline — photo analysis unavailable" : "Sin conexión — análisis no disponible"}
+            </div>
+          )}
+
+          {/* JOB ADDRESS */}
+          <div style={{ marginBottom: 14 }}>
+            <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, fontWeight: 700, color: "#4a6a7a", letterSpacing: ".06em", marginBottom: 6 }}>{t.jobModeAddress}</div>
+            <input
+              type="text"
+              value={jobAddress}
+              onChange={e => setJobAddress(e.target.value)}
+              placeholder={t.jobModeAddressPlaceholder}
+              style={{ width: "100%", background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "10px 14px", fontFamily: "'Lora',serif", fontSize: 14, color: "#c0d0d8", outline: "none", boxSizing: "border-box" }}
+            />
+          </div>
+
+          {/* PHOTO COUNTER + ADD BUTTON */}
+          <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 16 }}>
+            <div
+              onClick={() => { if (!isOnline || jobPhotos.length >= 10) return; jobFileRef.current?.click(); }}
+              style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: jobPhotos.length >= 10 ? "#1a1f24" : "#1a1a0a", border: `1px solid ${jobPhotos.length >= 10 ? "#2a3038" : "#c85a30"}`, borderRadius: 12, padding: "14px 16px", cursor: (!isOnline || jobPhotos.length >= 10) ? "not-allowed" : "pointer", opacity: (!isOnline || jobPhotos.length >= 10) ? 0.5 : 1 }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={jobPhotos.length >= 10 ? "#3a5a6a" : "#c85a30"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>
+              </svg>
+              <div>
+                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 15, letterSpacing: ".06em", color: jobPhotos.length >= 10 ? "#3a5a6a" : "#e0e8f0" }}>{t.jobModePhoto}</div>
+                <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#4a6a7a" }}>{jobPhotos.length}/10 {t.jobModePhotoCount}</div>
+              </div>
+            </div>
+            {jobPhotos.length > 0 && (
+              <div onClick={resetJob} style={{ background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 12, padding: "14px 12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6a3a3a" strokeWidth="2" strokeLinecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+              </div>
+            )}
+          </div>
+
+          {/* PHOTO THUMBNAILS */}
+          {jobPhotos.length > 0 && (
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 6, marginBottom: 16 }}>
+              {jobPhotos.map((p, i) => (
+                <div key={i} style={{ position: "relative", borderRadius: 8, overflow: "hidden", aspectRatio: "1", background: "#1a1f24" }}>
+                  <img src={p.preview} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,.5)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {p.status === "analyzing" && <div style={{ width: 16, height: 16, border: "2px solid #fff", borderTopColor: "transparent", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />}
+                    {p.status === "done" && <span style={{ fontSize: 14 }}>{p.partsEn.length > 0 ? "✅" : "⚪"}</span>}
+                    {p.status === "error" && <span style={{ fontSize: 14 }}>❌</span>}
+                  </div>
+                  <div style={{ position: "absolute", bottom: 2, right: 4, fontFamily: "'Barlow Condensed',sans-serif", fontSize: 9, color: "#fff", fontWeight: 700 }}>{i + 1}</div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* ANALYZING STATUS */}
+          {jobAnalyzingIdx !== null && (
+            <div style={{ background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "10px 14px", marginBottom: 14, display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{ width: 16, height: 16, border: "2px solid #c85a30", borderTopColor: "transparent", borderRadius: "50%", animation: "spin 0.8s linear infinite", flexShrink: 0 }} />
+              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, color: "#c85a30", letterSpacing: ".04em" }}>{t.jobModeAnalyzing} {jobAnalyzingIdx + 1}…</div>
+            </div>
+          )}
+
+          {/* BUILD LIST BUTTON */}
+          {jobPhotos.length > 0 && jobPhotos.every(p => p.status !== "analyzing") && (
+            <div>
+              {/* CONSOLIDATED PARTS LIST */}
+              {(() => {
+                const jobParts = buildJobPartsList();
+                const issues = jobParts.filter(p => p.codeStatus !== "approved");
+                const totalCost = jobParts.reduce((s, p) => s + getPartCost(p.name) * p.qty, 0);
+                return (
+                  <div>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                      <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 16, color: "#e0e8f0", letterSpacing: ".04em" }}>{t.jobModePartsTitle}</div>
+                      <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, color: "#4a9a6a", letterSpacing: ".04em" }}>{jobParts.length} {lang === "en" ? "types" : "tipos"}</div>
+                    </div>
+
+                    {issues.length > 0 && (
+                      <div style={{ background: "#2a1a0a", border: "1px solid #4a2a10", borderRadius: 10, padding: "10px 14px", marginBottom: 12 }}>
+                        <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, color: "#c87a30", fontWeight: 700, letterSpacing: ".04em" }}>⚠ {issues.length} {t.jobModeIssues}</div>
+                        {issues.map((p, i) => <div key={i} style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#8a6a4a", marginTop: 4 }}>• {p.name}</div>)}
+                      </div>
+                    )}
+
+                    {jobParts.map((p, i) => (
+                      <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "10px 14px", marginBottom: 8 }}>
+                        <div style={{ width: 28, height: 28, borderRadius: 6, background: p.codeStatus === "approved" ? "#1a2a1a" : p.codeStatus === "grandfathered" ? "#2a2a1a" : "#2a1a1a", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 13, color: "#e0e8f0" }}>
+                          {p.qty > 1 ? `×${p.qty}` : (p.codeStatus === "approved" ? "✅" : p.codeStatus === "grandfathered" ? "⚠" : "❌")}
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, fontWeight: 700, color: "#c0d0d8", letterSpacing: ".03em" }}>{p.name}</div>
+                          <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#3a5a6a" }}>{p.category}</div>
+                        </div>
+                        <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, color: "#4a9a6a", letterSpacing: ".04em" }}>${(getPartCost(p.name) * p.qty).toFixed(0)}</div>
+                      </div>
+                    ))}
+
+                    <div style={{ background: "#0a1a0a", border: "1px solid #1a3a1a", borderRadius: 10, padding: "12px 16px", marginTop: 4, marginBottom: 14 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, color: "#4a7a5a", letterSpacing: ".04em" }}>{t.jobModeTotal} {lang === "en" ? "(materials)" : "(materiales)"}</div>
+                        <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 20, fontWeight: 700, color: "#4a9a6a" }}>${totalCost.toFixed(0)}</div>
+                      </div>
+                    </div>
+
+                    <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+                      <div onClick={() => { setEstimateParts(jobParts); setActiveTab("estimate"); }} style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, background: "#0a1a10", border: "1px solid #1a4a2a", borderRadius: 10, padding: "12px 14px", cursor: "pointer" }}>
+                        <span style={{ fontSize: 16 }}>💰</span>
+                        <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, fontWeight: 700, color: "#4a9a6a", letterSpacing: ".04em" }}>{t.jobModeEstimate}</span>
+                      </div>
+                      <div onClick={copyJobReport} style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "12px 14px", cursor: "pointer" }}>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7acae0" strokeWidth="2" strokeLinecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                        <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, fontWeight: 700, color: "#7acae0", letterSpacing: ".04em" }}>{t.jobModeCopyReport}</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+          )}
+
+          {/* EMPTY STATE */}
+          {jobPhotos.length === 0 && (
+            <div style={{ textAlign: "center", padding: "30px 20px", color: "#3a5a6a" }}>
+              <div style={{ fontSize: 40, marginBottom: 12 }}>🔧</div>
+              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 16, color: "#4a6a7a", letterSpacing: ".04em", marginBottom: 8 }}>
+                {lang === "en" ? "Start taking photos" : "Comienza tomando fotos"}
+              </div>
+              <div style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#2a4a5a", lineHeight: 1.6 }}>
+                {lang === "en"
+                  ? "Tap ADD PHOTO for each part of the job. Bob identifies everything and builds your parts list automatically."
+                  : "Toca AGREGAR FOTO para cada parte del trabajo. Bob identifica todo y crea tu lista automáticamente."}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ══════════════════════════════════════════ */}
+      {/* ESTIMATE TAB                               */}
+      {/* ══════════════════════════════════════════ */}
+      {activeTab === "estimate" && (
+        <div>
+          <div style={{ marginBottom: 18 }}>
+            <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 26, letterSpacing: ".06em", color: "#e0e8f0", lineHeight: 1.1 }}>{t.estimateTitle}</div>
+            <div style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 13, color: "#4a6a7a", marginTop: 4 }}>{t.estimateSub}</div>
+          </div>
+
+          {/* NO PARTS YET */}
+          {estimateParts.length === 0 && (
+            <div style={{ background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 12, padding: "20px 16px", textAlign: "center", marginBottom: 16 }}>
+              <div style={{ fontSize: 32, marginBottom: 10 }}>💰</div>
+              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, color: "#4a6a7a", letterSpacing: ".04em", marginBottom: 8 }}>
+                {lang === "en" ? "NO PARTS LOADED YET" : "SIN PARTES AÚN"}
+              </div>
+              <div style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#2a4a5a", lineHeight: 1.6 }}>
+                {lang === "en"
+                  ? "Use Bob or Job Mode to identify parts, then tap Estimate This Job to load them here."
+                  : "Usa Bob o Modo Trabajo para identificar partes, luego toca Estimar Este Trabajo."}
+              </div>
+            </div>
+          )}
+
+          {/* PARTS LIST WITH QTY CONTROLS */}
+          {estimateParts.length > 0 && (
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, fontWeight: 700, color: "#4a6a7a", letterSpacing: ".06em", marginBottom: 10 }}>
+                {lang === "en" ? "MATERIALS" : "MATERIALES"}
+              </div>
+              {estimateParts.map((p, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "8px 12px", marginBottom: 6 }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, fontWeight: 700, color: "#c0d0d8" }}>{p.name}</div>
+                    <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#3a5a6a" }}>${getPartCost(p.name).toFixed(0)} {lang === "en" ? "ea." : "c/u"}</div>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <div onClick={() => setEstimateParts(prev => prev.map((x,j) => j===i ? {...x, qty: Math.max(1, (x.qty||1)-1)} : x))} style={{ width: 26, height: 26, background: "#2a3038", borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontFamily: "monospace", fontSize: 16, color: "#7acae0" }}>−</div>
+                    <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 15, fontWeight: 700, color: "#e0e8f0", minWidth: 20, textAlign: "center" }}>{p.qty || 1}</div>
+                    <div onClick={() => setEstimateParts(prev => prev.map((x,j) => j===i ? {...x, qty: (x.qty||1)+1} : x))} style={{ width: 26, height: 26, background: "#2a3038", borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontFamily: "monospace", fontSize: 16, color: "#7acae0" }}>+</div>
+                  </div>
+                  <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, color: "#4a9a6a", minWidth: 50, textAlign: "right" }}>${(getPartCost(p.name) * (p.qty||1)).toFixed(0)}</div>
+                  <div onClick={() => setEstimateParts(prev => prev.filter((_,j) => j!==i))} style={{ color: "#4a2a2a", cursor: "pointer", padding: "0 2px" }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* LABOR + SETTINGS */}
+          <div style={{ background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
+            <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, fontWeight: 700, color: "#4a6a7a", letterSpacing: ".06em", marginBottom: 12 }}>
+              {lang === "en" ? "LABOR & SETTINGS" : "MANO DE OBRA"}
+            </div>
+
+            {[
+              { label: t.estimateLaborHours, value: laborHours, min: 1, max: 80, step: 1, set: setLaborHours, suffix: lang === "en" ? "hrs" : "hrs" },
+              { label: t.estimateLaborRate, value: laborRate, min: 50, max: 300, step: 5, set: setLaborRate, suffix: "$/hr" },
+              { label: t.estimateMarkupLabel, value: markupPct, min: 0, max: 60, step: 5, set: setMarkupPct, suffix: "%" },
+              { label: t.estimatePermit, value: permitFee, min: 0, max: 2000, step: 25, set: setPermitFee, suffix: "$" },
+            ].map((item, i) => (
+              <div key={i} style={{ marginBottom: 14 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+                  <div style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#8a9aaa" }}>{item.label}</div>
+                  <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 15, fontWeight: 700, color: "#e0e8f0" }}>
+                    {item.suffix === "$/hr" || item.suffix === "$" ? `$${item.value}` : `${item.value}${item.suffix}`}
+                  </div>
+                </div>
+                <input
+                  type="range" min={item.min} max={item.max} step={item.step} value={item.value}
+                  onChange={e => item.set(Number(e.target.value))}
+                  style={{ width: "100%", accentColor: "#4a9a6a" }}
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* TOTAL BID BREAKDOWN */}
+          {(() => {
+            const partsForCalc = estimateParts.length > 0 ? estimateParts : [];
+            const calc = calcEstimate(partsForCalc);
+            return (
+              <div style={{ background: "#0a1a0a", border: "1px solid #1a4a1a", borderRadius: 12, padding: "16px" }}>
+                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, fontWeight: 700, color: "#3a7a4a", letterSpacing: ".06em", marginBottom: 12 }}>
+                  {lang === "en" ? "BID BREAKDOWN" : "DESGLOSE DE COTIZACIÓN"}
+                </div>
+                {[
+                  { label: t.estimateMaterial, val: calc.material },
+                  { label: t.estimateLabor, val: calc.labor },
+                  { label: t.estimatePermit, val: calc.permit },
+                  { label: `${t.estimateMarkup} (${markupPct}%)`, val: calc.markup },
+                ].map((row, i) => (
+                  <div key={i} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
+                    <div style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#4a7a5a" }}>{row.label}</div>
+                    <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, color: "#6a9a7a" }}>${row.val.toFixed(0)}</div>
+                  </div>
+                ))}
+                <div style={{ height: 1, background: "#1a4a1a", margin: "10px 0" }} />
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 16, fontWeight: 700, color: "#4a9a6a", letterSpacing: ".04em" }}>{t.estimateTotal}</div>
+                  <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 28, fontWeight: 700, color: "#4a9a6a" }}>${calc.total.toFixed(0)}</div>
+                </div>
+                <div style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 11, color: "#2a5a3a", marginTop: 10, lineHeight: 1.5 }}>{t.estimateDisclaimer}</div>
+              </div>
+            );
+          })()}
+        </div>
+      )}
+
+    </div>
+  );
         <div>
           <div style={{ marginBottom: 20 }}>
             <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 28, letterSpacing: ".06em", color: "#e0e8f0", lineHeight: 1.1 }}>{t.identifyTitle}</div>
             <div style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 14, color: "#4a6a7a", marginTop: 6, lineHeight: 1.5 }}>{t.identifySub}</div>
           </div>
+
+          {/* OFFLINE BANNER */}
+          {!isOnline && (
+            <div style={{ background: "#1a1a2a", border: "1px solid #4a4a8a", borderRadius: 12, padding: "14px 16px", marginBottom: 16, display: "flex", gap: 12, alignItems: "flex-start" }}>
+              <span style={{ fontSize: 22, flexShrink: 0 }}>📵</span>
+              <div>
+                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 15, color: "#9a9ae0", letterSpacing: ".04em", marginBottom: 4 }}>
+                  {lang === "en" ? "BOB NEEDS A SIGNAL" : "BOB NECESITA SEÑAL"}
+                </div>
+                <div style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#6a6a9a", lineHeight: 1.5 }}>
+                  {lang === "en"
+                    ? "No internet detected. Bob's photo ID requires a connection to analyze images. All cities, codes, and inspector contacts work offline."
+                    : "Sin internet detectado. La identificación de fotos de Bob requiere conexión. Todas las ciudades, códigos y contactos funcionan sin conexión."}
+                </div>
+                {recentHistory.length > 0 && (
+                  <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, color: "#7a7ab0", marginTop: 8, letterSpacing: ".04em" }}>
+                    {lang === "en" ? `↓ ${recentHistory.length} recent identification${recentHistory.length > 1 ? "s" : ""} saved below` : `↓ ${recentHistory.length} identificación${recentHistory.length > 1 ? "es" : ""} reciente${recentHistory.length > 1 ? "s" : ""} guardadas abajo`}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {error && <div style={{ background: "#2a1a1a", border: "1px solid #6a2a2a", borderRadius: 10, padding: "10px 14px", marginBottom: 16, fontFamily: "'Lora',serif", fontSize: 13, color: "#c87a60" }}>{error}</div>}
 
@@ -1202,7 +2035,11 @@ function IdentifyScreen({ t, lang }) {
           <input ref={galleryRef} type="file" accept="image/*" style={{ display: "none" }} onChange={e => handleImage(e.target.files[0])} />
 
           {/* Main camera button */}
-          <div className="upload-zone" onClick={() => { unlockAudio(); fileRef.current?.click(); }}>
+          <div
+            className="upload-zone"
+            onClick={() => { if (!isOnline) return; unlockAudio(); fileRef.current?.click(); }}
+            style={{ opacity: isOnline ? 1 : 0.4, cursor: isOnline ? "pointer" : "not-allowed" }}
+          >
             <div style={{ width: 72, height: 72, background: "linear-gradient(135deg,#2a1a0f,#3a2a1a)", border: "2px solid #c85a30", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
               <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#c85a30" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
@@ -1213,7 +2050,10 @@ function IdentifyScreen({ t, lang }) {
           </div>
 
           {/* Gallery upload button */}
-          <div onClick={() => { unlockAudio(); galleryRef.current?.click(); }} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 12, padding: "12px 16px", marginTop: 10, cursor: "pointer", transition: "all .15s" }}>
+          <div
+            onClick={() => { if (!isOnline) return; unlockAudio(); galleryRef.current?.click(); }}
+            style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 12, padding: "12px 16px", marginTop: 10, cursor: isOnline ? "pointer" : "not-allowed", opacity: isOnline ? 1 : 0.4, transition: "all .15s" }}
+          >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7acae0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
               <polyline points="21 15 16 10 5 21"/>
@@ -1221,179 +2061,54 @@ function IdentifyScreen({ t, lang }) {
             <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 600, fontSize: 15, letterSpacing: ".06em", color: "#7acae0" }}>{lang === "en" ? "UPLOAD FROM CAMERA ROLL" : "SUBIR DESDE LA GALERÍA"}</span>
           </div>
 
-          {/* What it can identify */}
-          <div style={{ marginTop: 24 }}>
-            <div className="sl">What Bob can identify</div>
-            {[
-              ["🔧", "Valves", "Ball, gate, globe, check, PRV, TPR"],
-              ["🚿", "Fixtures", "Faucets, showerheads, toilets, drains"],
-              ["🔥", "Gas parts", "Sediment traps, flex connectors, regulators"],
-              ["💧", "Backflow", "PVB, RPZ, double check, vacuum breakers"],
-              ["🔩", "Fittings & pipe", "Copper, galvanized, cast iron, PVC, PEX"],
-              ["♻️", "Water heaters", "Tank, tankless, mixing valves, expansion tanks"],
-            ].map(([icon, title, sub]) => (
-              <div key={title} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 0", borderBottom: "1px solid #1e2428" }}>
-                <span style={{ fontSize: 20, width: 28, textAlign: "center" }}>{icon}</span>
-                <div>
-                  <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 600, fontSize: 14, color: "#c0d8e8" }}>{title}</div>
-                  <div style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#3a5a6a" }}>{sub}</div>
+          {/* RECENT HISTORY */}
+          {recentHistory.length > 0 && (
+            <div style={{ marginTop: 24 }}>
+              <div
+                onClick={() => setShowHistory(h => !h)}
+                style={{ display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer", marginBottom: 10 }}
+              >
+                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 13, letterSpacing: ".08em", color: "#4a6a7a", textTransform: "uppercase" }}>
+                  {lang === "en" ? `Recent Identifications (${recentHistory.length})` : `Identificaciones Recientes (${recentHistory.length})`}
                 </div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4a6a7a" strokeWidth="2" strokeLinecap="round" style={{ transform: showHistory ? "rotate(180deg)" : "none", transition: "transform .2s" }}>
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
               </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* ANALYZING */}
-      {phase === "analyzing" && (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 20 }}>
-          {imagePreview && (
-            <div className="scanner-box" style={{ width: "100%", marginBottom: 24 }}>
-              <img src={imagePreview} alt="analyzing" style={{ width: "100%", maxHeight: 280, objectFit: "cover", display: "block", opacity: 0.7 }} />
-              <div className="scan-line" />
-              <div className="corner corner-tl" /><div className="corner corner-tr" />
-              <div className="corner corner-bl" /><div className="corner corner-br" />
-            </div>
-          )}
-          <div style={{ width: 48, height: 48, border: "3px solid #1a3a4a", borderTopColor: "#c85a30", borderRadius: "50%", animation: "spin 0.9s linear infinite", marginBottom: 16 }} />
-          <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 20, letterSpacing: ".08em", color: "#e0e8f0", marginBottom: 6 }}>{t.identifyAnalyzing}</div>
-          <div style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 13, color: "#3a5a6a" }}>{t.identifyAnalyzingSub}</div>
-        </div>
-      )}
-
-      {/* RESULTS LIST */}
-      {phase === "results" && !selectedPart && (
-        <div>
-          {imagePreview && <img src={imagePreview} alt="analyzed" style={{ width: "100%", maxHeight: 200, objectFit: "cover", borderRadius: 12, marginBottom: 16, border: "1px solid #2a3038" }} />}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
-            <div>
-              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 20, color: "#e0e8f0" }}>{parts.length} {t.identifyResults}</div>
-              <div style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#3a5a6a" }}>{t.identifyTapPart}</div>
-            </div>
-            <div style={{ display: "flex", gap: 8 }}>
-              {isSpeaking ? (
-                <button onClick={stopSpeaking} style={{ background: "#2a1a1a", border: "1px solid #c85a30", borderRadius: 8, padding: "6px 12px", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
-                  <span style={{ fontSize: 14 }}>⏹</span>
-                  <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#c85a30", fontWeight: 700, letterSpacing: ".06em" }}>STOP</span>
-                </button>
-              ) : (
-                <button onClick={() => speak(buildSpeech(parts))} style={{ background: "#1a2a3a", border: "1px solid #3a5a6a", borderRadius: 8, padding: "6px 12px", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
-                  <span style={{ fontSize: 14 }}>🔊</span>
-                  <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#7acae0", fontWeight: 700, letterSpacing: ".06em" }}>REPLAY</span>
-                </button>
+              {showHistory && (
+                <div>
+                  {recentHistory.map((entry) => (
+                    <div
+                      key={entry.id}
+                      onClick={() => {
+                        setPartsEn(entry.partsEn);
+                        setPartsEs(entry.partsEs);
+                        setImagePreview(entry.imagePreview);
+                        setPhase("results");
+                      }}
+                      style={{ display: "flex", gap: 12, alignItems: "center", background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "10px 12px", marginBottom: 8, cursor: "pointer" }}
+                    >
+                      {entry.imagePreview && (
+                        <img src={entry.imagePreview} alt="" style={{ width: 44, height: 44, objectFit: "cover", borderRadius: 6, flexShrink: 0 }} />
+                      )}
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, fontWeight: 600, color: "#c0d0d8", letterSpacing: ".03em", marginBottom: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          {entry.summary}
+                        </div>
+                        <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#3a5a6a" }}>{entry.timestamp}</div>
+                      </div>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3a5a6a" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
+                    </div>
+                  ))}
+                  <div
+                    onClick={() => { setRecentHistory([]); try { localStorage.removeItem("codex_recent_history"); } catch {} }}
+                    style={{ textAlign: "center", padding: "6px", cursor: "pointer", fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#3a4a5a", letterSpacing: ".06em" }}
+                  >
+                    {lang === "en" ? "CLEAR HISTORY" : "BORRAR HISTORIAL"}
+                  </div>
+                </div>
               )}
-              <button onClick={reset} style={{ background: "none", border: "1px solid #2a3038", borderRadius: 8, padding: "6px 12px", cursor: "pointer", fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#4a6a7a", letterSpacing: ".06em" }}>{t.identifyNewPhoto}</button>
-            </div>
-          </div>
-          {isSpeaking && (
-            <div style={{ background: "#1a2a1a", border: "1px solid #2a5a2a", borderRadius: 10, padding: "10px 14px", marginBottom: 14, display: "flex", alignItems: "center", gap: 10 }}>
-              <div style={{ display: "flex", gap: 3, alignItems: "center" }}>
-                {[0,1,2,3].map(i => <div key={i} style={{ width: 3, background: "#4a9a6a", borderRadius: 2, animation: "speakBar .6s ease-in-out infinite alternate", animationDelay: i * 0.15 + "s", height: [12,18,14,10][i] }} />)}
-              </div>
-              <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, color: "#4a9a6a", fontWeight: 600, letterSpacing: ".06em" }}>{lang === "en" ? "BOB IS SPEAKING..." : "BOB ESTÁ HABLANDO..."}</span>
             </div>
           )}
-          {parts.map((part, i) => (
-            <div key={part.id} className="part-card" style={{ animationDelay: `${i * 60}ms`, borderLeftColor: catColor[part.category] || "#3a5a6a", borderLeftWidth: 3 }} onClick={() => setSelectedPart(part)}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
-                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 16, color: "#e0e8f0", flex: 1, paddingRight: 8 }}>{part.name}</div>
-                <span className="pill" style={{ color: catColor[part.category] || "#4a6a7a", background: "rgba(255,255,255,.04)", fontSize: 10, flexShrink: 0 }}>{part.category}</span>
-              </div>
-              <div style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#4a6a7a", lineHeight: 1.5, marginBottom: 8 }}>{part.description.substring(0, 80)}…</div>
-              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                <span className="pill" style={{ color: codeColor(part.codeStatus), background: "rgba(255,255,255,.04)", fontSize: 10 }}>{codeLabel(part.codeStatus)}</span>
-                {part.estimatedCost && <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, color: "#4a9a6a", letterSpacing: ".04em" }}>{part.estimatedCost}</span>}
-                <span style={{ marginLeft: "auto", color: "#3a5a6a" }}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
-              </div>
-            </div>
-          ))}
-          <button onClick={reset} style={{ width: "100%", background: "none", border: "1px solid #2a3038", borderRadius: 10, padding: "12px", cursor: "pointer", fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, color: "#4a6a7a", letterSpacing: ".06em", marginTop: 8 }}>📷 {t.identifyNewPhoto}</button>
-        </div>
-      )}
 
-      {/* PART DETAIL */}
-      {phase === "results" && selectedPart && (
-        <div>
-          <button onClick={() => setSelectedPart(null)} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, color: "#7acae0", fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, fontWeight: 600, letterSpacing: ".05em", marginBottom: 16, padding: 0 }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-            BACK TO RESULTS
-          </button>
-
-          {/* Part header */}
-          <div style={{ marginBottom: 16 }}>
-            <div style={{ display: "flex", gap: 10, marginBottom: 8, flexWrap: "wrap" }}>
-              <span className="pill" style={{ color: catColor[selectedPart.category] || "#4a6a7a", background: "rgba(255,255,255,.06)", padding: "4px 12px" }}>{selectedPart.category}</span>
-              <span className="pill" style={{ color: codeColor(selectedPart.codeStatus), background: "rgba(255,255,255,.06)", padding: "4px 12px" }}>{codeLabel(selectedPart.codeStatus)}</span>
-            </div>
-            <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 26, letterSpacing: ".04em", color: "#e0e8f0", lineHeight: 1.1, marginBottom: 6 }}>{selectedPart.name.toUpperCase()}</div>
-            {selectedPart.manufacturer && <div style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#3a5a6a" }}>{selectedPart.manufacturer}</div>}
-          </div>
-
-          {/* Description */}
-          <div className="sl">What it is</div>
-          <div style={{ background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 12, padding: 16, marginBottom: 16 }}>
-            <p style={{ fontFamily: "'Lora',serif", fontSize: 15, lineHeight: 1.75, color: "#c0d0d8", margin: 0 }}>{selectedPart.description}</p>
-          </div>
-
-          {/* Code status */}
-          <div className="sl">{t.identifyCodeStatus}</div>
-          <div style={{ background: selectedPart.codeStatus === "approved" ? "#1a2a1a" : selectedPart.codeStatus === "grandfathered" ? "#2a2a1a" : "#2a1a1a", border: `1px solid ${codeColor(selectedPart.codeStatus)}40`, borderRadius: 12, padding: 14, marginBottom: 16 }}>
-            <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, fontWeight: 700, color: codeColor(selectedPart.codeStatus), marginBottom: 4 }}>{codeLabel(selectedPart.codeStatus)}</div>
-            <div style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#8a9aaa", lineHeight: 1.5 }}>{selectedPart.codeNote}</div>
-          </div>
-
-          {/* Pro tip */}
-          {selectedPart.proTip && <>
-            <div className="sl" style={{ color: "#7a6a20" }}>{t.identifyProTip}</div>
-            <div style={{ background: "#1e1a0a", border: "1px solid #3a3010", borderRadius: 12, padding: 14, marginBottom: 16 }}>
-              <div style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 14, color: "#c8b870", lineHeight: 1.6 }}>💡 {selectedPart.proTip}</div>
-            </div>
-          </>}
-
-          {/* Where to buy */}
-          <div className="sl">{t.identifyWhereToBuy}</div>
-          <div style={{ marginBottom: 16 }}>
-            {selectedPart.estimatedCost && <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, color: "#4a9a6a", letterSpacing: ".04em", marginBottom: 10 }}>Estimated cost: {selectedPart.estimatedCost}</div>}
-            <button className="buy-btn" onClick={() => window.open(`https://www.homedepot.com/s/${encodeURIComponent(selectedPart.affiliateSearch || selectedPart.name)}`, "_blank")}>
-              <span style={{ fontSize: 18 }}>🏠</span>
-              <div style={{ flex: 1, textAlign: "left" }}>
-                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, color: "#e0e8f0", fontWeight: 600 }}>Home Depot</div>
-                <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#4a6a7a" }}>{selectedPart.whereToFind?.includes("Home Depot") ? "Typically in stock" : "Check availability"}</div>
-              </div>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4a9a6a" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            </button>
-            <button className="buy-btn" onClick={() => window.open(`https://www.amazon.com/s?k=${encodeURIComponent(selectedPart.affiliateSearch || selectedPart.name)}+plumbing`, "_blank")} style={{ background: "#1a2a3a", borderColor: "#2a4a6a" }}>
-              <span style={{ fontSize: 18 }}>📦</span>
-              <div style={{ flex: 1, textAlign: "left" }}>
-                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, color: "#e0e8f0", fontWeight: 600 }}>Amazon</div>
-                <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#4a6a7a" }}>Wide selection, fast shipping</div>
-              </div>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7acae0" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            </button>
-            <button className="buy-btn" onClick={() => window.open(`https://www.ferguson.com/search?term=${encodeURIComponent(selectedPart.name)}`, "_blank")} style={{ background: "#1a1a2a", borderColor: "#2a2a4a" }}>
-              <span style={{ fontSize: 18 }}>🔧</span>
-              <div style={{ flex: 1, textAlign: "left" }}>
-                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, color: "#e0e8f0", fontWeight: 600 }}>Ferguson</div>
-                <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#4a6a7a" }}>Pro supply house</div>
-              </div>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8a7aaa" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            </button>
-          </div>
-
-          {/* YouTube */}
-          <div className="sl">{t.identifyRelatedVideos}</div>
-          <button className="yt-btn" onClick={() => window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(selectedPart.searchTerm || selectedPart.name + " plumbing repair")}`, "_blank")}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#c85a30"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.4 19.54C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#fff"/></svg>
-            <div style={{ flex: 1, textAlign: "left" }}>
-              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, color: "#e0e8f0", fontWeight: 600 }}>{t.identifySearchVideo}</div>
-              <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#6a4a4a" }}>{selectedPart.searchTerm}</div>
-            </div>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c85a30" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </button>
-
-          <div style={{ height: 12 }} />
-        </div>
-      )}
-    </div>
-  );
 }
