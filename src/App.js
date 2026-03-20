@@ -920,6 +920,7 @@ const Icon = ({ name, size = 20, color = "currentColor" }) => {
     globe: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,
     camera: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>,
     license: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 8h.01"/><path d="M11 8h6"/><path d="M7 12h.01"/><path d="M11 12h6"/></svg>,
+    pipewrench: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M 4 20 L 14 10"/><path d="M 14 10 C 14 10 13 7 15 5 C 17 3 20 3.5 20 3.5 L 18 5.5 L 18.5 7 L 20 7.5 L 22 5.5 C 22 5.5 22 8.5 20 10 C 18 11.5 15 10.5 14 10 Z"/><path d="M 4 20 C 3 21 2 21 2 20 C 2 19 3 18 4 18 L 6 20 Z"/></svg>,
   };
   return icons[name] || null;
 };
@@ -951,16 +952,18 @@ export default function App() {
   };
 
   const authScreen_JSX = (
-    <div style={{ minHeight: "100vh", background: "#0f1318", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px 20px" }}>
+    <div style={{ minHeight: "100vh", background: "linear-gradient(160deg,#0e1215 60%,#1a1408 100%)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px 20px" }}>
       <div style={{ width: "100%", maxWidth: 400 }}>
         <div style={{ textAlign: "center", marginBottom: 36 }}>
-          <div style={{ width: 56, height: 56, background: "linear-gradient(135deg,#2a6a8a,#1a4a6a)", borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, margin: "0 auto 14px" }}>🔧</div>
-          <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 32, letterSpacing: ".1em", color: "#e0e8f0" }}>CODEX TX</div>
-          <div style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 13, color: "#3a5a6a", marginTop: 4 }}>Texas Plumbing Code Reference</div>
+          <div style={{ width: 64, height: 64, background: "linear-gradient(135deg,#d4820a,#8a5006)", borderRadius: 18, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px", boxShadow: "0 0 32px rgba(212,130,10,.3)" }}>
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M 4 20 L 14 10"/><path d="M 14 10 C 14 10 13 7 15 5 C 17 3 20 3.5 20 3.5 L 18 5.5 L 18.5 7 L 20 7.5 L 22 5.5 C 22 5.5 22 8.5 20 10 C 18 11.5 15 10.5 14 10 Z"/><path d="M 4 20 C 3 21 2 21 2 20 C 2 19 3 18 4 18 L 6 20 Z"/></svg>
+          </div>
+          <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 36, letterSpacing: ".1em", color: "#e8f0f8" }}>CODEX TX</div>
+          <div style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 13, color: "#d4820a", marginTop: 4 }}>Texas Plumbing Code Reference</div>
         </div>
-        <div style={{ display: "flex", background: "#1a1f24", borderRadius: 10, padding: 4, marginBottom: 24 }}>
+        <div style={{ display: "flex", background: "#161c22", borderRadius: 10, padding: 4, marginBottom: 24, border: "1px solid #2a3540" }}>
           {["login","signup"].map(tab => (
-            <button key={tab} onClick={() => { setAuthScreen(tab); setAuthError(""); }} style={{ flex: 1, padding: "10px", borderRadius: 8, border: "none", cursor: "pointer", background: authScreen === tab ? "#2a3a4a" : "transparent", fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 14, letterSpacing: ".06em", color: authScreen === tab ? "#7acae0" : "#3a5a6a", transition: "all .2s" }}>
+            <button key={tab} onClick={() => { setAuthScreen(tab); setAuthError(""); }} style={{ flex: 1, padding: "10px", borderRadius: 8, border: "none", cursor: "pointer", background: authScreen === tab ? "linear-gradient(135deg,#2a1e0a,#1a1208)" : "transparent", fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 14, letterSpacing: ".06em", color: authScreen === tab ? "#d4820a" : "#3a5a6a", transition: "all .2s" }}>
               {tab === "login" ? "SIGN IN" : "CREATE ACCOUNT"}
             </button>
           ))}
@@ -968,24 +971,24 @@ export default function App() {
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {authScreen === "signup" && (
             <div>
-              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#4a6a7a", letterSpacing: ".08em", marginBottom: 6 }}>INVITE CODE</div>
-              <input autoComplete="off" value={authInvite} onChange={e => setAuthInvite(e.target.value)} placeholder="CODEX-001" style={{ width: "100%", background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "12px 14px", color: "#e0e8f0", fontFamily: "'Barlow Condensed',sans-serif", fontSize: 16, letterSpacing: ".06em", boxSizing: "border-box", outline: "none" }} />
+              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#d4820a", letterSpacing: ".08em", marginBottom: 6 }}>INVITE CODE</div>
+              <input autoComplete="off" value={authInvite} onChange={e => setAuthInvite(e.target.value)} placeholder="CODEX-001" style={{ width: "100%", background: "#161c22", border: "1px solid #2a3540", borderRadius: 10, padding: "12px 14px", color: "#e8f0f8", fontFamily: "'Barlow Condensed',sans-serif", fontSize: 16, letterSpacing: ".06em", boxSizing: "border-box", outline: "none" }} />
             </div>
           )}
           <div>
-            <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#4a6a7a", letterSpacing: ".08em", marginBottom: 6 }}>EMAIL</div>
-            <input type="email" autoComplete="email" value={authEmail} onChange={e => setAuthEmail(e.target.value)} placeholder="you@example.com" style={{ width: "100%", background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "12px 14px", color: "#e0e8f0", fontFamily: "'Lora',serif", fontSize: 15, boxSizing: "border-box", outline: "none" }} />
+            <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#d4820a", letterSpacing: ".08em", marginBottom: 6 }}>EMAIL</div>
+            <input type="email" autoComplete="email" value={authEmail} onChange={e => setAuthEmail(e.target.value)} placeholder="you@example.com" style={{ width: "100%", background: "#161c22", border: "1px solid #2a3540", borderRadius: 10, padding: "12px 14px", color: "#e8f0f8", fontFamily: "'Lora',serif", fontSize: 15, boxSizing: "border-box", outline: "none" }} />
           </div>
           <div>
-            <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#4a6a7a", letterSpacing: ".08em", marginBottom: 6 }}>PASSWORD</div>
-            <input type="password" autoComplete="current-password" value={authPassword} onChange={e => setAuthPassword(e.target.value)} placeholder="Min 6 characters" onKeyDown={e => e.key === "Enter" && doAuth(authScreen)} style={{ width: "100%", background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "12px 14px", color: "#e0e8f0", fontFamily: "'Lora',serif", fontSize: 15, boxSizing: "border-box", outline: "none" }} />
+            <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#d4820a", letterSpacing: ".08em", marginBottom: 6 }}>PASSWORD</div>
+            <input type="password" autoComplete="current-password" value={authPassword} onChange={e => setAuthPassword(e.target.value)} placeholder="Min 6 characters" onKeyDown={e => e.key === "Enter" && doAuth(authScreen)} style={{ width: "100%", background: "#161c22", border: "1px solid #2a3540", borderRadius: 10, padding: "12px 14px", color: "#e8f0f8", fontFamily: "'Lora',serif", fontSize: 15, boxSizing: "border-box", outline: "none" }} />
           </div>
-          {authError && <div style={{ background: "#2a1a1a", border: "1px solid #6a2a2a", borderRadius: 10, padding: "10px 14px", fontFamily: "'Lora',serif", fontSize: 13, color: "#c87a60" }}>{authError}</div>}
-          <button onClick={() => doAuth(authScreen)} disabled={authLoading} style={{ background: authLoading ? "#1a2a3a" : "linear-gradient(135deg,#2a6a8a,#1a4a6a)", border: "none", borderRadius: 12, padding: "16px", cursor: authLoading ? "not-allowed" : "pointer", fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 16, letterSpacing: ".08em", color: authLoading ? "#3a5a6a" : "#e0e8f0", marginTop: 4 }}>
+          {authError && <div style={{ background: "#2a1a1a", border: "1px solid #8a2a2a", borderRadius: 10, padding: "10px 14px", fontFamily: "'Lora',serif", fontSize: 13, color: "#f08060" }}>{authError}</div>}
+          <button onClick={() => doAuth(authScreen)} disabled={authLoading} style={{ background: authLoading ? "#1a1a1a" : "linear-gradient(135deg,#d4820a,#8a5006)", border: "none", borderRadius: 12, padding: "16px", cursor: authLoading ? "not-allowed" : "pointer", fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 16, letterSpacing: ".08em", color: authLoading ? "#3a3a3a" : "#fff", marginTop: 4, boxShadow: authLoading ? "none" : "0 4px 20px rgba(212,130,10,.3)" }}>
             {authLoading ? "PLEASE WAIT..." : authScreen === "login" ? "SIGN IN" : "CREATE ACCOUNT"}
           </button>
         </div>
-        <div style={{ textAlign: "center", marginTop: 24, fontFamily: "'Lora',serif", fontSize: 12, color: "#2a4a5a" }}>
+        <div style={{ textAlign: "center", marginTop: 24, fontFamily: "'Lora',serif", fontSize: 12, color: "#3a5a6a" }}>
           {authScreen === "login" ? "Need access? Contact your administrator for an invite code." : "Already have an account? Switch to Sign In above."}
         </div>
       </div>
@@ -1072,7 +1075,6 @@ export default function App() {
         .jc{background:#161c22;border:1px solid #2a3540;border-radius:12px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
         .jc:active{background:#1e262e}
         .pill{display:inline-flex;align-items:center;background:rgba(255,255,255,.07);border-radius:20px;padding:3px 10px;font-size:11px;font-family:'Barlow Condensed',sans-serif;letter-spacing:.05em;font-weight:600;pointer-events:none;user-select:none}
-        .sw{position:relative;margin-bottom:14px}
         .si{width:100%;background:#161c22;border:1px solid #2a3540;border-radius:10px;padding:12px 48px 12px 42px;color:#e8f0f8;font-family:'Lora',serif;font-size:15px;outline:none;transition:border-color .2s}
         .si:focus{border-color:#d4820a}
         .si::placeholder{color:#3a4a5a}
@@ -1134,7 +1136,9 @@ export default function App() {
           </div>
         ) : (
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ width: 30, height: 30, background: "linear-gradient(135deg,#d4820a,#a05a06)", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15 }}>🔧</div>
+            <div style={{ width: 30, height: 30, background: "linear-gradient(135deg,#d4820a,#a05a06)", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M 4 20 L 14 10"/><path d="M 14 10 C 14 10 13 7 15 5 C 17 3 20 3.5 20 3.5 L 18 5.5 L 18.5 7 L 20 7.5 L 22 5.5 C 22 5.5 22 8.5 20 10 C 18 11.5 15 10.5 14 10 Z"/><path d="M 4 20 C 3 21 2 21 2 20 C 2 19 3 18 4 18 L 6 20 Z"/></svg>
+            </div>
             <div>
               <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 20, letterSpacing: ".1em", color: "#e8f0f8", lineHeight: 1 }}>CODEX TX</div>
               <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 9, color: "#d4820a", letterSpacing: ".15em" }}>{t.appSub}</div>
@@ -1161,9 +1165,9 @@ export default function App() {
       {voiceStatus && <div className="vb"><Icon name="mic" size={14} color={isListening ? "#c85a30" : "#7acae0"} /><span style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 13, color: isListening ? "#c87a60" : "#7acae0", flex: 1 }}>{voiceStatus}</span></div>}
 
       {/* Texas silhouette — always visible behind all screens */}
-      <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", opacity: 0.055, pointerEvents: "none", zIndex: 0, width: 340, height: 320, maxWidth: "80vw" }}>
-        <svg viewBox="0 0 500 480" fill="#d4820a" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "100%" }}>
-          <path d="M 430 10 L 430 30 L 450 30 L 450 50 L 470 50 L 470 70 L 490 70 L 490 30 L 470 30 L 470 10 Z M 390 10 L 430 10 L 430 30 L 390 30 Z M 370 30 L 390 30 L 390 50 L 370 50 Z M 350 50 L 370 50 L 370 70 L 350 70 Z M 10 70 L 350 70 L 350 50 L 370 50 L 370 30 L 390 30 L 390 10 L 430 10 L 430 30 L 450 30 L 450 50 L 470 50 L 470 70 L 490 70 L 490 110 L 470 110 L 470 130 L 460 140 L 460 160 L 450 170 L 450 190 L 440 200 L 430 200 L 420 210 L 410 220 L 400 230 L 390 240 L 380 250 L 370 260 L 360 265 L 355 280 L 350 295 L 345 310 L 340 325 L 335 340 L 330 355 L 325 365 L 320 375 L 315 385 L 310 395 L 305 405 L 300 415 L 295 425 L 290 435 L 285 445 L 280 455 L 275 460 L 265 460 L 255 455 L 250 445 L 245 435 L 240 425 L 235 420 L 225 420 L 215 425 L 205 430 L 195 430 L 185 425 L 175 415 L 165 405 L 155 395 L 145 385 L 135 375 L 125 365 L 115 355 L 105 345 L 95 335 L 85 325 L 75 315 L 65 305 L 55 295 L 45 285 L 35 275 L 25 265 L 15 255 L 10 245 L 10 70 Z" />
+      <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", opacity: 0.08, pointerEvents: "none", zIndex: 0, width: 360, height: 360, maxWidth: "85vw" }}>
+        <svg viewBox="0 0 600 600" fill="#d4820a" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "100%" }}>
+          <path d="M 220 30 L 220 200 L 195 202 L 188 210 L 195 216 L 205 218 L 220 220 L 240 222 L 265 220 L 290 224 L 320 222 L 350 226 L 380 224 L 410 228 L 440 226 L 468 230 L 490 228 L 505 235 L 510 248 L 510 395 L 508 415 L 502 432 L 492 448 L 478 462 L 462 476 L 444 488 L 424 498 L 402 506 L 380 510 L 360 510 L 345 505 L 332 496 L 320 485 L 310 492 L 296 500 L 280 505 L 262 502 L 246 494 L 230 482 L 216 488 L 200 496 L 182 500 L 164 494 L 148 482 L 132 466 L 118 448 L 105 428 L 92 406 L 80 382 L 70 358 L 62 333 L 56 308 L 52 282 L 50 256 L 50 232 L 52 210 L 58 192 L 68 178 L 82 168 L 100 162 L 120 158 L 142 156 L 158 154 L 170 148 L 178 138 L 184 126 L 188 112 L 190 96 L 190 64 L 192 48 L 196 36 L 206 30 Z" />
         </svg>
       </div>
       <div className="cnt">
@@ -1184,11 +1188,15 @@ export default function App() {
             </button>
             <div style={{ marginBottom: 20 }}>
               <div className="sl">{t.quickAccess}</div>
-              {[{ s: "codes", icon: "book", bg: "#1a3a4a", ic: "#7acae0", ti: t.codes, sub: t.codesSub }, { s: "jurisdiction", icon: "map", bg: "#1a3a2a", ic: "#4a9a6a", ti: t.jurisdiction, sub: `${cityCount} ${t.jurisdictionSub}` }, { s: "inspectors", icon: "user", bg: "#2a2a1a", ic: "#c8a030", ti: t.inspectors, sub: t.inspectorsSub }].map(item => (
-                <div key={item.s} className="hb p" onClick={() => navTo(item.s)}>
-                  <div style={{ width: 42, height: 42, background: item.bg, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Icon name={item.icon} size={20} color={item.ic} /></div>
-                  <div><div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 16, letterSpacing: ".05em", color: "#e0e8f0", marginBottom: 2 }}>{item.ti}</div><div style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#4a6a7a" }}>{item.sub}</div></div>
-                  <div style={{ marginLeft: "auto", color: "#3a5a6a" }}><Icon name="chevron" size={18} /></div>
+              {[
+                { s: "codes", icon: "book", bg: "linear-gradient(135deg,#1a3a5a,#0f2238)", border: "#2a5a8a", ic: "#7acae0", ti: t.codes, sub: t.codesSub },
+                { s: "jurisdiction", icon: "map", bg: "linear-gradient(135deg,#1a3a2a,#0f2218)", border: "#2a6a3a", ic: "#4aba6a", ti: t.jurisdiction, sub: `${cityCount} ${t.jurisdictionSub}` },
+                { s: "inspectors", icon: "user", bg: "linear-gradient(135deg,#2a2010,#1a1408)", border: "#6a4a10", ic: "#d4820a", ti: t.inspectors, sub: t.inspectorsSub }
+              ].map(item => (
+                <div key={item.s} className="hb p" onClick={() => navTo(item.s)} style={{ background: item.bg, border: `1px solid ${item.border}` }}>
+                  <div style={{ width: 44, height: 44, background: "rgba(0,0,0,.3)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, border: `1px solid ${item.border}` }}><Icon name={item.icon} size={22} color={item.ic} /></div>
+                  <div><div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 16, letterSpacing: ".05em", color: "#e8f0f8", marginBottom: 2 }}>{item.ti}</div><div style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#5a7a8a" }}>{item.sub}</div></div>
+                  <div style={{ marginLeft: "auto", color: item.ic, opacity: 0.6 }}><Icon name="chevron" size={18} color={item.ic} /></div>
                 </div>
               ))}
             </div>
@@ -1898,7 +1906,7 @@ function IdentifyScreen({ t, lang }) {
       <div style={{ display: "flex", gap: 6, marginBottom: 18, background: "#111518", borderRadius: 12, padding: 4 }}>
         {[
           { id: "bob", label: lang === "en" ? "BOB" : "BOB", icon: "📷" },
-          { id: "job", label: lang === "en" ? "JOB MODE" : "MODO TRABAJO", icon: "🔧" },
+          { id: "job", label: lang === "en" ? "JOB MODE" : "MODO TRABAJO", icon: "pipewrench" },
           { id: "estimate", label: lang === "en" ? "ESTIMATE" : "ESTIMAR", icon: "💰" },
         ].map(tab => (
           <div
@@ -2105,7 +2113,7 @@ function IdentifyScreen({ t, lang }) {
                       url: "https://www.homedepot.com/s/" + encodeURIComponent(selectedPart.name) + "?zip=" + zip
                     },
                     "Ferguson": {
-                      icon: "🔧",
+                      icon: "pipewrench",
                       color: "#8a7aaa",
                       bg: "#1a1a2a",
                       border: "#2a2a4a",
@@ -2266,7 +2274,9 @@ function IdentifyScreen({ t, lang }) {
           })()}
           {jobPhotos.length === 0 && (
             <div style={{ textAlign: "center", padding: "30px 20px" }}>
-              <div style={{ fontSize: 40, marginBottom: 12 }}>🔧</div>
+              <div style={{ marginBottom: 12, display: "flex", justifyContent: "center" }}>
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#d4820a" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M 4 20 L 14 10"/><path d="M 14 10 C 14 10 13 7 15 5 C 17 3 20 3.5 20 3.5 L 18 5.5 L 18.5 7 L 20 7.5 L 22 5.5 C 22 5.5 22 8.5 20 10 C 18 11.5 15 10.5 14 10 Z"/><path d="M 4 20 C 3 21 2 21 2 20 C 2 19 3 18 4 18 L 6 20 Z"/></svg>
+              </div>
               <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 16, color: "#4a6a7a", marginBottom: 8 }}>{lang === "en" ? "Start taking photos" : "Comienza tomando fotos"}</div>
               <div style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#2a4a5a", lineHeight: 1.6 }}>{lang === "en" ? "Tap ADD PHOTO for each part. Bob identifies everything and builds your parts list." : "Toca AGREGAR FOTO para cada parte. Bob identifica todo automaticamente."}</div>
             </div>
