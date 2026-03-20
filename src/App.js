@@ -1052,59 +1052,64 @@ export default function App() {
 
   const callPhone = (phone) => { window.location.href = `tel:${phone.replace(/[^0-9]/g, '')}`; };
 
+  const [licenseExpiry, setLicenseExpiry] = useState(() => { try { return localStorage.getItem("codex_license_expiry") || ""; } catch(e) { return ""; } });
+  const [licenseType, setLicenseType] = useState(() => { try { return localStorage.getItem("codex_license_type") || "Journeyman"; } catch(e) { return "Journeyman"; } });
+  const saveLicense = (expiry, type) => { setLicenseExpiry(expiry); setLicenseType(type); try { localStorage.setItem("codex_license_expiry", expiry); localStorage.setItem("codex_license_type", type); } catch(e) {} };
+  const getLicenseDaysLeft = () => { if (!licenseExpiry) return null; const diff = Math.ceil((new Date(licenseExpiry) - new Date()) / (1000 * 60 * 60 * 24)); return diff; };
+
   if (!authed) return authScreen_JSX;
 
   return (
-    <div style={{ fontFamily: "'Georgia',serif", background: "#111518", minHeight: "100vh", maxWidth: 430, margin: "0 auto", display: "flex", flexDirection: "column" }}>
+    <div style={{ fontFamily: "'Georgia',serif", background: "#0e1215", minHeight: "100vh", maxWidth: 430, margin: "0 auto", display: "flex", flexDirection: "column" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
         *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-        body{background:#111518}
+        body{background:#0e1215}
         ::-webkit-scrollbar{display:none}
         .p{transition:opacity .15s,transform .15s;cursor:pointer;-webkit-user-select:none;user-select:none}
         .p:active{opacity:.7;transform:scale(.98)}
-        .cc{background:#1a1f24;border:1px solid #2a3038;border-radius:12px;padding:16px;margin-bottom:10px}
-        .jc{background:#1a1f24;border:1px solid #2a3038;border-radius:12px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
-        .jc:active{background:#1f252c}
-        .pill{display:inline-flex;align-items:center;background:rgba(255,255,255,.06);border-radius:20px;padding:3px 10px;font-size:11px;font-family:'Barlow Condensed',sans-serif;letter-spacing:.05em;font-weight:600;pointer-events:none;user-select:none}
+        .cc{background:#161c22;border:1px solid #2a3540;border-radius:12px;padding:16px;margin-bottom:10px}
+        .jc{background:#161c22;border:1px solid #2a3540;border-radius:12px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+        .jc:active{background:#1e262e}
+        .pill{display:inline-flex;align-items:center;background:rgba(255,255,255,.07);border-radius:20px;padding:3px 10px;font-size:11px;font-family:'Barlow Condensed',sans-serif;letter-spacing:.05em;font-weight:600;pointer-events:none;user-select:none}
         .sw{position:relative;margin-bottom:14px}
-        .si{width:100%;background:#1a1f24;border:1px solid #2a3038;border-radius:10px;padding:12px 48px 12px 42px;color:#e0e8f0;font-family:'Lora',serif;font-size:15px;outline:none;transition:border-color .2s}
-        .si:focus{border-color:#3a8a9a}
+        .si{width:100%;background:#161c22;border:1px solid #2a3540;border-radius:10px;padding:12px 48px 12px 42px;color:#e8f0f8;font-family:'Lora',serif;font-size:15px;outline:none;transition:border-color .2s}
+        .si:focus{border-color:#d4820a}
         .si::placeholder{color:#3a4a5a}
         .sic{position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none;color:#4a5a6a}
         .mb{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:6px;border-radius:50%;display:flex;align-items:center;justify-content:center}
         .mb.on{animation:pulse 1s infinite}
         .cs{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;margin-bottom:16px}
-        .cb{flex-shrink:0;background:#1a1f24;border:1px solid #2a3038;border-radius:20px;padding:6px 14px;color:#6a8a9a;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:.05em;cursor:pointer;transition:all .15s;white-space:nowrap}
-        .cb.active{background:#1a3a4a;border-color:#3a8a9a;color:#7acae0}
-        .sl{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:.15em;font-weight:700;color:#3a5a6a;text-transform:uppercase;margin-bottom:10px}
-        .ar{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid #1e2428;align-items:flex-start}
+        .cb{flex-shrink:0;background:#161c22;border:1px solid #2a3540;border-radius:20px;padding:6px 14px;color:#6a8a9a;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:.05em;cursor:pointer;transition:all .15s;white-space:nowrap}
+        .cb.active{background:#2a1e0a;border-color:#d4820a;color:#f0a030}
+        .sl{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:.15em;font-weight:700;color:#d4820a;text-transform:uppercase;margin-bottom:10px}
+        .ar{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid #1e2830;align-items:flex-start}
         .ar:last-child{border-bottom:none}
-        .dot{width:6px;height:6px;border-radius:50%;background:#3a8a9a;margin-top:7px;flex-shrink:0}
+        .dot{width:6px;height:6px;border-radius:50%;background:#d4820a;margin-top:7px;flex-shrink:0}
         .wd{background:#c87a20}.rd{background:#c85a40}
-        .nb{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#151a1f;border-top:1px solid #1e2428;display:flex;padding:8px 0 20px;z-index:100}
+        .nb{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#0e1215;border-top:2px solid #d4820a;display:flex;padding:8px 0 20px;z-index:100}
         .ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 0;cursor:pointer}
         .ni:active{opacity:.6}
         .nl{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.08em;font-weight:600}
-        .hdr{position:sticky;top:0;background:#111518;border-bottom:1px solid #1e2428;z-index:50;padding:0 16px;display:flex;align-items:center;height:56px;gap:8px}
+        .hdr{position:sticky;top:0;background:linear-gradient(180deg,#0e1215 85%,rgba(14,18,21,0));border-bottom:1px solid #d4820a;z-index:50;padding:0 16px;display:flex;align-items:center;height:56px;gap:8px}
         .cnt{flex:1;overflow-y:auto;padding:16px 16px 90px}
-        .hb{background:#1a1f24;border:1px solid #2a3038;border-radius:14px;padding:18px 16px;display:flex;align-items:center;gap:14px;margin-bottom:10px;cursor:pointer}
-        .hb:active{background:#1f252c}
-        .ib{background:#1a1f24;border:1px solid #2a3038;border-radius:12px;padding:16px;margin-bottom:12px}
+        .hb{background:#161c22;border:1px solid #2a3540;border-radius:14px;padding:18px 16px;display:flex;align-items:center;gap:14px;margin-bottom:10px;cursor:pointer}
+        .hb:active{background:#1e262e}
+        .ib{background:#161c22;border:1px solid #2a3540;border-radius:12px;padding:16px;margin-bottom:12px}
         .wb{background:#1a1a0f;border:1px solid #4a4a1a;border-radius:10px;padding:12px 14px;margin-bottom:16px}
         .tc{background:#1a2a1a;border:1px solid #2a4a2a;border-radius:8px;padding:8px 12px;display:inline-flex;align-items:center;gap:6px;margin:4px;cursor:pointer}
         .tc:active{opacity:.7}
-        .vb{background:#1a2a3a;border-bottom:1px solid #2a4a6a;padding:8px 16px;display:flex;align-items:center;gap:10px}
-        .vbig{width:100%;background:linear-gradient(135deg,#1a3a4a,#0f2030);border:1px solid #3a8a9a;border-radius:14px;padding:18px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:16px}
+        .vb{background:#1a2030;border-bottom:1px solid #2a3a50;padding:8px 16px;display:flex;align-items:center;gap:10px}
+        .vbig{width:100%;background:linear-gradient(135deg,#1e2a38,#0f1820);border:1px solid #d4820a;border-radius:14px;padding:18px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:16px}
         .vbig.on{border-color:#c85a30;background:linear-gradient(135deg,#2a1a0f,#1a0f08)}
         .vbig:active{opacity:.8;transform:scale(.98)}
         .call-btn{display:flex;align-items:center;gap:8px;background:#1a3a2a;border:1px solid #2a6a3a;border-radius:10px;padding:12px 16px;cursor:pointer;transition:all .15s;margin-bottom:10px;width:100%}
         .call-btn:active{background:#2a4a3a;transform:scale(.98)}
-        .lang-btn{background:rgba(58,138,154,.15);border:1px solid #3a8a9a;border-radius:8px;padding:5px 10px;cursor:pointer;display:flex;align-items:center;gap:4px}
+        .lang-btn{background:rgba(212,130,10,.12);border:1px solid #d4820a;border-radius:8px;padding:5px 10px;cursor:pointer;display:flex;align-items:center;gap:4px}
         .tab-btn{flex:1;padding:8px;border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;border-radius:6px;transition:all .15s}
-        .diagram-box{background:#1a1f24;border:1px solid #2a3038;border-radius:12px;padding:16px;margin-bottom:16px}
-        .part-card{background:#1a1f24;border:1px solid #2a3038;border-radius:12px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:all .15s;animation:fadeUp .3s ease forwards;opacity:0}
-        .part-card:active{background:#1f252c;transform:scale(.98)}
+        .diagram-box{background:#161c22;border:1px solid #2a3540;border-radius:12px;padding:16px;margin-bottom:16px}
+        .part-card{background:#161c22;border:1px solid #2a3540;border-radius:12px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:all .15s;animation:fadeUp .3s ease forwards;opacity:0}
+        .part-card:active{background:#1e262e;transform:scale(.98)}
         .scanner-box{position:relative;border-radius:12px;overflow:hidden;background:#0a0f14;border:1px solid #2a3038}
         .scan-line{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#c85a30,transparent);animation:scanLine 1.8s ease-in-out infinite alternate}
         .corner{position:absolute;width:20px;height:20px;border-color:#c85a30;border-style:solid}
@@ -1112,7 +1117,7 @@ export default function App() {
         .corner-tr{top:10px;right:10px;border-width:2px 2px 0 0}
         .corner-bl{bottom:10px;left:10px;border-width:0 0 2px 2px}
         .corner-br{bottom:10px;right:10px;border-width:0 2px 2px 0}
-        .upload-zone{border:2px dashed #2a3038;border-radius:14px;padding:32px 16px;text-align:center;cursor:pointer;transition:all .2s}
+        .upload-zone{border:2px dashed #2a3540;border-radius:14px;padding:32px 16px;text-align:center;cursor:pointer;transition:all .2s}
         .upload-zone:active{border-color:#c85a30;background:rgba(200,90,48,.05)}
         .buy-btn{display:flex;align-items:center;gap:8px;background:#1a3a2a;border:1px solid #2a6a3a;border-radius:10px;padding:10px 14px;cursor:pointer;width:100%;margin-bottom:8px;transition:all .15s}
         .buy-btn:active{background:#2a4a3a}
@@ -1129,10 +1134,10 @@ export default function App() {
           </div>
         ) : (
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ width: 30, height: 30, background: "linear-gradient(135deg,#2a6a8a,#1a4a6a)", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15 }}>🔧</div>
+            <div style={{ width: 30, height: 30, background: "linear-gradient(135deg,#d4820a,#a05a06)", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15 }}>🔧</div>
             <div>
-              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 20, letterSpacing: ".1em", color: "#e0e8f0", lineHeight: 1 }}>CODEX TX</div>
-              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 9, color: "#3a5a6a", letterSpacing: ".15em" }}>{t.appSub}</div>
+              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 20, letterSpacing: ".1em", color: "#e8f0f8", lineHeight: 1 }}>CODEX TX</div>
+              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 9, color: "#d4820a", letterSpacing: ".15em" }}>{t.appSub}</div>
             </div>
           </div>
         )}
@@ -1159,9 +1164,15 @@ export default function App() {
 
         {/* HOME */}
         {screen === "home" && (
-          <div>
-            <div style={{ marginBottom: 20 }}>
-              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 32, letterSpacing: ".04em", color: "#e0e8f0", lineHeight: 1.1, marginBottom: 6 }}>{t.tagline.split(".")[0]}.<br /><span style={{ color: "#3a8a9a" }}>{t.tagline.split(".")[1]}</span></div>
+          <div style={{ position: "relative" }}>
+            {/* Texas silhouette watermark */}
+            <div style={{ position: "absolute", top: -10, right: -10, opacity: 0.06, pointerEvents: "none", zIndex: 0 }}>
+              <svg width="220" height="200" viewBox="0 0 500 430" fill="#d4820a" xmlns="http://www.w3.org/2000/svg">
+                <path d="M480,20 L480,80 L460,80 L460,100 L440,100 L440,120 L420,120 L420,140 L160,140 L140,160 L120,160 L100,180 L80,180 L60,200 L40,200 L20,220 L20,260 L40,280 L40,300 L60,320 L80,340 L100,360 L120,370 L140,380 L160,390 L180,395 L190,410 L200,420 L220,415 L230,400 L250,395 L260,380 L270,370 L290,365 L310,370 L320,385 L330,400 L340,410 L360,415 L370,400 L380,385 L390,375 L410,370 L430,360 L450,340 L460,320 L470,300 L480,280 L490,260 L490,240 L480,220 L470,200 L460,180 L460,160 L470,140 L480,120 L490,100 L490,60 L480,40 Z"/>
+              </svg>
+            </div>
+            <div style={{ position: "relative", zIndex: 1, marginBottom: 20 }}>
+              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 34, letterSpacing: ".04em", color: "#e8f0f8", lineHeight: 1.1, marginBottom: 6 }}>{t.tagline.split(".")[0]}.<br /><span style={{ color: "#d4820a" }}>{t.tagline.split(".")[1]}</span></div>
               <div style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 14, color: "#4a6a7a", lineHeight: 1.6 }}>{cityCount} {t.taglineSub}</div>
             </div>
             <button className={`vbig ${isListening ? "on" : ""}`} onClick={isListening ? stopVoice : startVoice}>
@@ -1510,10 +1521,6 @@ export default function App() {
 // ─── IDENTIFY SCREEN COMPONENT ───────────────────────────────
 function IdentifyScreen({ t, lang }) {
   const [activeTab, setActiveTab] = useState("bob"); // "bob" | "job" | "estimate"
-  const [licenseExpiry, setLicenseExpiry] = useState(() => { try { return localStorage.getItem("codex_license_expiry") || ""; } catch(e) { return ""; } });
-  const [licenseType, setLicenseType] = useState(() => { try { return localStorage.getItem("codex_license_type") || "Journeyman"; } catch(e) { return "Journeyman"; } });
-  const saveLicense = (expiry, type) => { setLicenseExpiry(expiry); setLicenseType(type); try { localStorage.setItem("codex_license_expiry", expiry); localStorage.setItem("codex_license_type", type); } catch(e) {} };
-  const getLicenseDaysLeft = () => { if (!licenseExpiry) return null; const diff = Math.ceil((new Date(licenseExpiry) - new Date()) / (1000 * 60 * 60 * 24)); return diff; };
   const [phase, setPhase] = useState("idle");
   const [imagePreview, setImagePreview] = useState(null);
   const [partsEn, setPartsEn] = useState([]);
