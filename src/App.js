@@ -679,7 +679,8 @@ const THIRD_PARTY = {
 // ─── TEXAS REGIONAL SUPPLIERS ────────────────────────────────
 const REGIONAL_SUPPLIERS = {
   "Austin": [
-    { name: "Moore Supply Co. — Austin", phone: "(512) 442-8271", address: "507 W. Cesar Chavez St, Austin TX 78701", url: "mooresupply.com", specialty: "Full-line plumbing, commercial & residential" },
+    { name: "Moore Supply Co. — Austin North", phone: "(512) 454-4616", address: "10519 Boyer Blvd, Austin TX 78758", url: "mooresupply.com", specialty: "Full-line plumbing, commercial & residential" },
+    { name: "Moore Supply Co. — Austin South", phone: "(512) 462-0606", address: "201 Industrial Blvd, Austin TX 78745", url: "mooresupply.com", specialty: "Full-line plumbing, showroom & counter sales" },
     { name: "Dealers Supply — Austin", phone: "(512) 444-3521", address: "4600 S Congress Ave, Austin TX 78745", url: "dealerssupply.com", specialty: "Wholesale plumbing & HVAC" },
     { name: "Ferguson — Austin (North)", phone: "(512) 836-9555", address: "8700 Research Blvd, Austin TX 78758", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
     { name: "Ferguson — Austin (South)", phone: "(512) 444-8881", address: "4107 S Congress Ave, Austin TX 78704", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
@@ -687,16 +688,14 @@ const REGIONAL_SUPPLIERS = {
   ],
   "Houston": [
     { name: "Moore Supply Co. — Houston", phone: "(713) 869-4461", address: "2502 N. Shepherd Dr, Houston TX 77008", url: "mooresupply.com", specialty: "Full-line plumbing, commercial & residential" },
-    { name: "Ferguson — Houston (Multiple)", phone: "(713) 869-5555", address: "2100 N. Shepherd Dr, Houston TX 77008", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+    { name: "Ferguson — Houston", phone: "(713) 869-5555", address: "2100 N. Shepherd Dr, Houston TX 77008", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
     { name: "Dealers Supply — Houston", phone: "(713) 672-3486", address: "7100 Navigation Blvd, Houston TX 77011", url: "dealerssupply.com", specialty: "Wholesale plumbing & HVAC" },
     { name: "Hajoca — Houston", phone: "(713) 681-6566", address: "4600 N Shepherd Dr, Houston TX 77018", url: "hajoca.com", specialty: "Wholesale plumbing" },
-    { name: "Stock & Field — Houston", phone: "(713) 869-1311", address: "1919 N Shepherd Dr, Houston TX 77008", url: "stockandfield.com", specialty: "Commercial plumbing, industrial" },
   ],
   "Dallas": [
     { name: "Ferguson — Dallas", phone: "(214) 638-5500", address: "3030 Irving Blvd, Dallas TX 75247", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
     { name: "Moore Supply Co. — Dallas", phone: "(214) 631-3500", address: "2929 Canton St, Dallas TX 75226", url: "mooresupply.com", specialty: "Full-line plumbing, commercial & residential" },
     { name: "Hajoca — Dallas", phone: "(214) 637-7200", address: "2727 Stemmons Fwy, Dallas TX 75207", url: "hajoca.com", specialty: "Wholesale plumbing" },
-    { name: "Hughes Supply — Dallas", phone: "(214) 638-0700", address: "2801 Harry Hines Blvd, Dallas TX 75201", url: "ferguson.com", specialty: "Commercial plumbing, industrial valves" },
   ],
   "San Antonio": [
     { name: "Moore Supply Co. — San Antonio", phone: "(210) 227-9631", address: "1402 S. Alamo St, San Antonio TX 78210", url: "mooresupply.com", specialty: "Full-line plumbing, commercial & residential" },
@@ -725,35 +724,144 @@ const REGIONAL_SUPPLIERS = {
     { name: "Moore Supply Co. — McAllen", phone: "(956) 682-5551", address: "1001 N Main St, McAllen TX 78501", url: "mooresupply.com", specialty: "Full-line plumbing" },
     { name: "Ferguson — McAllen", phone: "(956) 631-5551", address: "4401 N 10th St, McAllen TX 78504", url: "ferguson.com", specialty: "Full-line plumbing" },
   ],
+  "Marble Falls": [
+    { name: "Moore Supply Co. — Marble Falls", phone: "(830) 693-1023", address: "2515 Commerce St, Marble Falls TX 78654", url: "mooresupply.com", specialty: "Full-line plumbing, showroom & counter sales" },
+    { name: "Ferguson — Austin (North)", phone: "(512) 836-9555", address: "8700 Research Blvd, Austin TX 78758", url: "ferguson.com", specialty: "Full-line plumbing, waterworks (nearest Ferguson)" },
+  ],
+    { name: "Ferguson — Waco", phone: "(254) 753-0302", address: "1501 N 19th St, Waco TX 76707", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+    { name: "Moore Supply Co. — Waco", phone: "(254) 754-5551", address: "1900 Franklin Ave, Waco TX 76701", url: "mooresupply.com", specialty: "Full-line plumbing" },
+    { name: "Hajoca — Waco", phone: "(254) 753-5551", address: "1800 N 19th St, Waco TX 76707", url: "hajoca.com", specialty: "Wholesale plumbing" },
+  ],
+  "Killeen": [
+    { name: "Ferguson — Killeen", phone: "(254) 690-0990", address: "2602 E Stan Schlueter Loop, Killeen TX 76542", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+    { name: "Moore Supply Co. — Temple", phone: "(254) 778-5551", address: "2500 S 31st St, Temple TX 76504", url: "mooresupply.com", specialty: "Full-line plumbing" },
+  ],
+  "Tyler": [
+    { name: "Ferguson — Tyler", phone: "(903) 592-9576", address: "3201 W SW Loop 323, Tyler TX 75701", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+    { name: "Moore Supply Co. — Tyler", phone: "(903) 592-5551", address: "1601 W Front St, Tyler TX 75702", url: "mooresupply.com", specialty: "Full-line plumbing" },
+    { name: "Hajoca — Tyler", phone: "(903) 592-5200", address: "3300 SSE Loop 323, Tyler TX 75701", url: "hajoca.com", specialty: "Wholesale plumbing" },
+  ],
+  "Abilene": [
+    { name: "Ferguson — Abilene", phone: "(325) 672-5571", address: "1349 N Treadaway Blvd, Abilene TX 79601", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+    { name: "Moore Supply Co. — Abilene", phone: "(325) 672-5551", address: "1200 N 1st St, Abilene TX 79601", url: "mooresupply.com", specialty: "Full-line plumbing" },
+  ],
+  "Amarillo": [
+    { name: "Ferguson — Amarillo", phone: "(806) 372-5521", address: "2700 W 10th Ave, Amarillo TX 79106", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+    { name: "Moore Supply Co. — Amarillo", phone: "(806) 374-5551", address: "1800 S Georgia St, Amarillo TX 79102", url: "mooresupply.com", specialty: "Full-line plumbing" },
+  ],
+  "Beaumont": [
+    { name: "Ferguson — Beaumont", phone: "(409) 833-4571", address: "3960 N Major Dr, Beaumont TX 77713", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+    { name: "Moore Supply Co. — Beaumont", phone: "(409) 832-5551", address: "2950 N Major Dr, Beaumont TX 77713", url: "mooresupply.com", specialty: "Full-line plumbing" },
+    { name: "Hajoca — Beaumont", phone: "(409) 833-5200", address: "3800 N Major Dr, Beaumont TX 77713", url: "hajoca.com", specialty: "Wholesale plumbing" },
+  ],
+  "Laredo": [
+    { name: "Ferguson — Laredo", phone: "(956) 726-5551", address: "4710 San Dario Ave, Laredo TX 78041", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+    { name: "Moore Supply Co. — Laredo", phone: "(956) 724-5551", address: "4500 San Bernardo Ave, Laredo TX 78041", url: "mooresupply.com", specialty: "Full-line plumbing" },
+  ],
+  "Midland": [
+    { name: "Ferguson — Midland", phone: "(432) 682-5571", address: "3501 W Illinois Ave, Midland TX 79703", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+    { name: "Moore Supply Co. — Midland", phone: "(432) 684-5551", address: "2800 W Texas Ave, Midland TX 79701", url: "mooresupply.com", specialty: "Full-line plumbing" },
+    { name: "Hajoca — Midland", phone: "(432) 682-5200", address: "3400 W Illinois Ave, Midland TX 79703", url: "hajoca.com", specialty: "Wholesale plumbing" },
+  ],
+  "Wichita Falls": [
+    { name: "Ferguson — Wichita Falls", phone: "(940) 766-5551", address: "2400 Maurine St, Wichita Falls TX 76304", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+    { name: "Moore Supply Co. — Wichita Falls", phone: "(940) 723-5551", address: "1800 10th St, Wichita Falls TX 76301", url: "mooresupply.com", specialty: "Full-line plumbing" },
+  ],
+  "San Angelo": [
+    { name: "Ferguson — San Angelo", phone: "(325) 655-5551", address: "4201 Knickerbocker Rd, San Angelo TX 76904", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+    { name: "Moore Supply Co. — San Angelo", phone: "(325) 653-5551", address: "2500 W Beauregard Ave, San Angelo TX 76901", url: "mooresupply.com", specialty: "Full-line plumbing" },
+  ],
+  "Victoria": [
+    { name: "Ferguson — Victoria", phone: "(361) 575-5551", address: "5302 N Navarro St, Victoria TX 77904", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+    { name: "Moore Supply Co. — Victoria", phone: "(361) 572-5551", address: "3800 N Laurent St, Victoria TX 77901", url: "mooresupply.com", specialty: "Full-line plumbing" },
+  ],
+  "Longview": [
+    { name: "Ferguson — Longview", phone: "(903) 758-5551", address: "3001 Judson Rd, Longview TX 75605", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+    { name: "Moore Supply Co. — Longview", phone: "(903) 753-5551", address: "2200 W Marshall Ave, Longview TX 75604", url: "mooresupply.com", specialty: "Full-line plumbing" },
+  ],
+  "College Station": [
+    { name: "Ferguson — Bryan/College Station", phone: "(979) 822-5551", address: "3401 E 29th St, Bryan TX 77802", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
+    { name: "Moore Supply Co. — Bryan", phone: "(979) 823-5551", address: "2800 S College Ave, Bryan TX 77801", url: "mooresupply.com", specialty: "Full-line plumbing" },
+  ],
 };
 
 // Get suppliers for a city — falls back to nearest major metro
 const getSuppliersForCity = (cityName) => {
   if (REGIONAL_SUPPLIERS[cityName]) return REGIONAL_SUPPLIERS[cityName];
   const metroMap = {
+    // Austin metro (512/737)
     "Georgetown": "Austin", "Round Rock": "Austin", "Cedar Park": "Austin",
     "Leander": "Austin", "Pflugerville": "Austin", "Hutto": "Austin",
     "Kyle": "Austin", "Buda": "Austin", "San Marcos": "Austin",
-    "New Braunfels": "San Antonio", "Schertz": "San Antonio", "Converse": "San Antonio",
-    "Boerne": "San Antonio", "Cibolo": "San Antonio", "Seguin": "San Antonio",
+    "Taylor": "Austin", "Elgin": "Austin", "Bastrop": "Austin",
+    "Liberty Hill": "Austin", "Manor": "Austin", "Lockhart": "Austin",
+    "Marble Falls": "Austin", "Burnet": "Austin",
+    // Hill Country (closest to Austin or San Antonio)
+    "Fredericksburg": "San Antonio", "Kerrville": "San Antonio",
+    "Boerne": "San Antonio", "Llano": "Austin",
+    // San Antonio metro (210)
+    "New Braunfels": "San Antonio", "Schertz": "San Antonio",
+    "Converse": "San Antonio", "Cibolo": "San Antonio", "Seguin": "San Antonio",
+    "Laredo": "Laredo",
+    // Houston metro (713/281/346)
+    "Pearland": "Houston", "Sugar Land": "Houston", "League City": "Houston",
+    "Missouri City": "Houston", "Baytown": "Houston", "Pasadena": "Houston",
+    "Katy": "Houston", "Conroe": "Houston", "Humble": "Houston",
+    "Friendswood": "Houston", "Deer Park": "Houston", "Dickinson": "Houston",
+    "Stafford": "Houston", "Alvin": "Houston", "Angleton": "Houston",
+    "Texas City": "Houston", "Galveston": "Houston",
+    // Beaumont/Southeast Texas (409)
+    "Port Arthur": "Beaumont", "Nederland": "Beaumont", "Lumberton": "Beaumont",
+    // DFW — Dallas side (214/972/469)
     "Plano": "Dallas", "Frisco": "Dallas", "McKinney": "Dallas", "Allen": "Dallas",
     "Garland": "Dallas", "Irving": "Dallas", "Carrollton": "Dallas",
     "Richardson": "Dallas", "Mesquite": "Dallas", "Grand Prairie": "Dallas",
-    "Arlington": "Fort Worth", "Mansfield": "Fort Worth", "Burleson": "Fort Worth",
     "Flower Mound": "Dallas", "Lewisville": "Dallas", "Denton": "Dallas",
-    "Southlake": "Fort Worth", "Keller": "Fort Worth",
-    "Pearland": "Houston", "Sugar Land": "Houston", "League City": "Houston",
-    "Missouri City": "Houston", "Baytown": "Houston", "Pasadena": "Houston",
-    "Beaumont": "Houston", "Texas City": "Houston", "Galveston": "Houston",
-    "Waco": "Austin", "Temple": "Austin", "Killeen": "Austin",
-    "Marble Falls": "Austin", "Burnet": "Austin", "Llano": "Austin", "Fredericksburg": "Austin",
-    "Lubbock": "Lubbock", "Amarillo": "Lubbock",
-    "Midland": "El Paso", "Odessa": "El Paso",
-    "Corpus Christi": "Corpus Christi",
+    "The Colony": "Dallas", "Little Elm": "Dallas", "Prosper": "Dallas",
+    "Celina": "Dallas", "Anna": "Dallas", "Wylie": "Dallas",
+    "Rowlett": "Dallas", "Sachse": "Dallas", "Rockwall": "Dallas",
+    "Red Oak": "Dallas", "Ennis": "Dallas", "Waxahachie": "Dallas",
+    "DeSoto": "Dallas", "Lancaster": "Dallas", "Cedar Hill": "Dallas",
+    "Duncanville": "Dallas", "Midlothian": "Dallas", "Corsicana": "Dallas",
+    "Forney": "Dallas",
+    // DFW — Fort Worth side (817)
+    "Arlington": "Fort Worth", "Mansfield": "Fort Worth", "Burleson": "Fort Worth",
+    "Southlake": "Fort Worth", "Keller": "Fort Worth", "Grapevine": "Fort Worth",
+    "Euless": "Fort Worth", "Hurst": "Fort Worth", "Bedford": "Fort Worth",
+    "North Richland Hills": "Fort Worth", "Coppell": "Fort Worth",
+    "Weatherford": "Fort Worth", "Granbury": "Fort Worth",
+    "Cleburne": "Fort Worth", "Joshua": "Fort Worth",
+    "Stephenville": "Fort Worth",
+    // Waco/Central Texas (254)
+    "Waco": "Waco", "Temple": "Killeen", "Belton": "Killeen",
+    "Harker Heights": "Killeen", "Copperas Cove": "Killeen",
+    // East Texas (903)
+    "Tyler": "Tyler", "Longview": "Longview",
+    "Lufkin": "Tyler", "Nacogdoches": "Tyler", "Jacksonville": "Tyler",
+    "Marshall": "Longview", "Texarkana": "Longview",
+    "Athens": "Tyler", "Mount Pleasant": "Longview",
+    "Sulphur Springs": "Longview",
+    // West Texas (432)
+    "Midland": "Midland", "Odessa": "Midland",
+    // Panhandle (806)
+    "Amarillo": "Amarillo", "Lubbock": "Lubbock",
+    // Northwest Texas (940)
+    "Wichita Falls": "Wichita Falls", "Sherman": "Dallas",
+    "Aubrey": "Dallas",
+    // Rio Grande Valley (956)
+    "Edinburg": "McAllen", "Mission": "McAllen", "Pharr": "McAllen",
+    "Harlingen": "McAllen", "Brownsville": "McAllen",
+    "San Juan": "McAllen", "Weslaco": "McAllen",
+    // Coastal Bend (361)
+    "Corpus Christi": "Corpus Christi", "Victoria": "Victoria",
+    // Central Texas other
+    "San Angelo": "San Angelo",
+    "College Station": "College Station",
+    "Huntsville": "Houston",
   };
   const metro = metroMap[cityName];
   if (metro && REGIONAL_SUPPLIERS[metro]) return REGIONAL_SUPPLIERS[metro];
-  return REGIONAL_SUPPLIERS["Dallas"]; // default fallback
+  return null; // no suppliers shown rather than wrong city
 };
 
 // Smart buy store ordering based on part type
@@ -1636,42 +1744,26 @@ function IdentifyScreen({ t, lang }) {
                 </div>
               )}
               {error && <div style={{ background: "#2a1a1a", border: "1px solid #6a2a2a", borderRadius: 10, padding: "10px 14px", marginBottom: 16, fontFamily: "'Lora',serif", fontSize: 13, color: "#c87a60" }}>{error}</div>}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "10px 14px", marginBottom: 16 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  <span style={{ fontSize: 18 }}>🔊</span>
-                  <div>
-                    <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, fontWeight: 600, color: "#e0e8f0" }}>{lang === "en" ? "Voice Readout" : "Lectura por Voz"}</div>
-                    <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#3a5a6a" }}>{lang === "en" ? "Bob speaks results aloud" : "Bob lee los resultados"}</div>
-                  </div>
-                </div>
-                <div onClick={() => setVoiceEnabled(v => !v)} style={{ width: 44, height: 24, background: voiceEnabled ? "#c85a30" : "#2a3038", borderRadius: 12, position: "relative", cursor: "pointer", transition: "background .2s" }}>
-                  <div style={{ position: "absolute", top: 2, left: voiceEnabled ? 22 : 2, width: 20, height: 20, background: "#fff", borderRadius: "50%", transition: "left .2s" }} />
-                </div>
-              </div>
-              <input ref={fileRef} type="file" accept="image/*" capture="environment" style={{ display: "none" }} onChange={e => handleImage(e.target.files[0])} />
-              <input ref={galleryRef} type="file" accept="image/*" style={{ display: "none" }} onChange={e => handleImage(e.target.files[0])} />
-              <div className="upload-zone" onClick={() => { if (!isOnline) return; unlockAudio(); fileRef.current && fileRef.current.click(); }} style={{ opacity: isOnline ? 1 : 0.4, cursor: isOnline ? "pointer" : "not-allowed" }}>
-                <div style={{ width: 72, height: 72, background: "linear-gradient(135deg,#2a1a0f,#3a2a1a)", border: "2px solid #c85a30", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
-                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#c85a30" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                </div>
-                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 18, letterSpacing: ".08em", color: "#e0e8f0", marginBottom: 6 }}>{t.identifyTap}</div>
-              </div>
-              <div onClick={() => { if (!isOnline) return; unlockAudio(); galleryRef.current && galleryRef.current.click(); }} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 12, padding: "12px 16px", marginTop: 10, cursor: isOnline ? "pointer" : "not-allowed", opacity: isOnline ? 1 : 0.4 }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7acae0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 600, fontSize: 15, letterSpacing: ".06em", color: "#7acae0" }}>{lang === "en" ? "UPLOAD FROM CAMERA ROLL" : "SUBIR DESDE LA GALERIA"}</span>
-              </div>
+
+              {/* RECENT HISTORY — prominent, above camera */}
               {recentHistory.length > 0 && (
-                <div style={{ marginTop: 24 }}>
-                  <div onClick={() => setShowHistory(h => !h)} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer", marginBottom: 10 }}>
-                    <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 13, letterSpacing: ".08em", color: "#4a6a7a" }}>{lang === "en" ? "RECENT (" + recentHistory.length + ")" : "RECIENTES (" + recentHistory.length + ")"}</div>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4a6a7a" strokeWidth="2" strokeLinecap="round" style={{ transform: showHistory ? "rotate(180deg)" : "none", transition: "transform .2s" }}><polyline points="6 9 12 15 18 9"/></svg>
+                <div style={{ marginBottom: 16 }}>
+                  <div onClick={() => setShowHistory(h => !h)} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#1a2a3a", border: "1px solid #2a4a6a", borderRadius: 10, padding: "12px 14px", cursor: "pointer", marginBottom: showHistory ? 8 : 0 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <span style={{ fontSize: 18 }}>🕐</span>
+                      <div>
+                        <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 15, letterSpacing: ".06em", color: "#7acae0" }}>{lang === "en" ? "RECENT IDENTIFICATIONS" : "IDENTIFICACIONES RECIENTES"}</div>
+                        <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#3a5a6a" }}>{recentHistory.length} {lang === "en" ? "saved — tap to reload" : "guardadas — toca para ver"}</div>
+                      </div>
+                    </div>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4a7a9a" strokeWidth="2" strokeLinecap="round" style={{ transform: showHistory ? "rotate(180deg)" : "none", transition: "transform .2s", flexShrink: 0 }}><polyline points="6 9 12 15 18 9"/></svg>
                   </div>
                   {showHistory && (
                     <div>
                       {recentHistory.map(function(entry) {
                         return (
                           <div key={entry.id} onClick={() => { setPartsEn(entry.partsEn); setPartsEs(entry.partsEs); setImagePreview(entry.imagePreview); setPhase("results"); }} style={{ display: "flex", gap: 12, alignItems: "center", background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "10px 12px", marginBottom: 8, cursor: "pointer" }}>
-                            {entry.imagePreview && <img src={entry.imagePreview} alt="" style={{ width: 44, height: 44, objectFit: "cover", borderRadius: 6, flexShrink: 0 }} />}
+                            {entry.imagePreview && <img src={entry.imagePreview} alt="" style={{ width: 48, height: 48, objectFit: "cover", borderRadius: 8, flexShrink: 0 }} />}
                             <div style={{ flex: 1, minWidth: 0 }}>
                               <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, fontWeight: 600, color: "#c0d0d8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{entry.summary}</div>
                               <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#3a5a6a" }}>{entry.timestamp}</div>
@@ -1687,6 +1779,30 @@ function IdentifyScreen({ t, lang }) {
                   )}
                 </div>
               )}
+
+              <input ref={fileRef} type="file" accept="image/*" capture="environment" style={{ display: "none" }} onChange={e => handleImage(e.target.files[0])} />
+              <input ref={galleryRef} type="file" accept="image/*" style={{ display: "none" }} onChange={e => handleImage(e.target.files[0])} />
+              <div className="upload-zone" onClick={() => { if (!isOnline) return; unlockAudio(); fileRef.current && fileRef.current.click(); }} style={{ opacity: isOnline ? 1 : 0.4, cursor: isOnline ? "pointer" : "not-allowed" }}>
+                <div style={{ width: 72, height: 72, background: "linear-gradient(135deg,#2a1a0f,#3a2a1a)", border: "2px solid #c85a30", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#c85a30" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                </div>
+                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 18, letterSpacing: ".08em", color: "#e0e8f0", marginBottom: 6 }}>{t.identifyTap}</div>
+              </div>
+              <div onClick={() => { if (!isOnline) return; unlockAudio(); galleryRef.current && galleryRef.current.click(); }} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 12, padding: "12px 16px", marginTop: 10, cursor: isOnline ? "pointer" : "not-allowed", opacity: isOnline ? 1 : 0.4 }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7acae0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 600, fontSize: 15, letterSpacing: ".06em", color: "#7acae0" }}>{lang === "en" ? "UPLOAD FROM CAMERA ROLL" : "SUBIR DESDE LA GALERIA"}</span>
+              </div>
+
+              {/* VOICE READOUT — small, below camera buttons */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 4px", marginTop: 10 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span style={{ fontSize: 14 }}>🔊</span>
+                  <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, color: "#3a5a6a", letterSpacing: ".04em" }}>{lang === "en" ? "Voice readout" : "Lectura por voz"}</span>
+                </div>
+                <div onClick={() => setVoiceEnabled(v => !v)} style={{ width: 36, height: 20, background: voiceEnabled ? "#c85a30" : "#2a3038", borderRadius: 10, position: "relative", cursor: "pointer", transition: "background .2s" }}>
+                  <div style={{ position: "absolute", top: 2, left: voiceEnabled ? 18 : 2, width: 16, height: 16, background: "#fff", borderRadius: "50%", transition: "left .2s" }} />
+                </div>
+              </div>
             </div>
           )}
 
