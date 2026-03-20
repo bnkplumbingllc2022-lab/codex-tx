@@ -728,6 +728,7 @@ const REGIONAL_SUPPLIERS = {
     { name: "Moore Supply Co. - Marble Falls", phone: "(830) 693-1023", address: "2515 Commerce St, Marble Falls TX 78654", url: "mooresupply.com", specialty: "Full-line plumbing, showroom & counter sales" },
     { name: "Ferguson - Austin (North)", phone: "(512) 836-9555", address: "8700 Research Blvd, Austin TX 78758", url: "ferguson.com", specialty: "Full-line plumbing, waterworks (nearest Ferguson)" },
   ],
+  "Waco": [
     { name: "Ferguson - Waco", phone: "(254) 753-0302", address: "1501 N 19th St, Waco TX 76707", url: "ferguson.com", specialty: "Full-line plumbing, waterworks" },
     { name: "Moore Supply Co. - Waco", phone: "(254) 754-5551", address: "1900 Franklin Ave, Waco TX 76701", url: "mooresupply.com", specialty: "Full-line plumbing" },
     { name: "Hajoca - Waco", phone: "(254) 753-5551", address: "1800 N 19th St, Waco TX 76707", url: "hajoca.com", specialty: "Wholesale plumbing" },
