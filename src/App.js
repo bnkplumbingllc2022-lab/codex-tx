@@ -951,6 +951,27 @@ export default function App() {
     setAuthLoading(false);
   };
 
+  const doGoogleAuth = () => {
+    const SUPABASE_URL = "https://mgvrvvhbhhgwihkrrlge.supabase.co";
+    const redirectTo = encodeURIComponent(window.location.origin);
+    window.location.href = `${SUPABASE_URL}/auth/v1/authorize?provider=google&redirect_to=${redirectTo}`;
+  };
+
+  // Handle Google OAuth redirect callback
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash && hash.includes("access_token")) {
+      const params = new URLSearchParams(hash.replace("#", "?"));
+      const token = params.get("access_token");
+      const email = params.get("email") || "Google User";
+      if (token) {
+        setAuthUser({ email });
+        setAuthed(true);
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+    }
+  }, []);
+
   const authScreen_JSX = (
     <div style={{ minHeight: "100vh", background: "linear-gradient(160deg,#0e1215 60%,#1a1408 100%)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px 20px" }}>
       <div style={{ width: "100%", maxWidth: 400 }}>
@@ -986,6 +1007,19 @@ export default function App() {
           {authError && <div style={{ background: "#2a1a1a", border: "1px solid #8a2a2a", borderRadius: 10, padding: "10px 14px", fontFamily: "'Lora',serif", fontSize: 13, color: "#f08060" }}>{authError}</div>}
           <button onClick={() => doAuth(authScreen)} disabled={authLoading} style={{ background: authLoading ? "#1a1a1a" : "linear-gradient(135deg,#d4820a,#8a5006)", border: "none", borderRadius: 12, padding: "16px", cursor: authLoading ? "not-allowed" : "pointer", fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 16, letterSpacing: ".08em", color: authLoading ? "#3a3a3a" : "#fff", marginTop: 4, boxShadow: authLoading ? "none" : "0 4px 20px rgba(212,130,10,.3)" }}>
             {authLoading ? "PLEASE WAIT..." : authScreen === "login" ? "SIGN IN" : "CREATE ACCOUNT"}
+          </button>
+
+          {/* Divider */}
+          <div style={{ display: "flex", alignItems: "center", gap: 10, margin: "4px 0" }}>
+            <div style={{ flex: 1, height: 1, background: "#2a3540" }} />
+            <span style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#3a5a6a" }}>or</span>
+            <div style={{ flex: 1, height: 1, background: "#2a3540" }} />
+          </div>
+
+          {/* Google Sign In */}
+          <button onClick={() => doGoogleAuth()} style={{ background: "#fff", border: "none", borderRadius: 12, padding: "14px 16px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, width: "100%", boxShadow: "0 2px 8px rgba(0,0,0,.3)" }}>
+            <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
+            <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 15, letterSpacing: ".06em", color: "#333" }}>CONTINUE WITH GOOGLE</span>
           </button>
         </div>
         <div style={{ textAlign: "center", marginTop: 24, fontFamily: "'Lora',serif", fontSize: 12, color: "#3a5a6a" }}>
@@ -1631,7 +1665,8 @@ function IdentifyScreen({ t, lang }) {
   const fileRef = useRef(null);
   const galleryRef = useRef(null);
   const jobFileRef = useRef(null);
-  const synthRef = useRef(window.speechSynthesis);
+  const synthRef = useRef(null);
+  const audioRef = useRef(null);
 
   // Track online/offline status
   useEffect(() => {
@@ -1650,32 +1685,56 @@ function IdentifyScreen({ t, lang }) {
   const setParts = lang === "es" ? setPartsEs : setPartsEn;
 
   const unlockAudio = () => {
-    // iOS requires audio to be triggered by a direct user gesture
-    // We play a silent utterance on the camera tap to unlock the audio engine
-    const utt = new SpeechSynthesisUtterance("");
-    utt.volume = 0;
-    synthRef.current.speak(utt);
+    // iOS requires audio context unlock on user gesture
+    if (!audioRef.current) {
+      audioRef.current = new Audio();
+    }
   };
 
-  const speak = (text) => {
+  const speak = async (text) => {
     if (!voiceEnabled || !text) return;
-    synthRef.current.cancel();
-    // Small delay gives iOS time to process after the async API call
-    setTimeout(() => {
-      const utt = new SpeechSynthesisUtterance(text);
-      utt.lang = lang === "es" ? "es-MX" : "en-US";
-      utt.rate = 0.92;
-      utt.pitch = 1;
-      utt.volume = 1;
-      utt.onstart = () => setIsSpeaking(true);
-      utt.onend = () => setIsSpeaking(false);
-      utt.onerror = () => setIsSpeaking(false);
-      synthRef.current.speak(utt);
-    }, 100);
+    stopSpeaking();
+    try {
+      setIsSpeaking(true);
+      const res = await fetch("/api/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, lang }),
+      });
+      const data = await res.json();
+      if (data.audioContent) {
+        const audio = new Audio("data:audio/mp3;base64," + data.audioContent);
+        audioRef.current = audio;
+        audio.onended = () => setIsSpeaking(false);
+        audio.onerror = () => setIsSpeaking(false);
+        audio.play();
+      } else {
+        // Fallback to browser TTS if Google fails
+        const utt = new SpeechSynthesisUtterance(text);
+        utt.lang = lang === "es" ? "es-MX" : "en-US";
+        utt.rate = 0.92;
+        utt.onstart = () => setIsSpeaking(true);
+        utt.onend = () => setIsSpeaking(false);
+        window.speechSynthesis.speak(utt);
+      }
+    } catch(e) {
+      setIsSpeaking(false);
+      // Fallback to browser TTS
+      try {
+        const utt = new SpeechSynthesisUtterance(text);
+        utt.lang = lang === "es" ? "es-MX" : "en-US";
+        utt.onend = () => setIsSpeaking(false);
+        window.speechSynthesis.speak(utt);
+      } catch(e2) { setIsSpeaking(false); }
+    }
   };
 
   const stopSpeaking = () => {
-    synthRef.current.cancel();
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+    try { window.speechSynthesis.cancel(); } catch(e) {}
     setIsSpeaking(false);
   };
 
