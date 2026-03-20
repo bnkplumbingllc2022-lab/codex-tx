@@ -927,59 +927,47 @@ export default function App() {
     setAuthLoading(false);
   };
 
-  if (!authed) {
-    return (
-      <div style={{ minHeight: "100vh", background: "#0f1318", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px 20px" }}>
-        <div style={{ width: "100%", maxWidth: 400 }}>
-          {/* Logo */}
-          <div style={{ textAlign: "center", marginBottom: 36 }}>
-            <div style={{ width: 56, height: 56, background: "linear-gradient(135deg,#2a6a8a,#1a4a6a)", borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, margin: "0 auto 14px" }}>🔧</div>
-            <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 32, letterSpacing: ".1em", color: "#e0e8f0" }}>CODEX TX</div>
-            <div style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 13, color: "#3a5a6a", marginTop: 4 }}>Texas Plumbing Code Reference</div>
-          </div>
-
-          {/* Tab toggle */}
-          <div style={{ display: "flex", background: "#1a1f24", borderRadius: 10, padding: 4, marginBottom: 24 }}>
-            {["login","signup"].map(tab => (
-              <button key={tab} onClick={() => { setAuthScreen(tab); setAuthError(""); }} style={{ flex: 1, padding: "10px", borderRadius: 8, border: "none", cursor: "pointer", background: authScreen === tab ? "#2a3a4a" : "transparent", fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 14, letterSpacing: ".06em", color: authScreen === tab ? "#7acae0" : "#3a5a6a", transition: "all .2s" }}>
-                {tab === "login" ? "SIGN IN" : "CREATE ACCOUNT"}
-              </button>
-            ))}
-          </div>
-
-          {/* Form */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {authScreen === "signup" && (
-              <div>
-                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#4a6a7a", letterSpacing: ".08em", marginBottom: 6 }}>INVITE CODE</div>
-                <input value={authInvite} onChange={e => setAuthInvite(e.target.value)} placeholder="CODEX-001" style={{ width: "100%", background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "12px 14px", color: "#e0e8f0", fontFamily: "'Barlow Condensed',sans-serif", fontSize: 16, letterSpacing: ".06em", boxSizing: "border-box", outline: "none" }} />
-              </div>
-            )}
-            <div>
-              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#4a6a7a", letterSpacing: ".08em", marginBottom: 6 }}>EMAIL</div>
-              <input type="email" value={authEmail} onChange={e => setAuthEmail(e.target.value)} placeholder="you@example.com" style={{ width: "100%", background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "12px 14px", color: "#e0e8f0", fontFamily: "'Lora',serif", fontSize: 15, boxSizing: "border-box", outline: "none" }} />
-            </div>
-            <div>
-              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#4a6a7a", letterSpacing: ".08em", marginBottom: 6 }}>PASSWORD</div>
-              <input type="password" value={authPassword} onChange={e => setAuthPassword(e.target.value)} placeholder="Min 6 characters" onKeyDown={e => e.key === "Enter" && doAuth(authScreen)} style={{ width: "100%", background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "12px 14px", color: "#e0e8f0", fontFamily: "'Lora',serif", fontSize: 15, boxSizing: "border-box", outline: "none" }} />
-            </div>
-
-            {authError && (
-              <div style={{ background: "#2a1a1a", border: "1px solid #6a2a2a", borderRadius: 10, padding: "10px 14px", fontFamily: "'Lora',serif", fontSize: 13, color: "#c87a60" }}>{authError}</div>
-            )}
-
-            <button onClick={() => doAuth(authScreen)} disabled={authLoading} style={{ background: authLoading ? "#1a2a3a" : "linear-gradient(135deg,#2a6a8a,#1a4a6a)", border: "none", borderRadius: 12, padding: "16px", cursor: authLoading ? "not-allowed" : "pointer", fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 16, letterSpacing: ".08em", color: authLoading ? "#3a5a6a" : "#e0e8f0", marginTop: 4, transition: "all .2s" }}>
-              {authLoading ? "PLEASE WAIT..." : authScreen === "login" ? "SIGN IN" : "CREATE ACCOUNT"}
+  const authScreen_JSX = (
+    <div style={{ minHeight: "100vh", background: "#0f1318", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px 20px" }}>
+      <div style={{ width: "100%", maxWidth: 400 }}>
+        <div style={{ textAlign: "center", marginBottom: 36 }}>
+          <div style={{ width: 56, height: 56, background: "linear-gradient(135deg,#2a6a8a,#1a4a6a)", borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, margin: "0 auto 14px" }}>🔧</div>
+          <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 32, letterSpacing: ".1em", color: "#e0e8f0" }}>CODEX TX</div>
+          <div style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 13, color: "#3a5a6a", marginTop: 4 }}>Texas Plumbing Code Reference</div>
+        </div>
+        <div style={{ display: "flex", background: "#1a1f24", borderRadius: 10, padding: 4, marginBottom: 24 }}>
+          {["login","signup"].map(tab => (
+            <button key={tab} onClick={() => { setAuthScreen(tab); setAuthError(""); }} style={{ flex: 1, padding: "10px", borderRadius: 8, border: "none", cursor: "pointer", background: authScreen === tab ? "#2a3a4a" : "transparent", fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 14, letterSpacing: ".06em", color: authScreen === tab ? "#7acae0" : "#3a5a6a", transition: "all .2s" }}>
+              {tab === "login" ? "SIGN IN" : "CREATE ACCOUNT"}
             </button>
+          ))}
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {authScreen === "signup" && (
+            <div>
+              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#4a6a7a", letterSpacing: ".08em", marginBottom: 6 }}>INVITE CODE</div>
+              <input autoComplete="off" value={authInvite} onChange={e => setAuthInvite(e.target.value)} placeholder="CODEX-001" style={{ width: "100%", background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "12px 14px", color: "#e0e8f0", fontFamily: "'Barlow Condensed',sans-serif", fontSize: 16, letterSpacing: ".06em", boxSizing: "border-box", outline: "none" }} />
+            </div>
+          )}
+          <div>
+            <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#4a6a7a", letterSpacing: ".08em", marginBottom: 6 }}>EMAIL</div>
+            <input type="email" autoComplete="email" value={authEmail} onChange={e => setAuthEmail(e.target.value)} placeholder="you@example.com" style={{ width: "100%", background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "12px 14px", color: "#e0e8f0", fontFamily: "'Lora',serif", fontSize: 15, boxSizing: "border-box", outline: "none" }} />
           </div>
-
-          <div style={{ textAlign: "center", marginTop: 24, fontFamily: "'Lora',serif", fontSize: 12, color: "#2a4a5a" }}>
-            {authScreen === "login" ? "Need access? Contact your administrator for an invite code." : "Already have an account? Switch to Sign In above."}
+          <div>
+            <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#4a6a7a", letterSpacing: ".08em", marginBottom: 6 }}>PASSWORD</div>
+            <input type="password" autoComplete="current-password" value={authPassword} onChange={e => setAuthPassword(e.target.value)} placeholder="Min 6 characters" onKeyDown={e => e.key === "Enter" && doAuth(authScreen)} style={{ width: "100%", background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "12px 14px", color: "#e0e8f0", fontFamily: "'Lora',serif", fontSize: 15, boxSizing: "border-box", outline: "none" }} />
           </div>
+          {authError && <div style={{ background: "#2a1a1a", border: "1px solid #6a2a2a", borderRadius: 10, padding: "10px 14px", fontFamily: "'Lora',serif", fontSize: 13, color: "#c87a60" }}>{authError}</div>}
+          <button onClick={() => doAuth(authScreen)} disabled={authLoading} style={{ background: authLoading ? "#1a2a3a" : "linear-gradient(135deg,#2a6a8a,#1a4a6a)", border: "none", borderRadius: 12, padding: "16px", cursor: authLoading ? "not-allowed" : "pointer", fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 16, letterSpacing: ".08em", color: authLoading ? "#3a5a6a" : "#e0e8f0", marginTop: 4 }}>
+            {authLoading ? "PLEASE WAIT..." : authScreen === "login" ? "SIGN IN" : "CREATE ACCOUNT"}
+          </button>
+        </div>
+        <div style={{ textAlign: "center", marginTop: 24, fontFamily: "'Lora',serif", fontSize: 12, color: "#2a4a5a" }}>
+          {authScreen === "login" ? "Need access? Contact your administrator for an invite code." : "Already have an account? Switch to Sign In above."}
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 
   // ── MAIN APP STATE ───────────────────────────────────────
   const [lang, setLang] = useState("en");
@@ -1040,6 +1028,8 @@ export default function App() {
   const cityCount = sortedJ.length;
 
   const callPhone = (phone) => { window.location.href = `tel:${phone.replace(/[^0-9]/g, '')}`; };
+
+  if (!authed) return authScreen_JSX;
 
   return (
     <div style={{ fontFamily: "'Georgia',serif", background: "#111518", minHeight: "100vh", maxWidth: 430, margin: "0 auto", display: "flex", flexDirection: "column" }}>
