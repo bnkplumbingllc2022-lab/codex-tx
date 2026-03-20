@@ -1160,17 +1160,17 @@ export default function App() {
 
       {voiceStatus && <div className="vb"><Icon name="mic" size={14} color={isListening ? "#c85a30" : "#7acae0"} /><span style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 13, color: isListening ? "#c87a60" : "#7acae0", flex: 1 }}>{voiceStatus}</span></div>}
 
+      {/* Texas silhouette — always visible behind all screens */}
+      <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", opacity: 0.055, pointerEvents: "none", zIndex: 0, width: 340, height: 320, maxWidth: "80vw" }}>
+        <svg viewBox="0 0 500 480" fill="#d4820a" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "100%" }}>
+          <path d="M 430 10 L 430 30 L 450 30 L 450 50 L 470 50 L 470 70 L 490 70 L 490 30 L 470 30 L 470 10 Z M 390 10 L 430 10 L 430 30 L 390 30 Z M 370 30 L 390 30 L 390 50 L 370 50 Z M 350 50 L 370 50 L 370 70 L 350 70 Z M 10 70 L 350 70 L 350 50 L 370 50 L 370 30 L 390 30 L 390 10 L 430 10 L 430 30 L 450 30 L 450 50 L 470 50 L 470 70 L 490 70 L 490 110 L 470 110 L 470 130 L 460 140 L 460 160 L 450 170 L 450 190 L 440 200 L 430 200 L 420 210 L 410 220 L 400 230 L 390 240 L 380 250 L 370 260 L 360 265 L 355 280 L 350 295 L 345 310 L 340 325 L 335 340 L 330 355 L 325 365 L 320 375 L 315 385 L 310 395 L 305 405 L 300 415 L 295 425 L 290 435 L 285 445 L 280 455 L 275 460 L 265 460 L 255 455 L 250 445 L 245 435 L 240 425 L 235 420 L 225 420 L 215 425 L 205 430 L 195 430 L 185 425 L 175 415 L 165 405 L 155 395 L 145 385 L 135 375 L 125 365 L 115 355 L 105 345 L 95 335 L 85 325 L 75 315 L 65 305 L 55 295 L 45 285 L 35 275 L 25 265 L 15 255 L 10 245 L 10 70 Z" />
+        </svg>
+      </div>
       <div className="cnt">
 
         {/* HOME */}
         {screen === "home" && (
           <div style={{ position: "relative" }}>
-            {/* Texas silhouette watermark */}
-            <div style={{ position: "absolute", top: -10, right: -10, opacity: 0.06, pointerEvents: "none", zIndex: 0 }}>
-              <svg width="220" height="200" viewBox="0 0 500 430" fill="#d4820a" xmlns="http://www.w3.org/2000/svg">
-                <path d="M480,20 L480,80 L460,80 L460,100 L440,100 L440,120 L420,120 L420,140 L160,140 L140,160 L120,160 L100,180 L80,180 L60,200 L40,200 L20,220 L20,260 L40,280 L40,300 L60,320 L80,340 L100,360 L120,370 L140,380 L160,390 L180,395 L190,410 L200,420 L220,415 L230,400 L250,395 L260,380 L270,370 L290,365 L310,370 L320,385 L330,400 L340,410 L360,415 L370,400 L380,385 L390,375 L410,370 L430,360 L450,340 L460,320 L470,300 L480,280 L490,260 L490,240 L480,220 L470,200 L460,180 L460,160 L470,140 L480,120 L490,100 L490,60 L480,40 Z"/>
-              </svg>
-            </div>
             <div style={{ position: "relative", zIndex: 1, marginBottom: 20 }}>
               <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 34, letterSpacing: ".04em", color: "#e8f0f8", lineHeight: 1.1, marginBottom: 6 }}>{t.tagline.split(".")[0]}.<br /><span style={{ color: "#d4820a" }}>{t.tagline.split(".")[1]}</span></div>
               <div style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 14, color: "#4a6a7a", lineHeight: 1.6 }}>{cityCount} {t.taglineSub}</div>
