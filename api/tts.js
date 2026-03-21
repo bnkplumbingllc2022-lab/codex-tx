@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     const apiKey = process.env.GOOGLE_TTS_KEY || "AIzaSyBBbeRX9ycA67jWBQHUvyHYUH52-A_iMwg";
 
     const languageCode = lang === "es" ? "es-US" : "en-US";
-    const voiceName = lang === "es" ? "es-US-Journey-F" : "en-US-Journey-F";
+    const voiceName = lang === "es" ? "es-US-Journey-D" : "en-US-Journey-D";
 
     const ttsRes = await fetch(
       `https://texttospeech.googleapis.com/v1/text:synthesize?key=${apiKey}`,
