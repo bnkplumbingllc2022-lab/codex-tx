@@ -967,13 +967,86 @@ const Icon = ({ name, size = 20, color = "currentColor" }) => {
 export default function App() {
   // ── AUTH STATE ───────────────────────────────────────────
   const [authed, setAuthed] = useState(false);
-  const [authScreen, setAuthScreen] = useState("login"); // "login" | "signup"
+  const [authScreen, setAuthScreen] = useState("login");
   const [authEmail, setAuthEmail] = useState("");
   const [authPassword, setAuthPassword] = useState("");
   const [authInvite, setAuthInvite] = useState("");
   const [authError, setAuthError] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
   const [authUser, setAuthUser] = useState(null);
+
+  // ── SUBSCRIPTION & USAGE ─────────────────────────────────
+  const [tier, setTier] = useState("free"); // "free" | "basic" | "pro"
+  const [showUpgrade, setShowUpgrade] = useState(false);
+  const [upgradeFeature, setUpgradeFeature] = useState("");
+  const [showLanding, setShowLanding] = useState(true);
+
+  // Usage counters stored in localStorage
+  const getUsage = () => {
+    try { return JSON.parse(localStorage.getItem("codex_usage") || "{}"); } catch(e) { return {}; }
+  };
+  const bumpUsage = (feature) => {
+    const u = getUsage();
+    u[feature] = (u[feature] || 0) + 1;
+    localStorage.setItem("codex_usage", JSON.stringify(u));
+    return u[feature];
+  };
+  const resetUsage = () => localStorage.removeItem("codex_usage");
+
+  // Free tier limits
+  const FREE_LIMITS = { codes: 5, cities: 5, voice: 5, license: 5, inspectors: 5, identify: 5, jobmode: 1, estimate: 1 };
+
+  // Check if action is allowed for current tier
+  const canUse = (feature) => {
+    if (tier === "pro") return true;
+    if (tier === "basic") {
+      // Basic can use codes, cities, voice, license unlimited — not pro features
+      if (["inspectors","identify","jobmode","estimate"].includes(feature)) return false;
+      return true;
+    }
+    // Free tier — check usage count
+    const count = getUsage()[feature] || 0;
+    return count < (FREE_LIMITS[feature] || 5);
+  };
+
+  const useFeature = (feature) => {
+    if (tier === "pro") return true;
+    if (tier === "basic") {
+      if (["inspectors","identify","jobmode","estimate"].includes(feature)) {
+        setUpgradeFeature(feature); setShowUpgrade(true); return false;
+      }
+      return true;
+    }
+    // Free tier
+    const count = bumpUsage(feature);
+    if (count > (FREE_LIMITS[feature] || 5)) {
+      setUpgradeFeature(feature); setShowUpgrade(true); return false;
+    }
+    return true;
+  };
+
+  const checkSubscription = async (email) => {
+    try {
+      const res = await fetch("/api/subscription", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      setTier(data.tier || "free");
+    } catch(e) { setTier("free"); }
+  };
+
+  const startCheckout = async (priceId) => {
+    if (!authUser?.email) return;
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ priceId, email: authUser.email })
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+    } catch(e) { alert("Could not start checkout — please try again"); }
+  };
 
   const doAuth = async (action) => {
     setAuthError(""); setAuthLoading(true);
@@ -984,7 +1057,12 @@ export default function App() {
       const res = await fetch("/api/auth", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
       const data = await res.json();
       if (!data.success) { setAuthError(data.error || "Something went wrong"); }
-      else { setAuthUser(data.user); setAuthed(true); }
+      else {
+        setAuthUser(data.user);
+        setAuthed(true);
+        setShowLanding(false);
+        await checkSubscription(data.user.email);
+      }
     } catch(e) { setAuthError("Network error — check your connection"); }
     setAuthLoading(false);
   };
@@ -995,7 +1073,7 @@ export default function App() {
     window.location.href = `${SUPABASE_URL}/auth/v1/authorize?provider=google&redirect_to=${redirectTo}`;
   };
 
-  // Handle Google OAuth redirect callback
+  // Handle Google OAuth redirect and Stripe return
   useEffect(() => {
     const hash = window.location.hash;
     if (hash && hash.includes("access_token")) {
@@ -1005,8 +1083,19 @@ export default function App() {
       if (token) {
         setAuthUser({ email });
         setAuthed(true);
+        setShowLanding(false);
+        checkSubscription(email);
         window.history.replaceState(null, "", window.location.pathname);
       }
+    }
+    // Handle Stripe successful checkout return
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("upgraded") === "true") {
+      window.history.replaceState(null, "", window.location.pathname);
+      setShowUpgrade(false);
+      setTimeout(() => {
+        if (authUser?.email) checkSubscription(authUser.email);
+      }, 2000);
     }
   }, []);
 
@@ -1123,13 +1212,23 @@ export default function App() {
       const localMatches = CODES.filter(c => {
         const q = stripped.toLowerCase();
         if (q.length < 4) return false;
-        // Must match a tag word exactly or match the title closely — not just appear anywhere in the long plain text
         const titleMatch = (lang === "en" ? c.title : c.titleEs).toLowerCase().includes(q);
         const tagMatch = (c.tags || []).some(tag => stripped.split(" ").some(word => word.length > 4 && tag.toLowerCase() === word));
         return titleMatch || tagMatch;
       });
 
-      if (localMatches.length > 0) {
+      if (localMatches.length === 1) {
+        // Single exact match — jump straight to that code detail and speak it
+        setScreen("codes"); setSelectedCode(localMatches[0]); setShowDiagram(false);
+        const speechText = lang === "en"
+          ? `${localMatches[0].title}. ${localMatches[0].plain.substring(0, 400)}`
+          : `${localMatches[0].titleEs}. ${localMatches[0].plainEs.substring(0, 400)}`;
+        setTimeout(() => speak(speechText), 500);
+        setTimeout(() => setVoiceStatus(""), 3000); return;
+      }
+
+      if (localMatches.length > 1) {
+        // Multiple matches — show the list filtered
         setScreen("codes"); setSearchQuery(stripped); setSelectedCode(null);
         setTimeout(() => setVoiceStatus(""), 3000); return;
       }
@@ -1169,7 +1268,106 @@ export default function App() {
   const saveLicense = (expiry, type) => { setLicenseExpiry(expiry); setLicenseType(type); try { localStorage.setItem("codex_license_expiry", expiry); localStorage.setItem("codex_license_type", type); } catch(e) {} };
   const getLicenseDaysLeft = () => { if (!licenseExpiry) return null; const diff = Math.ceil((new Date(licenseExpiry) - new Date()) / (1000 * 60 * 60 * 24)); return diff; };
 
+  if (!authed && showLanding) return (
+    <div style={{ minHeight: "100vh", background: "linear-gradient(160deg,#0e1215 60%,#1a1408 100%)", color: "#c8d8e8", fontFamily: "'Lora',serif" }}>
+      {/* Header */}
+      <div style={{ padding: "20px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #2a3540" }}>
+        <div>
+          <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 800, fontSize: 24, letterSpacing: ".1em", color: "#e8f0f8" }}>CODEX TX</div>
+          <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 10, letterSpacing: ".12em", color: "#d4820a" }}>TEXAS PLUMBING CODE</div>
+        </div>
+        <button onClick={() => setShowLanding(false)} style={{ background: "linear-gradient(135deg,#d4820a,#8a5006)", border: "none", borderRadius: 10, padding: "10px 20px", cursor: "pointer", fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 14, letterSpacing: ".06em", color: "#fff" }}>SIGN IN</button>
+      </div>
+
+      {/* Hero */}
+      <div style={{ padding: "40px 24px 32px", textAlign: "center" }}>
+        <div style={{ width: 72, height: 72, background: "linear-gradient(135deg,#d4820a,#8a5006)", borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px", boxShadow: "0 0 40px rgba(212,130,10,.3)" }}>
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M 4 20 L 14 10"/><path d="M 14 10 C 14 10 13 7 15 5 C 17 3 20 3.5 20 3.5 L 18 5.5 L 18.5 7 L 20 7.5 L 22 5.5 C 22 5.5 22 8.5 20 10 C 18 11.5 15 10.5 14 10 Z"/><path d="M 4 20 C 3 21 2 21 2 20 C 2 19 3 18 4 18 L 6 20 Z"/></svg>
+        </div>
+        <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 800, fontSize: 42, letterSpacing: ".08em", color: "#e8f0f8", lineHeight: 1, marginBottom: 12 }}>The code book<br/>in your pocket.</div>
+        <div style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 16, color: "#d4820a", marginBottom: 8 }}>Built by plumbers in the field, like you —<br/>for plumbers like you.</div>
+        <div style={{ fontFamily: "'Lora',serif", fontSize: 14, color: "#4a6a7a", marginBottom: 32, lineHeight: 1.6 }}>Texas plumbing codes, city amendments, inspector contacts, and Bob — the AI parts identifier that reads your camera and tells you exactly what you're looking at.</div>
+        <button onClick={() => setShowLanding(false)} style={{ background: "linear-gradient(135deg,#d4820a,#8a5006)", border: "none", borderRadius: 14, padding: "18px 40px", cursor: "pointer", fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 800, fontSize: 18, letterSpacing: ".08em", color: "#fff", boxShadow: "0 6px 30px rgba(212,130,10,.4)", marginBottom: 12, width: "100%" }}>GET STARTED FREE</button>
+        <div style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#3a5a6a" }}>No credit card required · 5 free uses of every feature</div>
+      </div>
+
+      {/* Tiers */}
+      <div style={{ padding: "0 24px 32px" }}>
+        <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: ".12em", color: "#d4820a", textAlign: "center", marginBottom: 16 }}>CHOOSE YOUR PLAN</div>
+
+        {/* Free */}
+        <div style={{ background: "#161c22", border: "1px solid #2a3540", borderRadius: 14, padding: "20px", marginBottom: 12 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
+            <div><div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 800, fontSize: 20, color: "#e8f0f8" }}>FREE</div><div style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#4a6a7a" }}>Try before you pay</div></div>
+            <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 24, color: "#4a6a7a" }}>$0</div>
+          </div>
+          {["5 code lookups", "5 city searches", "5 voice searches", "5 inspector profiles", "5 Bob identifications", "1 job mode use", "1 estimate use"].map(f => <div key={f} style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#5a7a8a", marginBottom: 4 }}>✓ {f}</div>)}
+          <button onClick={() => setShowLanding(false)} style={{ background: "transparent", border: "1px solid #2a3540", borderRadius: 10, padding: "12px", cursor: "pointer", width: "100%", fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 14, letterSpacing: ".06em", color: "#4a6a7a", marginTop: 12 }}>START FREE</button>
+        </div>
+
+        {/* Basic */}
+        <div style={{ background: "linear-gradient(135deg,#1a2a1a,#0e1808)", border: "1px solid #2a5a3a", borderRadius: 14, padding: "20px", marginBottom: 12 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
+            <div><div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 800, fontSize: 20, color: "#e8f0f8" }}>BASIC</div><div style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#4a8a5a" }}>The reference tool</div></div>
+            <div style={{ textAlign: "right" }}><div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 24, color: "#4aba6a" }}>$9.99<span style={{ fontSize: 13, color: "#4a6a4a" }}>/mo</span></div><div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#3a5a3a" }}>or $83.99/year</div></div>
+          </div>
+          {["Unlimited code lookups", "Unlimited city searches", "Unlimited voice search", "Unlimited license tracker", "All 170+ Texas cities"].map(f => <div key={f} style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#6a9a7a", marginBottom: 4 }}>✓ {f}</div>)}
+          <button onClick={() => { setShowLanding(false); setTimeout(() => startCheckout("price_1TDJhn22aMwDwvRaosmzUBGR"), 500); }} style={{ background: "linear-gradient(135deg,#2a5a3a,#1a3a2a)", border: "1px solid #3a7a4a", borderRadius: 10, padding: "12px", cursor: "pointer", width: "100%", fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 14, letterSpacing: ".06em", color: "#4aba6a", marginTop: 12 }}>GET BASIC</button>
+        </div>
+
+        {/* Pro */}
+        <div style={{ background: "linear-gradient(135deg,#2a1e0a,#1a1208)", border: "2px solid #d4820a", borderRadius: 14, padding: "20px", position: "relative" }}>
+          <div style={{ position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)", background: "linear-gradient(135deg,#d4820a,#8a5006)", borderRadius: 20, padding: "4px 14px", fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: ".08em", color: "#fff" }}>MOST POPULAR</div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
+            <div><div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 800, fontSize: 20, color: "#e8f0f8" }}>PRO</div><div style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#d4820a" }}>The field tool</div></div>
+            <div style={{ textAlign: "right" }}><div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 24, color: "#d4820a" }}>$29.99<span style={{ fontSize: 13, color: "#8a5a2a" }}>/mo</span></div><div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#6a4a2a" }}>or $251.99/year</div></div>
+          </div>
+          {["Everything in Basic", "Bob AI parts identifier", "Inspector profiles & intel", "Job mode — multi-photo lists", "Estimate builder", "CODEX TX videos (coming soon)"].map(f => <div key={f} style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#c0a070", marginBottom: 4 }}>✓ {f}</div>)}
+          <button onClick={() => { setShowLanding(false); setTimeout(() => startCheckout("price_1TDK0o22aMwDwvRaE4BOddDs"), 500); }} style={{ background: "linear-gradient(135deg,#d4820a,#8a5006)", border: "none", borderRadius: 10, padding: "14px", cursor: "pointer", width: "100%", fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 15, letterSpacing: ".06em", color: "#fff", marginTop: 12, boxShadow: "0 4px 20px rgba(212,130,10,.3)" }}>GET PRO</button>
+        </div>
+      </div>
+
+      <div style={{ textAlign: "center", padding: "0 24px 40px", fontFamily: "'Lora',serif", fontSize: 12, color: "#2a4a5a", lineHeight: 1.8 }}>
+        Cancel anytime · Secure payments by Stripe · Used by Texas plumbers daily
+      </div>
+    </div>
+  );
+
   if (!authed) return authScreen_JSX;
+
+  // ── UPGRADE MODAL ────────────────────────────────────────
+  const upgradeModal = showUpgrade && (
+    <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,.85)", zIndex: 999, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+      <div style={{ background: "linear-gradient(135deg,#161c22,#111820)", border: "2px solid #d4820a", borderRadius: 18, padding: 28, maxWidth: 380, width: "100%" }}>
+        <div style={{ textAlign: "center", marginBottom: 20 }}>
+          <div style={{ fontSize: 40, marginBottom: 8 }}>🔒</div>
+          <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 800, fontSize: 22, color: "#e8f0f8", marginBottom: 6 }}>
+            {tier === "free" ? "Free limit reached" : "Pro feature"}
+          </div>
+          <div style={{ fontFamily: "'Lora',serif", fontSize: 14, color: "#6a8a9a", lineHeight: 1.6 }}>
+            {tier === "free"
+              ? `You've used your free ${upgradeFeature} allowance. Upgrade to keep going.`
+              : `${upgradeFeature} is a Pro feature. Upgrade to unlock it.`}
+          </div>
+        </div>
+
+        {/* Basic option — only show if free tier and feature is basic-eligible */}
+        {tier === "free" && !["inspectors","identify","jobmode","estimate"].includes(upgradeFeature) && (
+          <button onClick={() => startCheckout("price_1TDJhn22aMwDwvRaosmzUBGR")} style={{ background: "linear-gradient(135deg,#1a3a2a,#0e2218)", border: "1px solid #2a6a3a", borderRadius: 12, padding: "14px", cursor: "pointer", width: "100%", marginBottom: 10, fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 15, letterSpacing: ".06em", color: "#4aba6a" }}>
+            BASIC — $9.99/month
+          </button>
+        )}
+
+        <button onClick={() => startCheckout("price_1TDK0o22aMwDwvRaE4BOddDs")} style={{ background: "linear-gradient(135deg,#d4820a,#8a5006)", border: "none", borderRadius: 12, padding: "16px", cursor: "pointer", width: "100%", marginBottom: 12, fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 16, letterSpacing: ".06em", color: "#fff", boxShadow: "0 4px 20px rgba(212,130,10,.3)" }}>
+          PRO — $29.99/month
+        </button>
+
+        <button onClick={() => setShowUpgrade(false)} style={{ background: "transparent", border: "none", cursor: "pointer", width: "100%", fontFamily: "'Lora',serif", fontSize: 13, color: "#3a5a6a", padding: 8 }}>
+          Maybe later
+        </button>
+      </div>
+    </div>
+  );
 
   return (
     <div style={{ fontFamily: "'Georgia',serif", background: "#0e1215", minHeight: "100vh", maxWidth: 430, margin: "0 auto", display: "flex", flexDirection: "column" }}>
@@ -1255,6 +1453,10 @@ export default function App() {
           </div>
         )}
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 8 }}>
+          {/* TIER BADGE */}
+          <button onClick={() => { if (tier === "free" || tier === "basic") { setUpgradeFeature("upgrade"); setShowUpgrade(true); } }} style={{ background: tier === "pro" ? "rgba(212,130,10,.15)" : tier === "basic" ? "rgba(74,186,106,.15)" : "rgba(58,90,106,.15)", border: `1px solid ${tier === "pro" ? "#d4820a" : tier === "basic" ? "#4aba6a" : "#2a4a5a"}`, borderRadius: 6, padding: "3px 8px", cursor: tier === "pro" ? "default" : "pointer" }}>
+            <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: ".08em", color: tier === "pro" ? "#d4820a" : tier === "basic" ? "#4aba6a" : "#4a6a7a" }}>{tier.toUpperCase()}</span>
+          </button>
           {/* LANGUAGE TOGGLE */}
           <button className="lang-btn p" onClick={() => setLang(l => l === "en" ? "es" : "en")}>
             <Icon name="globe" size={13} color="#7acae0" />
@@ -1377,7 +1579,29 @@ export default function App() {
 
             <div className="sl" style={{ marginTop: 16 }}>{t.tags}</div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>{selectedCode.tags.map(tg => <span key={tg} className="pill" style={{ color: "#4a7a8a", fontSize: 12, padding: "5px 12px" }}>{tg}</span>)}</div>
-            <div style={{ padding: "12px 14px", background: "#1a2a1a", border: "1px solid #2a4a2a", borderRadius: 10 }}><div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, letterSpacing: ".1em", color: "#3a7a3a", marginBottom: 4 }}>{t.alwaysVerify}</div><div style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#4a6a4a", lineHeight: 1.5 }}>{t.alwaysVerifyText}</div></div>
+            <div style={{ padding: "12px 14px", background: "#1a2a1a", border: "1px solid #2a4a2a", borderRadius: 10, marginBottom: 12 }}><div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, letterSpacing: ".1em", color: "#3a7a3a", marginBottom: 4 }}>{t.alwaysVerify}</div><div style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#4a6a4a", lineHeight: 1.5 }}>{t.alwaysVerifyText}</div></div>
+
+            {/* YouTube + Speak buttons */}
+            <div style={{ display: "flex", gap: 10, marginTop: 4, marginBottom: 8 }}>
+              <button onClick={() => {
+                const ytQuery = `plumbing ${lang === "en" ? selectedCode.title : selectedCode.titleEs}`;
+                window.location.href = `https://www.youtube.com/results?search_query=${encodeURIComponent(ytQuery)}`;
+              }} style={{ flex: 1, background: "#1a0a0a", border: "1px solid #8a2020", borderRadius: 10, padding: "12px 8px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#ff4444"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+                <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 13, letterSpacing: ".06em", color: "#ff6666" }}>WATCH ON YOUTUBE</span>
+              </button>
+              {voiceEnabled && (
+                <button onClick={() => {
+                  const speechText = lang === "en"
+                    ? `${selectedCode.title}. ${selectedCode.plain.substring(0, 500)}`
+                    : `${selectedCode.titleEs}. ${selectedCode.plainEs.substring(0, 500)}`;
+                  isSpeaking ? stopSpeaking() : speak(speechText);
+                }} style={{ background: isSpeaking ? "#2a1a1a" : "#1a2a1a", border: `1px solid ${isSpeaking ? "#c85a30" : "#2a5a3a"}`, borderRadius: 10, padding: "12px 14px", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
+                  <Icon name="mic" size={16} color={isSpeaking ? "#c85a30" : "#4a9a6a"} />
+                  <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 12, letterSpacing: ".06em", color: isSpeaking ? "#c85a30" : "#4a9a6a" }}>{isSpeaking ? "STOP" : "SPEAK"}</span>
+                </button>
+              )}
+            </div>
           </div>
         )}
 
