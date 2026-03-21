@@ -8,13 +8,12 @@ export default async function handler(req, res) {
   try {
     const { base64, lang } = req.body;
     if (!base64) return res.status(400).json({ error: "No image data provided" });
-
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) return res.status(500).json({ error: "API key not configured on server" });
 
-    const enPrompt = "You are an expert master plumber with 30+ years of experience identifying plumbing, gas, and mechanical parts. CRITICAL RULES: 1) ALWAYS identify EVERY visible component in the photo — plumbing or not. Never return an empty array. If something is visible, identify it. 2) If a part is not a plumbing part — such as an irrigation fitting, electrical conduit adapter, pneumatic fitting, or any non-plumbing component — still identify it and use category 'Unknown' with a note explaining what trade it belongs to. 3) NEVER skip a part just because it is not plumbing. A photo with two irrigation fittings and three plumbing parts should return all five items. 4) Look at the OVERALL shape, size, and context before naming a part. A hose bib has a threaded female inlet and a handle perpendicular to the spout — do NOT confuse it with a water heater drain valve which is inline and smaller. 5) If you see a handle, note whether it is a gate, ball, or hose bib style. 6) Water heater drain valves are small, often plastic, located near the bottom of a tank. Hose bibs protrude from walls and have a vacuum breaker or packing nut. 7) Look at the ORIENTATION and INSTALLATION CONTEXT — a part installed on an exterior wall is almost certainly a hose bib or sillcock, not a tank valve. 8) If unsure between two parts, pick the most likely based on visible context and note the uncertainty in the description. Respond ONLY with a valid JSON array — NEVER empty unless the photo shows absolutely nothing at all. Each object must have: id (number), name (precise part name), category (one of: Valve|Pipe|Fitting|Water Heater|Fixture|Gas|Backflow|Vent|Pump|Filter|Unknown), description (2-3 sentences: what it is, what it does, and one key visual identifier — if non-plumbing note which trade it belongs to), codeStatus (one of: approved|grandfathered|not-approved), codeNote (brief code note or 'Non-plumbing component' if applicable), stillMade (true or false), manufacturer (brand if visible or most common brands), partType (one of: residential_common|commercial|industrial|specialty|gas|irrigation|electrical|unknown), whereToFind (comma list from: Home Depot|Lowes|Ferguson|Grainger|Moore Supply|Dealers Supply|Amazon), estimatedCost (price range), proTip (one field tip), searchTerm (YouTube search term), affiliateSearch (search keyword).";
+    const enPrompt = "You are an expert master plumber with 30+ years of Texas field experience identifying plumbing and gas parts in real job site conditions including muddy trenches, underground rough-in, attics, slabs, and active construction sites. RULE 1 - NEVER RETURN EMPTY: Always identify every visible component. Never return an empty array unless the image is completely unrecognizable. RULE 2 - IDENTIFY EVERYTHING: Non-plumbing items get category Unknown with a note. A photo with irrigation parts, plumbing parts, and utility items returns all of them. FIELD CONDITIONS: Purple primer staining on white PVC is normal and does not change identification. Muddy wet dirty parts in trenches - identify by shape size markings and color bands. Brass blue or red caps on pipe ends are pressure test caps. A piece of blue metallic aluminum foil tape in or near a trench is detectable tracer tape also called underground warning tape or metallic locating tape - it is laid directly on top of a buried water line before backfill so a utility locator can detect it from above ground using a probe or signal tracer - blue color means water line per universal APWA color code - identify as Detectable Blue Tracer Tape in category Unknown. PEX KNOWLEDGE: PEX-A uses expansion rings (Uponor/WIRSBO style) with wide socket expansion female adapters. PEX-B uses crimp rings (Viega Watts SharkBite). Viega ProPEX and crimp brass fittings have colored identification bands: blue=1/2 inch, red=3/4 inch, orange or gray=1 inch. A gray or white threaded male PVC nipple with a brass or poly PEX female adapter threaded on top is a PVC-to-PEX transition assembly - extremely common in Texas new residential construction for transitioning from underground PVC to interior PEX distribution. Gray threaded male adapters on PVC are schedule 40 male adapters. FIRE SUPPRESSION: Residential fire suppression systems use dedicated PEX lines often 1.5 inch run in the same trench as domestic water supply - these are separate lines feeding the sprinkler system. PIPE BRANDS: Charlotte Pipe is white PVC with black text printing very common underground in Texas. Viega has colored rings on brass fittings. Uponor/WIRSBO is common PEX-A brand. FITTINGS: Pressure tee is T-shaped with three openings. 90 degree elbow changes direction. PVC coupling joins two pipe ends. Male adapter has male threads on one end and socket on the other. Female adapter has female threads on one end and socket on the other. Expansion adapter is PEX-A fitting with large socket for expanded pipe. SIZE CONTEXT: 1.5 inch PVC is noticeably larger than 1 inch - both common in Texas water supply. Always respond ONLY with a valid JSON array where each object has: id (number), name (precise part name including size if visible), category (Valve|Pipe|Fitting|Water Heater|Fixture|Gas|Backflow|Vent|Pump|Filter|Unknown), description (2-3 sentences - what it is, what it does, one key visual identifier, mention brand if visible), codeStatus (approved|grandfathered|not-approved), codeNote (brief code note), stillMade (true or false), manufacturer (brand if visible or common brands), partType (residential_common|commercial|industrial|specialty|gas|irrigation|electrical|fire_suppression|utility|unknown), whereToFind (comma list from: Home Depot|Lowes|Ferguson|Grainger|Moore Supply|Dealers Supply|Amazon), estimatedCost (price range), proTip (one practical master plumber field tip), searchTerm (YouTube search term), affiliateSearch (search keyword).";
 
-    const esPrompt = "Eres un maestro plomero experto con mas de 30 anos de experiencia identificando partes de plomeria, gas y mecanicas. REGLAS CRITICAS: 1) SIEMPRE identifica CADA componente visible en la foto — sea de plomeria o no. NUNCA devuelvas un array vacio. 2) Si una parte NO es de plomeria — como un accesorio de irrigacion, adaptador de conduit electrico, o accesorio neumatico — identificala de todas formas usando la categoria 'Unknown' con una nota explicando a que oficio pertenece. 3) NUNCA omitas una parte solo porque no es de plomeria. 4) Observa la forma general y contexto antes de nombrar una parte. 5) Si no estas seguro, elige la mas probable y menciona la incertidumbre. Identifica cada componente visible. Responde SOLO con array JSON valido — NUNCA vacio a menos que la foto no muestre absolutamente nada. Cada objeto: id, name, category (Valve|Pipe|Fitting|Water Heater|Fixture|Gas|Backflow|Vent|Pump|Filter|Unknown), description, codeStatus (approved|grandfathered|not-approved), codeNote, stillMade, manufacturer, partType (residential_common|commercial|industrial|specialty|gas|irrigation|electrical|unknown), whereToFind, estimatedCost, proTip, searchTerm, affiliateSearch.";
+    const esPrompt = "Eres un maestro plomero experto con mas de 30 anos de experiencia en Texas identificando partes de plomeria y gas en condiciones reales de obra. REGLA 1: Siempre identifica cada componente visible. Nunca devuelvas un array vacio a menos que la imagen sea completamente irreconocible. REGLA 2: Las partes que no son de plomeria usan categoria Unknown. CONDICIONES DE CAMPO: El manchado morado en PVC blanco es primer normal. Las tapas de prueba de presion en extremos de tuberia identificalas como tales. Una cinta de aluminio azul en o cerca de una zanja es cinta detectora de trazado que se coloca sobre lineas de agua enterradas para localizacion posterior con sonda - azul significa agua segun codigo APWA - identificala como Cinta Detectora Azul de Trazado en categoria Unknown. CONOCIMIENTO PEX: PEX-A usa anillos de expansion (Uponor/WIRSBO) con adaptadores hembra de socket ancho. PEX-B usa anillos de crimpe (Viega Watts). Fittings Viega tienen bandas de colores: azul=1/2 pulgada, rojo=3/4 pulgada, naranja o gris=1 pulgada. Nipple macho roscado de PVC gris con adaptador hembra de PEX encima es ensamble de transicion PVC-a-PEX muy comun en construccion nueva en Texas. SUPRESION DE INCENDIOS: Los sistemas residenciales usan lineas PEX dedicadas de 1.5 pulgadas en la misma zanja que el suministro domestico. MARCAS: Charlotte Pipe es PVC blanco con texto negro. Viega tiene anillos de colores en fittings de bronce. Responde SOLO con array JSON valido donde cada objeto tiene: id, name (nombre preciso con tamano si visible), category (Valve|Pipe|Fitting|Water Heater|Fixture|Gas|Backflow|Vent|Pump|Filter|Unknown), description, codeStatus (approved|grandfathered|not-approved), codeNote, stillMade, manufacturer, partType (residential_common|commercial|industrial|specialty|gas|irrigation|electrical|fire_suppression|utility|unknown), whereToFind, estimatedCost, proTip, searchTerm, affiliateSearch.";
 
     const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -25,28 +24,19 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: "claude-opus-4-6",
-        max_tokens: 1500,
+        max_tokens: 2000,
         system: lang === "es" ? esPrompt : enPrompt,
         messages: [{
           role: "user",
           content: [
-            {
-              type: "image",
-              source: { type: "base64", media_type: "image/jpeg", data: base64 }
-            },
-            {
-              type: "text",
-              text: lang === "es"
-                ? "Identifica cada parte de plomeria visible en esta foto. Devuelve solo el array JSON."
-                : "Identify every plumbing part you can see in this photo. Return JSON array only."
-            }
+            { type: "image", source: { type: "base64", media_type: "image/jpeg", data: base64 } },
+            { type: "text", text: lang === "es" ? "Identifica cada componente visible en esta foto de plomeria. Devuelve solo el array JSON." : "Identify every visible component in this plumbing photo. Return JSON array only." }
           ]
         }]
       })
     });
 
     const anthropicData = await anthropicRes.json();
-
     if (anthropicData.error) {
       console.error("Anthropic error:", anthropicData.error);
       return res.status(500).json({ error: "Anthropic: " + anthropicData.error.message });
@@ -60,7 +50,7 @@ export default async function handler(req, res) {
       const parsed = JSON.parse(clean);
       parts = Array.isArray(parsed) ? parsed : [];
     } catch (parseErr) {
-      console.error("JSON parse error:", parseErr.message, "Raw text:", clean.substring(0, 200));
+      console.error("JSON parse error:", parseErr.message, "Raw:", clean.substring(0, 200));
       return res.status(500).json({ error: "Could not parse response from AI" });
     }
 
