@@ -986,43 +986,48 @@ export default function App() {
     try { return JSON.parse(localStorage.getItem("codex_usage") || "{}"); } catch(e) { return {}; }
   };
   const bumpUsage = (feature) => {
-    const u = getUsage();
-    u[feature] = (u[feature] || 0) + 1;
-    localStorage.setItem("codex_usage", JSON.stringify(u));
-    return u[feature];
+    try {
+      const u = getUsage();
+      u[feature] = (u[feature] || 0) + 1;
+      localStorage.setItem("codex_usage", JSON.stringify(u));
+      return u[feature];
+    } catch(e) { return 1; }
   };
-  const resetUsage = () => localStorage.removeItem("codex_usage");
+  const resetUsage = () => { try { localStorage.removeItem("codex_usage"); } catch(e) {} };
 
   // Free tier limits
   const FREE_LIMITS = { codes: 5, cities: 5, voice: 5, license: 5, inspectors: 5, identify: 5, jobmode: 1, estimate: 1 };
 
-  // Check if action is allowed for current tier
+  // Check if action is allowed for current tier — never throws
   const canUse = (feature) => {
-    if (tier === "pro") return true;
-    if (tier === "basic") {
-      // Basic can use codes, cities, voice, license unlimited — not pro features
-      if (["inspectors","identify","jobmode","estimate"].includes(feature)) return false;
-      return true;
-    }
-    // Free tier — check usage count
-    const count = getUsage()[feature] || 0;
-    return count < (FREE_LIMITS[feature] || 5);
+    try {
+      if (tier === "pro") return true;
+      if (tier === "basic") {
+        if (["inspectors","identify","jobmode","estimate"].includes(feature)) return false;
+        return true;
+      }
+      const count = getUsage()[feature] || 0;
+      return count < (FREE_LIMITS[feature] || 5);
+    } catch(e) { return true; }
   };
 
   const useFeature = (feature) => {
-    if (tier === "pro") return true;
-    if (tier === "basic") {
-      if (["inspectors","identify","jobmode","estimate"].includes(feature)) {
+    try {
+      if (tier === "pro") return true;
+      if (tier === "basic") {
+        if (["inspectors","identify","jobmode","estimate"].includes(feature)) {
+          setUpgradeFeature(feature); setShowUpgrade(true); return false;
+        }
+        return true;
+      }
+      // Free tier — bump AFTER checking so first use always works
+      const currentCount = getUsage()[feature] || 0;
+      if (currentCount >= (FREE_LIMITS[feature] || 5)) {
         setUpgradeFeature(feature); setShowUpgrade(true); return false;
       }
+      bumpUsage(feature);
       return true;
-    }
-    // Free tier
-    const count = bumpUsage(feature);
-    if (count > (FREE_LIMITS[feature] || 5)) {
-      setUpgradeFeature(feature); setShowUpgrade(true); return false;
-    }
-    return true;
+    } catch(e) { return true; } // on any error let them through rather than crash
   };
 
   const checkSubscription = async (email) => {
