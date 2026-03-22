@@ -2241,7 +2241,7 @@ function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIM
       const img = new Image();
       img.onload = () => {
         const canvas = document.createElement("canvas");
-        const maxSize = 1600;
+        const maxSize = 1024;
         let w = img.width;
         let h = img.height;
         if (w > h && w > maxSize) { h = (h * maxSize) / w; w = maxSize; }
@@ -2250,7 +2250,7 @@ function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIM
         canvas.height = h;
         const ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0, w, h);
-        resolve(canvas.toDataURL("image/jpeg", 0.92));
+        resolve(canvas.toDataURL("image/jpeg", 0.85));
       };
       img.src = dataUrl;
     });
