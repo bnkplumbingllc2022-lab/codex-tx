@@ -977,6 +977,7 @@ export default function App() {
 
   // ── SUBSCRIPTION & USAGE ─────────────────────────────────
   const [tier, setTier] = useState("free"); // "free" | "basic" | "pro"
+  const [tierLoaded, setTierLoaded] = useState(false); // true once subscription check completes
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [upgradeFeature, setUpgradeFeature] = useState("");
   const [showLanding, setShowLanding] = useState(true);
@@ -1039,6 +1040,7 @@ export default function App() {
       const data = await res.json();
       setTier(data.tier || "free");
     } catch(e) { setTier("free"); }
+    finally { setTierLoaded(true); }
   };
 
   const startCheckout = async (priceId) => {
@@ -1224,7 +1226,7 @@ export default function App() {
 
       if (localMatches.length === 1) {
         // Single exact match — jump straight to that code detail and speak it
-        setScreen("codes"); setSelectedCode(localMatches[0]); setShowDiagram(false);
+        setScreen("codes"); openCode(localMatches[0]);
         const speechText = lang === "en"
           ? `${localMatches[0].title}. ${localMatches[0].plain.substring(0, 400)}`
           : `${localMatches[0].titleEs}. ${localMatches[0].plainEs.substring(0, 400)}`;
@@ -1267,29 +1269,32 @@ export default function App() {
   // Safe gated handlers — separates gate check from state update to prevent React crash
   const openCode = (code) => {
     try {
-      if (tier === "pro" || tier === "basic") { setSelectedCode(code); setShowDiagram(false); return; }
+      if (!tierLoaded) { setSelectedCode(code); setShowDiagram(false); scrollTop(); return; }
+      if (tier === "pro" || tier === "basic") { setSelectedCode(code); setShowDiagram(false); scrollTop(); return; }
       const count = getUsage()["codes"] || 0;
       if (count >= (FREE_LIMITS["codes"] || 5)) { setTimeout(() => { setUpgradeFeature("codes"); setShowUpgrade(true); }, 0); return; }
       bumpUsage("codes");
-      setSelectedCode(code); setShowDiagram(false);
+      setSelectedCode(code); setShowDiagram(false); scrollTop();
     } catch(e) { setSelectedCode(code); setShowDiagram(false); }
   };
   const openCity = (city) => {
     try {
-      if (tier === "pro" || tier === "basic") { setSelectedJurisdiction(city); return; }
+      if (!tierLoaded) { setSelectedJurisdiction(city); scrollTop(); return; }
+      if (tier === "pro" || tier === "basic") { setSelectedJurisdiction(city); scrollTop(); return; }
       const count = getUsage()["cities"] || 0;
       if (count >= (FREE_LIMITS["cities"] || 5)) { setTimeout(() => { setUpgradeFeature("cities"); setShowUpgrade(true); }, 0); return; }
       bumpUsage("cities");
-      setSelectedJurisdiction(city);
+      setSelectedJurisdiction(city); scrollTop();
     } catch(e) { setSelectedJurisdiction(city); }
   };
   const openInspector = (name) => {
     try {
-      if (tier === "pro") { setSelectedThirdParty(name); return; }
+      if (!tierLoaded) { setSelectedThirdParty(name); scrollTop(); return; }
+      if (tier === "pro") { setSelectedThirdParty(name); scrollTop(); return; }
       const count = getUsage()["inspectors"] || 0;
       if (count >= (FREE_LIMITS["inspectors"] || 5)) { setTimeout(() => { setUpgradeFeature("inspectors"); setShowUpgrade(true); }, 0); return; }
       bumpUsage("inspectors");
-      setSelectedThirdParty(name);
+      setSelectedThirdParty(name); scrollTop();
     } catch(e) { setSelectedThirdParty(name); }
   };
   const openCamera = (refObj) => {
@@ -1519,7 +1524,7 @@ export default function App() {
       {voiceStatus && <div className="vb"><Icon name="mic" size={14} color={isListening ? "#c85a30" : "#7acae0"} /><span style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 13, color: isListening ? "#c87a60" : "#7acae0", flex: 1 }}>{voiceStatus}</span></div>}
 
       {/* Texas silhouette — always visible behind all screens */}
-      <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", opacity: 0.08, pointerEvents: "none", zIndex: 0, width: 360, height: 360, maxWidth: "85vw" }}>
+      <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", opacity: 0.18, pointerEvents: "none", zIndex: 0, width: 360, height: 360, maxWidth: "85vw" }}>
         <svg viewBox="0 0 700 700" fill="#d4820a" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "100%" }}>
           <path d="M 601.74 452.0 C 604.02 456.27 609.71 462.05 605.16 466.51 C 603.55 467.83 601.74 469.16 600.13 470.68 C 598.14 472.57 592.07 482.43 584.4 488.97 C 577.38 493.52 569.89 497.32 562.69 501.68 C 553.68 506.23 553.59 504.05 549.7 504.14 C 547.42 504.14 544.58 506.32 542.21 505.66 C 540.98 505.09 534.63 504.9 531.97 505.66 C 527.33 507.74 533.39 515.8 522.49 519.4 C 518.32 522.15 509.98 511.63 512.06 521.02 C 514.53 525.0 499.27 529.83 496.04 532.2 C 493.2 533.43 482.77 550.4 484.1 552.39 C 487.61 555.81 489.69 559.98 486.66 564.53 C 484.48 569.55 484.1 576.76 478.41 578.94 C 476.42 579.41 482.01 581.21 480.59 587.09 C 478.22 594.49 472.25 601.12 478.22 608.8 C 482.11 616.57 480.12 626.24 485.42 633.45 C 487.32 638.57 488.17 644.64 492.16 648.71 C 492.53 649.28 493.1 649.66 493.77 649.28 C 495.38 649.28 494.62 651.37 493.1 652.5 C 491.87 653.36 490.16 653.55 488.74 653.93 C 476.32 664.35 476.99 650.89 465.23 648.52 C 458.12 646.44 450.44 648.24 443.24 646.72 C 438.78 645.3 435.84 641.6 431.39 639.89 C 426.36 637.15 420.01 637.81 415.94 633.45 C 411.58 628.99 403.04 631.08 399.06 626.05 C 395.74 620.84 393.85 613.82 391.67 608.04 C 389.49 602.35 384.56 598.94 382.57 593.44 C 381.62 586.43 382.95 584.34 378.68 577.9 C 378.68 573.91 379.91 568.42 377.64 564.72 C 376.5 561.5 373.66 560.74 370.91 559.5 C 366.74 556.94 362.37 553.15 360.19 548.7 C 357.82 542.54 353.75 536.47 348.82 531.82 C 344.93 528.98 341.42 526.42 339.43 521.87 C 335.93 509.36 328.63 498.93 323.03 487.17 C 320.47 473.05 307.96 464.23 297.44 455.89 C 293.17 454.18 291.65 450.01 288.34 446.98 C 285.21 441.48 280.18 438.54 273.93 439.87 C 269.0 440.34 264.07 438.44 259.23 438.35 C 250.42 440.34 241.6 432.09 238.19 436.17 C 234.77 440.91 227.66 439.58 223.21 442.52 C 216.95 448.21 215.43 457.5 212.21 465.08 C 211.64 470.2 210.22 472.29 206.05 475.13 C 201.97 478.55 200.55 486.03 194.1 484.33 C 188.23 483.0 183.68 479.78 178.75 476.08 C 172.58 474.28 167.84 469.92 161.87 467.64 C 154.1 466.41 148.79 460.91 143.67 455.6 C 138.55 452.66 132.86 449.82 130.02 444.23 C 127.46 437.97 122.63 432.19 122.25 425.27 C 123.1 417.87 120.26 411.52 115.7 405.83 C 110.11 382.23 93.05 384.88 79.68 369.15 C 76.93 364.79 72.67 361.94 68.78 358.72 C 63.56 352.84 58.35 347.34 50.96 344.4 C 44.6 340.8 43.37 332.84 38.25 327.81 C 33.23 324.4 25.64 322.5 26.59 315.39 C 26.78 313.88 26.78 312.46 28.87 311.98 C 37.31 310.84 45.93 311.7 54.46 311.41 C 86.79 311.51 118.64 311.51 151.07 311.51 L 183.58 311.51 C 189.36 310.65 196.85 313.5 201.59 309.52 C 204.63 291.5 201.69 271.41 202.73 252.92 C 203.58 210.92 203.96 168.83 203.77 126.93 L 203.77 69.1 C 204.34 61.24 202.26 50.05 205.1 43.13 C 216.1 41.14 231.93 42.94 243.78 42.37 C 279.9 42.94 316.3 41.42 352.23 42.94 C 353.37 43.41 353.94 44.55 354.03 46.54 C 354.22 55.26 354.03 66.17 354.03 75.17 L 354.03 151.3 C 352.89 160.02 358.2 159.16 362.66 164.38 C 366.83 170.16 371.0 171.2 377.45 169.59 C 383.04 171.01 382.28 169.12 386.26 167.89 C 394.7 170.16 391.29 183.53 402.29 181.16 C 411.39 182.77 411.58 186.09 422.67 184.95 C 430.54 189.22 428.26 189.31 435.94 185.42 C 438.88 185.42 442.95 185.99 446.08 185.8 C 448.36 186.47 447.32 189.78 448.55 191.4 C 449.87 193.58 453.19 193.29 454.52 195.38 C 455.18 197.27 453.86 199.64 456.32 200.69 C 469.21 203.44 462.01 186.75 481.06 202.58 C 484.67 205.24 491.4 196.33 493.01 202.3 C 493.86 214.62 498.6 206.47 501.73 200.78 C 502.96 198.13 504.86 194.71 507.89 199.45 C 515.19 207.23 518.23 198.03 521.16 200.5 C 523.16 204.86 528.46 205.81 531.88 208.74 C 533.58 210.64 535.67 210.55 537.56 209.12 C 540.41 207.7 542.97 206.56 544.77 204.19 C 547.23 202.39 550.74 202.87 553.59 201.63 C 565.34 202.87 561.17 200.97 571.03 198.7 C 576.81 199.74 583.45 203.63 588.57 198.41 C 595.11 194.24 602.31 203.72 607.15 207.23 C 613.78 209.88 620.23 213.58 626.87 215.57 C 628.95 216.42 629.99 219.46 632.46 219.74 C 634.17 220.12 636.25 218.79 637.77 218.98 C 639.29 219.65 640.61 218.7 642.03 218.51 C 647.53 219.46 648.58 219.27 648.48 226.38 L 648.48 286.1 C 649.52 295.39 645.73 306.86 651.7 314.83 C 657.96 320.23 660.05 327.53 659.76 335.4 C 665.73 342.79 666.49 352.56 672.47 359.86 C 674.74 367.63 672.94 376.92 669.81 384.31 C 665.17 390.95 664.12 398.44 663.27 406.12 C 668.1 421.85 662.23 424.79 655.59 437.69 C 655.21 439.58 657.49 442.05 656.06 443.75 C 643.93 446.31 638.34 447.74 627.15 453.99 C 626.11 454.85 620.42 450.67 621.46 447.36 C 624.4 440.15 616.34 435.89 606.67 443.94 C 603.26 445.74 599.75 447.36 601.37 451.43 L 601.74 452.0 L 601.74 452.0 Z" />
         </svg>
@@ -1528,7 +1533,7 @@ export default function App() {
       {/* UPGRADE MODAL */}
       {upgradeModal}
 
-      <div className="cnt">
+      <div className="cnt" ref={cntRef}>
 
         {/* HOME */}
         {screen === "home" && (
@@ -1558,7 +1563,7 @@ export default function App() {
                 </div>
               ))}
             </div>
-            {bookmarks.length > 0 && <div><div className="sl">{t.saved}</div>{CODES.filter(c => bookmarks.includes(c.id)).map(c => <div key={c.id} className="cc p" onClick={() => { setScreen("codes"); setSelectedCode(c); setShowDiagram(false); }}><div style={{ display: "flex", justifyContent: "space-between" }}><div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 600, fontSize: 14, color: "#c0d8e8", flex: 1, paddingRight: 8 }}>{lang === "en" ? c.title : c.titleEs}</div><span className="pill" style={{ color: catColors[c.category] || "#7a9aaa" }}>{c.code}</span></div></div>)}</div>}
+            {bookmarks.length > 0 && <div><div className="sl">{t.saved}</div>{CODES.filter(c => bookmarks.includes(c.id)).map(c => <div key={c.id} className="cc p" onClick={() => openCode(c)}><div style={{ display: "flex", justifyContent: "space-between" }}><div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 600, fontSize: 14, color: "#c0d8e8", flex: 1, paddingRight: 8 }}>{lang === "en" ? c.title : c.titleEs}</div><span className="pill" style={{ color: catColors[c.category] || "#7a9aaa" }}>{c.code}</span></div></div>)}</div>}
           </div>
         )}
 
@@ -1985,6 +1990,9 @@ function IdentifyScreen({ t, lang }) {
   const jobFileRef = useRef(null);
   const synthRef = useRef(null);
   const audioRef = useRef(null);
+  const cntRef = useRef(null);
+
+  const scrollTop = () => { try { if (cntRef.current) cntRef.current.scrollTop = 0; } catch(e) {} };
 
   // Track online/offline status
   useEffect(() => {
