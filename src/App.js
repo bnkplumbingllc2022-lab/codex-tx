@@ -1223,8 +1223,8 @@ function AppInner() {
     if (!voiceEnabled || !text) return;
     stopSpeaking();
     setIsSpeaking(true);
-    // Set a 3 second timeout — if Google doesn't respond, fall back to browser TTS
     let googleSucceeded = false;
+    // Shorter fallback — 2 seconds feels acceptable, 3 was too long
     const fallbackTimer = setTimeout(() => {
       if (!googleSucceeded) {
         try {
@@ -1236,7 +1236,7 @@ function AppInner() {
           window.speechSynthesis.speak(utt);
         } catch(e) { setIsSpeaking(false); }
       }
-    }, 3000);
+    }, 2000);
     try {
       const res = await fetch("/api/tts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text, lang }) });
       const data = await res.json();
@@ -1247,16 +1247,24 @@ function AppInner() {
         const audio = new Audio("data:audio/mp3;base64," + data.audioContent);
         audioRef.current = audio;
         audio.onended = () => setIsSpeaking(false);
-        audio.onerror = () => setIsSpeaking(false);
-        audio.play();
+        audio.onerror = () => { setIsSpeaking(false); };
+        // iOS requires play() to be called synchronously after a user gesture
+        // Use a try/catch and retry once if it fails
+        try {
+          await audio.play();
+        } catch(playErr) {
+          try { await audio.play(); } catch(e2) { setIsSpeaking(false); }
+        }
       } else {
         clearTimeout(fallbackTimer);
         googleSucceeded = true;
-        const utt = new SpeechSynthesisUtterance(text.substring(0, 400));
-        utt.lang = lang === "es" ? "es-MX" : "en-US";
-        utt.rate = 0.92;
-        utt.onend = () => setIsSpeaking(false);
-        window.speechSynthesis.speak(utt);
+        try {
+          const utt = new SpeechSynthesisUtterance(text.substring(0, 400));
+          utt.lang = lang === "es" ? "es-MX" : "en-US";
+          utt.rate = 0.92;
+          utt.onend = () => setIsSpeaking(false);
+          window.speechSynthesis.speak(utt);
+        } catch(e) { setIsSpeaking(false); }
       }
     } catch(e) {
       clearTimeout(fallbackTimer);
