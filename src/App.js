@@ -11,7 +11,8 @@ class ErrorBoundary extends Component {
         <div style={{ minHeight: "100vh", background: "#0e1215", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 32, color: "#c8d8e8" }}>
           <div style={{ fontSize: 48, marginBottom: 16 }}>⚠️</div>
           <div style={{ fontFamily: "sans-serif", fontWeight: 700, fontSize: 20, marginBottom: 12, color: "#e8f0f8" }}>Something went wrong</div>
-          <div style={{ fontFamily: "sans-serif", fontSize: 14, color: "#4a6a7a", marginBottom: 24, textAlign: "center" }}>The app hit an unexpected error. Tap below to reload.</div>
+          <div style={{ fontFamily: "sans-serif", fontSize: 14, color: "#4a6a7a", marginBottom: 12, textAlign: "center" }}>The app hit an unexpected error. Tap below to reload.</div>
+          {this.state.error && <div style={{ fontFamily: "monospace", fontSize: 11, color: "#c85a30", marginBottom: 20, textAlign: "center", maxWidth: 340, wordBreak: "break-word", padding: "8px 12px", background: "#1a0a0a", borderRadius: 8, border: "1px solid #3a1a1a" }}>{this.state.error.toString()}</div>}
           <button onClick={() => window.location.reload()} style={{ background: "linear-gradient(135deg,#d4820a,#8a5006)", border: "none", borderRadius: 12, padding: "14px 32px", cursor: "pointer", fontFamily: "sans-serif", fontWeight: 700, fontSize: 16, color: "#fff" }}>RELOAD APP</button>
         </div>
       );
