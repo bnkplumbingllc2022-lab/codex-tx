@@ -1211,6 +1211,7 @@ function AppInner() {
   const cntRef = useRef(null);
   const synthRef = useRef(null);
   const audioRef = useRef(null);
+  const cameraLaunchRef = useRef(null); // IdentifyScreen sets this to trigger camera
   const scrollTop = () => { try { if (cntRef.current) cntRef.current.scrollTop = 0; } catch(e) {} };
   const unlockAudio = () => { if (!audioRef.current) { audioRef.current = new Audio(); } };
   const stopSpeaking = () => {
@@ -1852,7 +1853,7 @@ function AppInner() {
 
         {/* ── IDENTIFY SCREEN ── */}
         {screen === "identify" && (
-          <IdentifyScreen t={t} lang={lang} isOnline={isOnline} tier={tier} getUsage={getUsage} bumpUsage={bumpUsage} FREE_LIMITS={FREE_LIMITS} setUpgradeFeature={setUpgradeFeature} setShowUpgrade={setShowUpgrade} voiceEnabled={voiceEnabled} setVoiceEnabled={setVoiceEnabled} isSpeaking={isSpeaking} speak={speak} stopSpeaking={stopSpeaking} unlockAudio={unlockAudio} audioRef={audioRef} />
+          <IdentifyScreen t={t} lang={lang} isOnline={isOnline} tier={tier} getUsage={getUsage} bumpUsage={bumpUsage} FREE_LIMITS={FREE_LIMITS} setUpgradeFeature={setUpgradeFeature} setShowUpgrade={setShowUpgrade} voiceEnabled={voiceEnabled} setVoiceEnabled={setVoiceEnabled} isSpeaking={isSpeaking} speak={speak} stopSpeaking={stopSpeaking} unlockAudio={unlockAudio} audioRef={audioRef} cameraLaunchRef={cameraLaunchRef} />
         )}
 
       </div>
@@ -1957,7 +1958,10 @@ function AppInner() {
           const isCamera = item.id === "identify";
           if (isCamera) {
             return (
-              <div key={item.id} className="ni" onClick={() => navTo(item.id)}>
+              <div key={item.id} className="ni" onClick={() => {
+                navTo(item.id);
+                setTimeout(() => { try { if (cameraLaunchRef.current) cameraLaunchRef.current(); } catch(e) {} }, 300);
+              }}>
                 <div style={{ width: 46, height: 46, borderRadius: "50%", background: active ? "#c85a30" : "linear-gradient(135deg,#2a1a0f,#1a2a3a)", border: `2px solid ${active ? "#ff7a50" : "#c85a30"}`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 ${active ? "16px" : "6px"} rgba(200,90,48,${active ? ".6" : ".3"})`, marginBottom: 2 }}>
                   <Icon name="camera" size={22} color={active ? "#fff" : "#c85a30"} />
                 </div>
@@ -1986,7 +1990,7 @@ export default function App() {
 }
 
 // ─── IDENTIFY SCREEN COMPONENT ───────────────────────────────
-function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIMITS, setUpgradeFeature, setShowUpgrade, voiceEnabled, setVoiceEnabled, isSpeaking, speak, stopSpeaking, unlockAudio, audioRef }) {
+function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIMITS, setUpgradeFeature, setShowUpgrade, voiceEnabled, setVoiceEnabled, isSpeaking, speak, stopSpeaking, unlockAudio, audioRef, cameraLaunchRef }) {
   const [activeTab, setActiveTab] = useState("bob"); // "bob" | "job" | "estimate"
   const [phase, setPhase] = useState("idle");
   const [imagePreview, setImagePreview] = useState(null);
@@ -2059,6 +2063,16 @@ function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIM
   const fileRef = useRef(null);
   const galleryRef = useRef(null);
   const jobFileRef = useRef(null);
+
+  // Register camera launch function so parent tab button can trigger it
+  useEffect(() => {
+    if (cameraLaunchRef) {
+      cameraLaunchRef.current = () => {
+        try { unlockAudio(); if (fileRef.current) fileRef.current.click(); } catch(e) {}
+      };
+    }
+    return () => { if (cameraLaunchRef) cameraLaunchRef.current = null; };
+  }, []);
 
   // Current parts based on active language — no API call needed to switch
   const parts = lang === "es" ? partsEs : partsEn;
