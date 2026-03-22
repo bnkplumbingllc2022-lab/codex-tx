@@ -1209,7 +1209,39 @@ function AppInner() {
   const [isOnline, setIsOnline] = useState(true);
   const recognitionRef = useRef(null);
   const cntRef = useRef(null);
+  const synthRef = useRef(null);
+  const audioRef = useRef(null);
   const scrollTop = () => { try { if (cntRef.current) cntRef.current.scrollTop = 0; } catch(e) {} };
+  const unlockAudio = () => { if (!audioRef.current) { audioRef.current = new Audio(); } };
+  const stopSpeaking = () => {
+    if (audioRef.current) { try { audioRef.current.pause(); audioRef.current.currentTime = 0; } catch(e) {} }
+    try { window.speechSynthesis.cancel(); } catch(e) {}
+    setIsSpeaking(false);
+  };
+  const speak = async (text) => {
+    if (!voiceEnabled || !text) return;
+    stopSpeaking();
+    try {
+      setIsSpeaking(true);
+      const res = await fetch("/api/tts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text, lang }) });
+      const data = await res.json();
+      if (data.audioContent) {
+        const audio = new Audio("data:audio/mp3;base64," + data.audioContent);
+        audioRef.current = audio;
+        audio.onended = () => setIsSpeaking(false);
+        audio.onerror = () => setIsSpeaking(false);
+        audio.play();
+      } else {
+        const utt = new SpeechSynthesisUtterance(text);
+        utt.lang = lang === "es" ? "es-MX" : "en-US"; utt.rate = 0.92;
+        utt.onend = () => setIsSpeaking(false);
+        window.speechSynthesis.speak(utt);
+      }
+    } catch(e) {
+      setIsSpeaking(false);
+      try { const utt = new SpeechSynthesisUtterance(text); utt.lang = lang === "es" ? "es-MX" : "en-US"; utt.onend = () => setIsSpeaking(false); window.speechSynthesis.speak(utt); } catch(e2) { setIsSpeaking(false); }
+    }
+  };
 
   const startVoice = () => {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -1820,7 +1852,7 @@ function AppInner() {
 
         {/* ── IDENTIFY SCREEN ── */}
         {screen === "identify" && (
-          <IdentifyScreen t={t} lang={lang} isOnline={isOnline} tier={tier} getUsage={getUsage} bumpUsage={bumpUsage} FREE_LIMITS={FREE_LIMITS} setUpgradeFeature={setUpgradeFeature} setShowUpgrade={setShowUpgrade} />
+          <IdentifyScreen t={t} lang={lang} isOnline={isOnline} tier={tier} getUsage={getUsage} bumpUsage={bumpUsage} FREE_LIMITS={FREE_LIMITS} setUpgradeFeature={setUpgradeFeature} setShowUpgrade={setShowUpgrade} voiceEnabled={voiceEnabled} setVoiceEnabled={setVoiceEnabled} isSpeaking={isSpeaking} speak={speak} stopSpeaking={stopSpeaking} unlockAudio={unlockAudio} audioRef={audioRef} />
         )}
 
       </div>
@@ -1954,7 +1986,7 @@ export default function App() {
 }
 
 // ─── IDENTIFY SCREEN COMPONENT ───────────────────────────────
-function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIMITS, setUpgradeFeature, setShowUpgrade }) {
+function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIMITS, setUpgradeFeature, setShowUpgrade, voiceEnabled, setVoiceEnabled, isSpeaking, speak, stopSpeaking, unlockAudio, audioRef }) {
   const [activeTab, setActiveTab] = useState("bob"); // "bob" | "job" | "estimate"
   const [phase, setPhase] = useState("idle");
   const [imagePreview, setImagePreview] = useState(null);
@@ -2027,78 +2059,12 @@ function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIM
   const fileRef = useRef(null);
   const galleryRef = useRef(null);
   const jobFileRef = useRef(null);
-  const synthRef = useRef(null);
-  const audioRef = useRef(null);
-
-  // Track online/offline status
-  useEffect(() => {
-    const goOnline = () => setIsOnline(true);
-    const goOffline = () => setIsOnline(false);
-    window.addEventListener("online", goOnline);
-    window.addEventListener("offline", goOffline);
-    return () => {
-      window.removeEventListener("online", goOnline);
-      window.removeEventListener("offline", goOffline);
-    };
-  }, []);
 
   // Current parts based on active language — no API call needed to switch
   const parts = lang === "es" ? partsEs : partsEn;
   const setParts = lang === "es" ? setPartsEs : setPartsEn;
 
-  const unlockAudio = () => {
-    // iOS requires audio context unlock on user gesture
-    if (!audioRef.current) {
-      audioRef.current = new Audio();
-    }
-  };
-
-  const speak = async (text) => {
-    if (!voiceEnabled || !text) return;
-    stopSpeaking();
-    try {
-      setIsSpeaking(true);
-      const res = await fetch("/api/tts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text, lang }),
-      });
-      const data = await res.json();
-      if (data.audioContent) {
-        const audio = new Audio("data:audio/mp3;base64," + data.audioContent);
-        audioRef.current = audio;
-        audio.onended = () => setIsSpeaking(false);
-        audio.onerror = () => setIsSpeaking(false);
-        audio.play();
-      } else {
-        // Fallback to browser TTS if Google fails
-        const utt = new SpeechSynthesisUtterance(text);
-        utt.lang = lang === "es" ? "es-MX" : "en-US";
-        utt.rate = 0.92;
-        utt.onstart = () => setIsSpeaking(true);
-        utt.onend = () => setIsSpeaking(false);
-        window.speechSynthesis.speak(utt);
-      }
-    } catch(e) {
-      setIsSpeaking(false);
-      // Fallback to browser TTS
-      try {
-        const utt = new SpeechSynthesisUtterance(text);
-        utt.lang = lang === "es" ? "es-MX" : "en-US";
-        utt.onend = () => setIsSpeaking(false);
-        window.speechSynthesis.speak(utt);
-      } catch(e2) { setIsSpeaking(false); }
-    }
-  };
-
-  const stopSpeaking = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-    }
-    try { window.speechSynthesis.cancel(); } catch(e) {}
-    setIsSpeaking(false);
-  };
+  const unlockAudio_local = unlockAudio; // use prop
 
   const buildSpeech = (partsList) => {
     if (partsList.length === 0) return lang === "en" ? "No plumbing parts detected." : "No se detectaron partes de plomería.";
