@@ -1200,6 +1200,8 @@ function AppInner() {
   const [voiceStatus, setVoiceStatus] = useState("");
   const [showDiagram, setShowDiagram] = useState(false);
   const recognitionRef = useRef(null);
+  const cntRef = useRef(null);
+  const scrollTop = () => { try { if (cntRef.current) cntRef.current.scrollTop = 0; } catch(e) {} };
 
   const startVoice = () => {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -2022,9 +2024,6 @@ function IdentifyScreen({ t, lang }) {
   const jobFileRef = useRef(null);
   const synthRef = useRef(null);
   const audioRef = useRef(null);
-  const cntRef = useRef(null);
-
-  const scrollTop = () => { try { if (cntRef.current) cntRef.current.scrollTop = 0; } catch(e) {} };
 
   // Track online/offline status
   useEffect(() => {
