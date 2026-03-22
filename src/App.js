@@ -1,4 +1,24 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Component } from "react";
+
+// ─── ERROR BOUNDARY ──────────────────────────────────────────
+class ErrorBoundary extends Component {
+  constructor(props) { super(props); this.state = { hasError: false, error: null }; }
+  static getDerivedStateFromError(error) { return { hasError: true, error }; }
+  componentDidCatch(error, info) { console.error("App crashed:", error, info); }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ minHeight: "100vh", background: "#0e1215", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 32, color: "#c8d8e8" }}>
+          <div style={{ fontSize: 48, marginBottom: 16 }}>⚠️</div>
+          <div style={{ fontFamily: "sans-serif", fontWeight: 700, fontSize: 20, marginBottom: 12, color: "#e8f0f8" }}>Something went wrong</div>
+          <div style={{ fontFamily: "sans-serif", fontSize: 14, color: "#4a6a7a", marginBottom: 24, textAlign: "center" }}>The app hit an unexpected error. Tap below to reload.</div>
+          <button onClick={() => window.location.reload()} style={{ background: "linear-gradient(135deg,#d4820a,#8a5006)", border: "none", borderRadius: 12, padding: "14px 32px", cursor: "pointer", fontFamily: "sans-serif", fontWeight: 700, fontSize: 16, color: "#fff" }}>RELOAD APP</button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 // ─── TRANSLATIONS ────────────────────────────────────────────
 const T = {
@@ -964,7 +984,7 @@ const Icon = ({ name, size = 20, color = "currentColor" }) => {
 };
 
 // ─── MAIN APP ────────────────────────────────────────────────
-export default function App() {
+function AppInner() {
   // ── AUTH STATE ───────────────────────────────────────────
   const [authed, setAuthed] = useState(false);
   const [authScreen, setAuthScreen] = useState("login");
@@ -977,7 +997,7 @@ export default function App() {
 
   // ── SUBSCRIPTION & USAGE ─────────────────────────────────
   const [tier, setTier] = useState("free"); // "free" | "basic" | "pro"
-  const [tierLoaded, setTierLoaded] = useState(false); // true once subscription check completes
+  const [tierLoaded, setTierLoaded] = useState(true); // default true — set false only during active check
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [upgradeFeature, setUpgradeFeature] = useState("");
   const [showLanding, setShowLanding] = useState(true);
@@ -1032,6 +1052,7 @@ export default function App() {
   };
 
   const checkSubscription = async (email) => {
+    setTierLoaded(false);
     try {
       const res = await fetch("/api/subscription", {
         method: "POST", headers: { "Content-Type": "application/json" },
@@ -1253,11 +1274,13 @@ export default function App() {
 
   const categories = ["All", ...new Set(CODES.map(c => c.category))];
   const filteredCodes = CODES.filter(c => {
-    const q = searchQuery.toLowerCase();
-    const title = lang === "en" ? c.title : c.titleEs;
-    const plain = lang === "en" ? c.plain : c.plainEs;
-    const matchCat = selectedCategory === "All" || c.category === selectedCategory;
-    return matchCat && (!q || title.toLowerCase().includes(q) || c.tags.some(tg => tg.toLowerCase().includes(q)) || c.code.toLowerCase().includes(q) || plain.toLowerCase().includes(q));
+    try {
+      const q = searchQuery.toLowerCase();
+      const title = lang === "en" ? (c.title || "") : (c.titleEs || "");
+      const plain = lang === "en" ? (c.plain || "") : (c.plainEs || "");
+      const matchCat = selectedCategory === "All" || c.category === selectedCategory;
+      return matchCat && (!q || title.toLowerCase().includes(q) || (c.tags || []).some(tg => tg.toLowerCase().includes(q)) || (c.code || "").toLowerCase().includes(q) || plain.toLowerCase().includes(q));
+    } catch(e) { return false; }
   });
   const sortedJ = Object.entries(JURISDICTIONS).sort(([a], [b]) => a.localeCompare(b));
   const filteredJ = sortedJ.filter(([city]) => !jSearchQuery || city.toLowerCase().includes(jSearchQuery.toLowerCase()));
@@ -1908,6 +1931,14 @@ export default function App() {
         })}
       </div>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <ErrorBoundary>
+      <AppInner />
+    </ErrorBoundary>
   );
 }
 
