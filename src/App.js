@@ -1108,8 +1108,13 @@ function AppInner() {
     if (hash && hash.includes("access_token")) {
       const params = new URLSearchParams(hash.replace("#", "?"));
       const token = params.get("access_token");
-      const email = params.get("email") || "Google User";
       if (token) {
+        // Try to decode email from JWT payload
+        let email = "Google User";
+        try {
+          const payload = JSON.parse(atob(token.split(".")[1]));
+          email = payload.email || payload.user_metadata?.email || "Google User";
+        } catch(e) {}
         setAuthUser({ email });
         setAuthed(true);
         setShowLanding(false);
@@ -1815,7 +1820,7 @@ function AppInner() {
 
         {/* ── IDENTIFY SCREEN ── */}
         {screen === "identify" && (
-          <IdentifyScreen t={t} lang={lang} />
+          <IdentifyScreen t={t} lang={lang} isOnline={isOnline} tier={tier} getUsage={getUsage} bumpUsage={bumpUsage} FREE_LIMITS={FREE_LIMITS} setUpgradeFeature={setUpgradeFeature} setShowUpgrade={setShowUpgrade} />
         )}
 
       </div>
@@ -1949,7 +1954,7 @@ export default function App() {
 }
 
 // ─── IDENTIFY SCREEN COMPONENT ───────────────────────────────
-function IdentifyScreen({ t, lang }) {
+function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIMITS, setUpgradeFeature, setShowUpgrade }) {
   const [activeTab, setActiveTab] = useState("bob"); // "bob" | "job" | "estimate"
   const [phase, setPhase] = useState("idle");
   const [imagePreview, setImagePreview] = useState(null);
