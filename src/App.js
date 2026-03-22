@@ -1199,6 +1199,9 @@ function AppInner() {
   const [isListening, setIsListening] = useState(false);
   const [voiceStatus, setVoiceStatus] = useState("");
   const [showDiagram, setShowDiagram] = useState(false);
+  const [voiceEnabled, setVoiceEnabled] = useState(true);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isOnline, setIsOnline] = useState(true);
   const recognitionRef = useRef(null);
   const cntRef = useRef(null);
   const scrollTop = () => { try { if (cntRef.current) cntRef.current.scrollTop = 0; } catch(e) {} };
@@ -1954,10 +1957,7 @@ function IdentifyScreen({ t, lang }) {
   const [partsEs, setPartsEs] = useState([]);
   const [selectedPart, setSelectedPart] = useState(null);
   const [error, setError] = useState(null);
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [voiceEnabled, setVoiceEnabled] = useState(true);
   const [lastBase64, setLastBase64] = useState(null);
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [recentHistory, setRecentHistory] = useState(() => {
     try {
       const saved = localStorage.getItem("codex_recent_history");
