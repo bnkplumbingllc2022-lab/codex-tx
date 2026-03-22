@@ -1223,30 +1223,52 @@ function AppInner() {
     if (!voiceEnabled || !text) return;
     stopSpeaking();
     setIsSpeaking(true);
-    // Start browser TTS immediately so there's no delay
-    try {
-      const utt = new SpeechSynthesisUtterance(text.substring(0, 300));
-      utt.lang = lang === "es" ? "es-MX" : "en-US";
-      utt.rate = 0.92;
-      utt.onend = () => setIsSpeaking(false);
-      utt.onerror = () => setIsSpeaking(false);
-      synthRef.current = utt;
-      window.speechSynthesis.speak(utt);
-    } catch(e) { setIsSpeaking(false); }
-    // Also try Google TTS in background for better voice quality
+    // Set a 3 second timeout — if Google doesn't respond, fall back to browser TTS
+    let googleSucceeded = false;
+    const fallbackTimer = setTimeout(() => {
+      if (!googleSucceeded) {
+        try {
+          const utt = new SpeechSynthesisUtterance(text.substring(0, 400));
+          utt.lang = lang === "es" ? "es-MX" : "en-US";
+          utt.rate = 0.92;
+          utt.onend = () => setIsSpeaking(false);
+          utt.onerror = () => setIsSpeaking(false);
+          window.speechSynthesis.speak(utt);
+        } catch(e) { setIsSpeaking(false); }
+      }
+    }, 3000);
     try {
       const res = await fetch("/api/tts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text, lang }) });
       const data = await res.json();
       if (data.audioContent) {
-        // Cancel browser TTS and play Google voice
+        googleSucceeded = true;
+        clearTimeout(fallbackTimer);
         try { window.speechSynthesis.cancel(); } catch(e) {}
         const audio = new Audio("data:audio/mp3;base64," + data.audioContent);
         audioRef.current = audio;
         audio.onended = () => setIsSpeaking(false);
         audio.onerror = () => setIsSpeaking(false);
         audio.play();
+      } else {
+        clearTimeout(fallbackTimer);
+        googleSucceeded = true;
+        const utt = new SpeechSynthesisUtterance(text.substring(0, 400));
+        utt.lang = lang === "es" ? "es-MX" : "en-US";
+        utt.rate = 0.92;
+        utt.onend = () => setIsSpeaking(false);
+        window.speechSynthesis.speak(utt);
       }
-    } catch(e) { /* browser TTS already playing, no action needed */ }
+    } catch(e) {
+      clearTimeout(fallbackTimer);
+      if (!googleSucceeded) {
+        try {
+          const utt = new SpeechSynthesisUtterance(text.substring(0, 400));
+          utt.lang = lang === "es" ? "es-MX" : "en-US";
+          utt.onend = () => setIsSpeaking(false);
+          window.speechSynthesis.speak(utt);
+        } catch(e2) { setIsSpeaking(false); }
+      }
+    }
   };
 
   const startVoice = () => {
@@ -2211,7 +2233,7 @@ function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIM
       const img = new Image();
       img.onload = () => {
         const canvas = document.createElement("canvas");
-        const maxSize = 1024;
+        const maxSize = 1600;
         let w = img.width;
         let h = img.height;
         if (w > h && w > maxSize) { h = (h * maxSize) / w; w = maxSize; }
@@ -2220,7 +2242,7 @@ function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIM
         canvas.height = h;
         const ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0, w, h);
-        resolve(canvas.toDataURL("image/jpeg", 0.85));
+        resolve(canvas.toDataURL("image/jpeg", 0.92));
       };
       img.src = dataUrl;
     });
