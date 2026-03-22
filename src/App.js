@@ -1222,26 +1222,31 @@ function AppInner() {
   const speak = async (text) => {
     if (!voiceEnabled || !text) return;
     stopSpeaking();
+    setIsSpeaking(true);
+    // Start browser TTS immediately so there's no delay
     try {
-      setIsSpeaking(true);
+      const utt = new SpeechSynthesisUtterance(text.substring(0, 300));
+      utt.lang = lang === "es" ? "es-MX" : "en-US";
+      utt.rate = 0.92;
+      utt.onend = () => setIsSpeaking(false);
+      utt.onerror = () => setIsSpeaking(false);
+      synthRef.current = utt;
+      window.speechSynthesis.speak(utt);
+    } catch(e) { setIsSpeaking(false); }
+    // Also try Google TTS in background for better voice quality
+    try {
       const res = await fetch("/api/tts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text, lang }) });
       const data = await res.json();
       if (data.audioContent) {
+        // Cancel browser TTS and play Google voice
+        try { window.speechSynthesis.cancel(); } catch(e) {}
         const audio = new Audio("data:audio/mp3;base64," + data.audioContent);
         audioRef.current = audio;
         audio.onended = () => setIsSpeaking(false);
         audio.onerror = () => setIsSpeaking(false);
         audio.play();
-      } else {
-        const utt = new SpeechSynthesisUtterance(text);
-        utt.lang = lang === "es" ? "es-MX" : "en-US"; utt.rate = 0.92;
-        utt.onend = () => setIsSpeaking(false);
-        window.speechSynthesis.speak(utt);
       }
-    } catch(e) {
-      setIsSpeaking(false);
-      try { const utt = new SpeechSynthesisUtterance(text); utt.lang = lang === "es" ? "es-MX" : "en-US"; utt.onend = () => setIsSpeaking(false); window.speechSynthesis.speak(utt); } catch(e2) { setIsSpeaking(false); }
-    }
+    } catch(e) { /* browser TTS already playing, no action needed */ }
   };
 
   const startVoice = () => {
@@ -1574,12 +1579,7 @@ function AppInner() {
           </button>
           {/* LANGUAGE TOGGLE */}
           <button className="lang-btn p" onClick={() => setLang(l => l === "en" ? "es" : "en")}>
-            <Icon name="globe" size={13} color="#7acae0" />
-            <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, color: "#7acae0", fontWeight: 700, letterSpacing: ".08em" }}>{lang === "en" ? "ES" : "EN"}</span>
-          </button>
-          {/* VOICE BUTTON */}
-          <button onClick={isListening ? stopVoice : startVoice} style={{ background: isListening ? "rgba(200,90,48,.2)" : "rgba(58,138,154,.15)", border: "1px solid " + (isListening ? "#c85a30" : "#3a8a9a"), borderRadius: 8, padding: "5px 8px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }} title={isListening ? "Stop" : "Voice Search"}>
-            <Icon name="mic" size={16} color={isListening ? "#c85a30" : "#7acae0"} />
+            <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, color: "#7acae0", fontWeight: 700, letterSpacing: ".06em" }}>{lang === "en" ? "SPANISH" : "ENGLISH"}</span>
           </button>
           {/* LOGOUT */}
           <button onClick={() => { setAuthed(false); setAuthEmail(""); setAuthPassword(""); setAuthInvite(""); setAuthUser(null); }} style={{ background: "transparent", border: "1px solid #2a3038", borderRadius: 8, padding: "5px 8px", cursor: "pointer" }} title="Sign out">
@@ -1986,6 +1986,87 @@ export default function App() {
     <ErrorBoundary>
       <AppInner />
     </ErrorBoundary>
+  );
+}
+
+// ─── LIVE VIEWFINDER COMPONENT ───────────────────────────────
+function LiveViewfinder({ onCapture, onFallback, isOnline, t, lang }) {
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const streamRef = useRef(null);
+  const [camReady, setCamReady] = useState(false);
+  const [camError, setCamError] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    const start = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "environment", width: { ideal: 1280 }, height: { ideal: 720 } }
+        });
+        if (!active) { stream.getTracks().forEach(t => t.stop()); return; }
+        streamRef.current = stream;
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.play();
+          setCamReady(true);
+        }
+      } catch(e) {
+        setCamError(true);
+      }
+    };
+    start();
+    return () => {
+      active = false;
+      if (streamRef.current) streamRef.current.getTracks().forEach(t => t.stop());
+    };
+  }, []);
+
+  const capture = () => {
+    if (!camReady || !videoRef.current || !canvasRef.current) { onFallback(); return; }
+    try {
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext("2d").drawImage(video, 0, 0);
+      canvas.toBlob(blob => {
+        if (blob) onCapture(new File([blob], "capture.jpg", { type: "image/jpeg" }));
+        else onFallback();
+      }, "image/jpeg", 0.92);
+    } catch(e) { onFallback(); }
+  };
+
+  if (camError) {
+    return (
+      <div onClick={onFallback} style={{ border: "2px dashed #c85a30", borderRadius: 14, padding: "32px 16px", textAlign: "center", cursor: "pointer", background: "rgba(200,90,48,.05)" }}>
+        <div style={{ fontSize: 40, marginBottom: 12 }}>📷</div>
+        <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 18, color: "#e0e8f0", marginBottom: 6 }}>{t.identifyTap}</div>
+        <div style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#4a6a7a" }}>{lang === "en" ? "Tap to open camera" : "Toca para abrir cámara"}</div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ position: "relative", borderRadius: 14, overflow: "hidden", background: "#000", aspectRatio: "4/3" }}>
+      <video ref={videoRef} autoPlay playsInline muted style={{ width: "100%", height: "100%", objectFit: "cover", display: camReady ? "block" : "none" }} />
+      <canvas ref={canvasRef} style={{ display: "none" }} />
+      {!camReady && (
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "#0e1215" }}>
+          <div style={{ width: 36, height: 36, border: "3px solid #c85a30", borderTopColor: "transparent", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
+        </div>
+      )}
+      {camReady && (
+        <div onClick={capture} style={{ position: "absolute", bottom: 16, left: "50%", transform: "translateX(-50%)", width: 64, height: 64, borderRadius: "50%", background: "rgba(200,90,48,.9)", border: "3px solid #fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 20px rgba(200,90,48,.6)" }}>
+          <div style={{ width: 24, height: 24, borderRadius: "50%", background: "#fff" }} />
+        </div>
+      )}
+      {camReady && (
+        <div style={{ position: "absolute", top: 10, left: "50%", transform: "translateX(-50%)", background: "rgba(0,0,0,.5)", borderRadius: 20, padding: "4px 12px" }}>
+          <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#fff", letterSpacing: ".08em" }}>{lang === "en" ? "TAP BUTTON TO CAPTURE" : "TOCA PARA CAPTURAR"}</span>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -2414,12 +2495,10 @@ function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIM
 
               <input ref={fileRef} type="file" accept="image/*" capture="environment" style={{ display: "none" }} onChange={e => handleImage(e.target.files[0])} />
               <input ref={galleryRef} type="file" accept="image/*" style={{ display: "none" }} onChange={e => handleImage(e.target.files[0])} />
-              <div className="upload-zone" onClick={() => { if (!isOnline) return; unlockAudio(); openCamera(fileRef); }} style={{ opacity: isOnline ? 1 : 0.4, cursor: isOnline ? "pointer" : "not-allowed" }}>
-                <div style={{ width: 72, height: 72, background: "linear-gradient(135deg,#2a1a0f,#3a2a1a)", border: "2px solid #c85a30", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
-                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#c85a30" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                </div>
-                <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 18, letterSpacing: ".08em", color: "#e0e8f0", marginBottom: 6 }}>{t.identifyTap}</div>
-              </div>
+
+              {/* LIVE VIEWFINDER */}
+              <LiveViewfinder onCapture={handleImage} onFallback={() => { unlockAudio(); if (fileRef.current) fileRef.current.click(); }} isOnline={isOnline} t={t} lang={lang} />
+
               <div onClick={() => { if (!isOnline) return; unlockAudio(); openCamera(galleryRef); }} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 12, padding: "12px 16px", marginTop: 10, cursor: isOnline ? "pointer" : "not-allowed", opacity: isOnline ? 1 : 0.4 }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7acae0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                 <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 600, fontSize: 15, letterSpacing: ".06em", color: "#7acae0" }}>{lang === "en" ? "UPLOAD FROM CAMERA ROLL" : "SUBIR DESDE LA GALERIA"}</span>
