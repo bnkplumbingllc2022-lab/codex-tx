@@ -2019,10 +2019,7 @@ function AppInner() {
           const isCamera = item.id === "identify";
           if (isCamera) {
             return (
-              <div key={item.id} className="ni" onClick={() => {
-                navTo(item.id);
-                setTimeout(() => { try { if (cameraLaunchRef.current) cameraLaunchRef.current(); } catch(e) {} }, 300);
-              }}>
+              <div key={item.id} className="ni" onClick={() => navTo(item.id)}>
                 <div style={{ width: 46, height: 46, borderRadius: "50%", background: active ? "#c85a30" : "linear-gradient(135deg,#2a1a0f,#1a2a3a)", border: `2px solid ${active ? "#ff7a50" : "#c85a30"}`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 ${active ? "16px" : "6px"} rgba(200,90,48,${active ? ".6" : ".3"})`, marginBottom: 2 }}>
                   <Icon name="camera" size={22} color={active ? "#fff" : "#c85a30"} />
                 </div>
