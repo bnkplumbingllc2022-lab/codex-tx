@@ -614,7 +614,6 @@ const JURISDICTIONS = {
   "Waco": { code: "IPC 2021", population: "139K", region: "Central Texas", amendments: ["Model construction codes with local amendments", "Gas pressure test: 10 PSI minimum", "Thermal expansion tank required on all closed water systems", "CSST bonding required per NFPA 54"], inspector: "Waco Inspection Services", phone: "(254) 750-5630", directLine: "(254) 750-5630", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "waco-texas.com/inspection-services", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
   "Wichita Falls": { code: "IPC 2021", population: "102K", region: "North Texas", amendments: ["Permits and inspections through MGOconnect online portal", "After-hours and emergency inspections available", "All contractors must register and obtain code compliance bond", "Gas pressure test: 10 PSI minimum, witnessed test may be required"], inspector: "Wichita Falls Building Inspections", phone: "(940) 761-7442", directLine: "(940) 761-7442", scheduleHours: "Mon–Fri 8AM–5PM | After-hours available", permitRequired: true, permitUrl: "wichitafallstx.gov/building-inspections", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
   "Abilene": { code: "IPC 2021", population: "125K", region: "West Texas", amendments: ["All permits through Accela online portal", "Gas pressure test: 10 PSI minimum hold for 15 minutes", "Thermal expansion tank required on all closed water systems", "Water heater pan required in all interior locations"], inspector: "Abilene Building Inspections", phone: "(325) 676-6246", directLine: "(325) 676-6246", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "abilenetx.gov/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
-  "Allen": { code: "IPC 2021", population: "107K", region: "North Texas (DFW)", amendments: ["NCTCOG regional amendments apply", "All permits through CSS portal before work begins", "Call (214) 509-4130 between 8-9 AM on day of inspection for time window", "Backflow prevention required — irrigation backflow tester must be licensed"], inspector: "Allen Building & Permitting", phone: "(214) 509-4130", directLine: "(214) 509-4130", scheduleHours: "8–9 AM day of inspection", permitRequired: true, permitUrl: "cityofallen.org/building-permitting", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
   "Anna": { code: "IPC 2021", population: "22K", region: "North Texas (DFW)", amendments: ["Fast-growing Collin County suburb — permit volume high, plan ahead", "NCTCOG regional amendments apply", "Thermal expansion tank required on all closed water systems", "Underground plastic sewer requires tracer wire"], inspector: "Anna Building Inspections", phone: "(972) 924-2616", directLine: "(972) 924-2616", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "annatexas.gov/permits", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
   "Aubrey": { code: "IPC 2021", population: "10K", region: "North Texas (DFW)", amendments: ["Denton County — verify ETJ if working near city limits", "NCTCOG regional amendments apply", "Thermal expansion tank required", "CSST bonding required per NFPA 54"], inspector: "Aubrey Building Department", phone: "(940) 440-9343", directLine: "(940) 440-9343", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "aubreytx.gov", thirdParty: ["Crossroads Inspections", "Bureau Veritas"] },
   "Bastrop": { code: "IPC 2021", population: "10K", region: "Central Texas", amendments: ["Historic district overlay — special considerations for older homes", "Thermal expansion tank required on all water heater installs", "Backflow prevention required on all irrigation connections", "Verify MUD district rules if outside city limits"], inspector: "Bastrop Building Department", phone: "(512) 332-8800", directLine: "(512) 332-8800", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "cityofbastrop.org/permits", thirdParty: ["Fox Energy Specialists", "Bureau Veritas"] },
@@ -638,7 +637,6 @@ const JURISDICTIONS = {
   "Humble": { code: "IPC 2021", population: "16K", region: "Greater Houston", amendments: ["Harris County MUD rules commonly apply — verify jurisdiction", "Thermal expansion tank required", "Backflow prevention required on all irrigation systems", "Gas pressure test: 10 PSI for 30 minutes"], inspector: "Humble Building Inspections", phone: "(281) 446-4661", directLine: "(281) 446-4661", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "cityofhumble.com/permits", thirdParty: ["Fox Energy Specialists", "Bureau Veritas", "Burgess Construction Consultants"] },
   "Huntsville": { code: "IPC 2021", population: "43K", region: "East Texas (Sam Houston area)", amendments: ["Walker County seat — verify county rules for unincorporated areas", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum hold", "Water heater pan required in all interior locations"], inspector: "Huntsville Building Inspections", phone: "(936) 291-5415", directLine: "(936) 291-5415", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "huntsvilletx.gov/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
   "Joshua": { code: "IPC 2021", population: "8K", region: "North Texas (Fort Worth suburb)", amendments: ["Johnson County — verify ETJ boundaries", "NCTCOG regional amendments apply", "Thermal expansion tank required", "Gas pressure test required — document results"], inspector: "Joshua Building Department", phone: "(817) 558-7447", directLine: "(817) 558-7447", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "joshuatx.gov", thirdParty: ["Code Solutions Inc.", "Bureau Veritas"] },
-  "Katy": { code: "IPC 2021", population: "22K", region: "Greater Houston", amendments: ["Harris County MUD rules apply outside city limits — verify jurisdiction", "Expansion tank required on all water heater replacements", "Gas test: 10 PSI for 30 min — inspector must witness", "Water service: copper only within 5 ft of meter"], inspector: "Katy Building Department", phone: "(281) 391-4800", directLine: "(281) 391-4800", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "cityofkaty.com", thirdParty: ["Crossroads Inspections", "Roadrunner Inspections", "Bureau Veritas", "Fox Energy Specialists"] },
   "Kyle": { code: "IPC 2021", population: "65K", region: "Central Texas (Austin suburb)", amendments: ["Hays County fast-growing suburb — high permit volume, plan ahead", "Kyle Water pre-approval required for new water service connections", "Thermal expansion tank required on all water heater installs", "Backflow prevention required on all irrigation systems"], inspector: "Kyle Building Inspections", phone: "(512) 262-3945", directLine: "(512) 262-3945", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "cityofkyle.com/permits", thirdParty: ["Fox Energy Specialists", "Bureau Veritas"] },
   "Lancaster": { code: "IPC 2021", population: "40K", region: "North Texas (DFW)", amendments: ["NCTCOG regional amendments apply", "Dallas County suburb — permits required before work begins", "Thermal expansion tank required on all closed water systems", "Water heater elevated 18\" in garage"], inspector: "Lancaster Building Inspections", phone: "(972) 218-1300", directLine: "(972) 218-1300", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "lancaster-tx.com/permits", thirdParty: ["Crossroads Inspections", "Bureau Veritas"] },
   "Little Elm": { code: "IPC 2021", population: "57K", region: "North Texas (DFW)", amendments: ["Fast-growing Denton County suburb", "NCTCOG regional amendments apply", "Thermal expansion tank required", "Underground plastic sewer requires tracer wire"], inspector: "Little Elm Building Inspections", phone: "(214) 975-0400", directLine: "(214) 975-0400", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "littleelm.org/permits", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
@@ -648,10 +646,7 @@ const JURISDICTIONS = {
   "Missouri City": { code: "IPC 2021", population: "75K", region: "Greater Houston", amendments: ["Fort Bend County — verify MUD district rules", "Thermal expansion tank required on all water heater installs", "Backflow prevention required on all irrigation systems", "Gas pressure test: 10 PSI for 30 minutes"], inspector: "Missouri City Building Inspections", phone: "(281) 403-8700", directLine: "(281) 403-8700", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "missouricitytx.gov/permits", thirdParty: ["Fox Energy Specialists", "Bureau Veritas", "Burgess Construction Consultants"] },
   "Mount Pleasant": { code: "IPC 2021", population: "17K", region: "Northeast Texas", amendments: ["Titus County seat", "Permits required for all plumbing work", "Gas pressure test: 10 PSI minimum hold", "Thermal expansion tank required on all closed water systems"], inspector: "Mount Pleasant Building Inspections", phone: "(903) 575-4000", directLine: "(903) 575-4000", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "mpcity.net/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
   "Nacogdoches": { code: "IPC 2021", population: "33K", region: "East Texas (Deep East Texas)", amendments: ["Stephen F. Austin University area — student housing codes enforced", "Nacogdoches Water utility approval required for new connections", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum"], inspector: "Nacogdoches Building Inspections", phone: "(936) 559-2571", directLine: "(936) 559-2571", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "ci.nacogdoches.tx.us/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
-  "North Richland Hills": { code: "IPC 2021", population: "74K", region: "North Texas (DFW)", amendments: ["NCTCOG regional amendments apply", "Thermal expansion tank required", "CSST bonding required per NFPA 54", "Water heater elevated 18\" in garage"], inspector: "NRH Building Inspections", phone: "(817) 427-6300", directLine: "(817) 427-6300", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "nrhtx.com/permits", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
-  "Odessa": { code: "IPC 2021", population: "114K", region: "West Texas (Permian Basin)", amendments: ["Permian Basin: expansive soil — granular bedding required", "Water heater strapping required at all locations", "Industrial connections: RPZ backflow required"], inspector: "Odessa Building Inspections", phone: "(432) 335-3265", directLine: "(432) 335-3265", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "odessatx.gov/permits", thirdParty: ["Bureau Veritas", "ECS Limited", "Texas Third Party Inspections LLC"] },
   "Port Arthur": { code: "IPC 2021", population: "55K", region: "Southeast Texas", amendments: ["Jefferson County — verify jurisdiction in unincorporated areas", "Coastal/industrial area — corrosion protection required on exposed piping", "Thermal expansion tank required on all closed water systems", "Backflow prevention required on all commercial connections"], inspector: "Port Arthur Building Inspections", phone: "(409) 983-8160", directLine: "(409) 983-8160", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "portarthurtx.gov/permits", thirdParty: ["Bureau Veritas", "ECS Limited"] },
-  "Rowlett": { code: "IPC 2021", population: "66K", region: "North Texas (DFW)", amendments: ["NCTCOG regional amendments apply", "Thermal expansion tank required", "CSST bonding required", "Water heater elevated 18\" in garage"], inspector: "Rowlett Building Inspections", phone: "(972) 412-6100", directLine: "(972) 412-6100", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "rowlett.com/permits", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
   "San Angelo": { code: "IPC 2021", population: "100K", region: "West Texas", amendments: ["Tom Green County seat — verify county rules for unincorporated areas", "Water conservation fixtures mandatory on all new construction", "Gas pressure test: 10 PSI minimum hold for 15 minutes", "Thermal expansion tank required on all closed water systems"], inspector: "San Angelo Building Inspections", phone: "(325) 657-4407", directLine: "(325) 657-4407", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "cosatx.us/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
   "San Marcos": { code: "IPC 2021", population: "70K", region: "Central Texas", amendments: ["Texas State University area — student housing codes enforced", "Hays County fast-growing area — high permit volume", "San Marcos Utilities pre-approval required for new water connections", "Thermal expansion tank required on all water heater installs"], inspector: "San Marcos Building Inspections", phone: "(512) 393-8150", directLine: "(512) 393-8150", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "sanmarcostx.gov/permits", thirdParty: ["Fox Energy Specialists", "Bureau Veritas"] },
   "Sherman": { code: "IPC 2021", population: "44K", region: "North Texas (Texoma)", amendments: ["Grayson County seat", "NCTCOG regional amendments apply", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum"], inspector: "Sherman Building Inspections", phone: "(903) 892-7227", directLine: "(903) 892-7227", scheduleHours: "Mon–Fri 8AM–5PM", permitRequired: true, permitUrl: "ci.sherman.tx.us/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
@@ -683,14 +678,12 @@ const JURISDICTIONS = {
   "Brownsville": { code: "IPC 2021", population: "182K", region: "Rio Grande Valley (Cameron County)", amendments: ["Southernmost major Texas city — Cameron County seat", "High humidity coastal environment — corrosion protection recommended", "Backflow prevention required on all irrigation and commercial connections", "High mineral content water — water softener loop recommended on new construction"], inspector: "Brownsville Building Safety", phone: "(956) 548-6030", directLine: "(956) 548-6030", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "brownsvilletx.gov/permits", thirdParty: ["Bureau Veritas", "ECS Limited", "Texas Third Party Inspections LLC"] },
   "Weslaco": { code: "IPC 2021", population: "42K", region: "Rio Grande Valley (Hidalgo County)", amendments: ["Hidalgo County — Valley area", "High mineral content water — water softener loop recommended", "Backflow prevention required on all irrigation connections", "Thermal expansion tank required on all closed water systems"], inspector: "Weslaco Building Department", phone: "(956) 968-3181", directLine: "(956) 968-3181", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "weslacotx.gov/permits", thirdParty: ["Bureau Veritas", "ECS Limited"] },
   "San Juan": { code: "IPC 2021", population: "37K", region: "Rio Grande Valley (Hidalgo County)", amendments: ["Hidalgo County — Valley area growing suburb", "High mineral content water — additional protection recommended", "Backflow prevention required on all irrigation and commercial connections", "Thermal expansion tank required"], inspector: "San Juan Building Department", phone: "(956) 223-2200", directLine: "(956) 223-2200", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "cityofsanjuan.com/permits", thirdParty: ["Bureau Veritas", "ECS Limited"] },
-  "Longview": { code: "IPC 2021", population: "82K", region: "East Texas", amendments: ["All inspection requests through automated line: (903) 239-5598", "Plan review required for all commercial and residential construction", "Gas pressure test required — document results for inspector", "Thermal expansion tank required on all closed water systems"], inspector: "Longview Building Inspection", phone: "(903) 239-5598", directLine: "(903) 239-5598", scheduleHours: "Automated request line 24/7", permitRequired: true, permitUrl: "longviewtexas.gov/building-inspection", thirdParty: ["Bureau Veritas", "ECS Limited", "Texas Third Party Inspections LLC"] },
   "Midlothian": { code: "IPC 2021", population: "38K", region: "North Texas (Ellis County)", amendments: ["Fast-growing Ellis County suburb", "NCTCOG regional amendments apply", "Thermal expansion tank required on all closed water systems", "Underground plastic sewer requires tracer wire"], inspector: "Midlothian Building Inspections", phone: "(972) 775-7120", directLine: "(972) 775-7120", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "midlothian.tx.us/permits", thirdParty: ["Crossroads Inspections", "Code Solutions Inc.", "Bureau Veritas"] },
   "Red Oak": { code: "IPC 2021", population: "16K", region: "North Texas (Ellis County)", amendments: ["Ellis County growing suburb south of Dallas", "NCTCOG regional amendments apply", "Thermal expansion tank required", "Gas pressure test: 10 PSI minimum hold"], inspector: "Red Oak Building Inspections", phone: "(972) 617-3638", directLine: "(972) 617-3638", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "redoaktexas.gov/permits", thirdParty: ["Crossroads Inspections", "Bureau Veritas"] },
   "Ennis": { code: "IPC 2021", population: "20K", region: "North Texas (Ellis County)", amendments: ["Ellis County — Bluebonnet city", "Verify ETJ boundaries for addresses near city limits", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum"], inspector: "Ennis Building Inspections", phone: "(972) 878-1234", directLine: "(972) 878-1234", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "ennisgov.com/permits", thirdParty: ["Crossroads Inspections", "Bureau Veritas"] },
   "Corsicana": { code: "IPC 2021", population: "23K", region: "North Texas (Navarro County)", amendments: ["Navarro County seat", "Verify county rules for addresses outside city limits", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum hold"], inspector: "Corsicana Building Department", phone: "(903) 654-4800", directLine: "(903) 654-4800", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "corsicanatx.gov/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
   "Athens": { code: "IPC 2021", population: "13K", region: "East Texas (Henderson County)", amendments: ["Henderson County seat", "East Texas expansive soil — granular bedding under slab recommended", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum"], inspector: "Athens Building Department", phone: "(903) 675-2341", directLine: "(903) 675-2341", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "athenstexas.net/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
   "Jacksonville": { code: "IPC 2021", population: "14K", region: "East Texas (Cherokee County)", amendments: ["Cherokee County seat", "Verify county rules if working outside city limits", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum hold"], inspector: "Jacksonville Building Department", phone: "(903) 586-1511", directLine: "(903) 586-1511", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "jacksonvilletexas.com/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
-  "Marshall": { code: "IPC 2021", population: "23K", region: "East Texas (Harrison County)", amendments: ["Harrison County seat", "East Texas industrial and commercial growth area", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum"], inspector: "Marshall Building Department", phone: "(903) 935-4406", directLine: "(903) 935-4406", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "marshalltexas.net/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
   "Kerrville": { code: "IPC 2021", population: "25K", region: "Central Texas (Hill Country)", amendments: ["Kerr County seat — Hill Country resort and retirement area", "Expansive limestone soils — granular bedding under slab strongly recommended", "Water conservation amendments — low-flow fixtures required", "Thermal expansion tank required on all closed water systems"], inspector: "Kerrville Building Inspections", phone: "(830) 258-1010", directLine: "(830) 258-1010", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "kerrvilletx.gov/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
   "Fredericksburg": { code: "IPC 2021", population: "12K", region: "Central Texas (Hill Country)", amendments: ["Gillespie County seat — heavy wine country tourism growth", "Historic district overlay applies downtown", "Expansive limestone soils — granular bedding under slab required", "Water conservation amendments — low-flow fixtures required"], inspector: "Fredericksburg Building Department", phone: "(830) 997-7521", directLine: "(830) 997-7521", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "fbgtx.org/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
 
@@ -698,33 +691,6 @@ const JURISDICTIONS = {
   "Taylor": { code: "IPC 2021", population: "17K", region: "Central Texas (Williamson County)", amendments: ["Williamson County — Samsung megafab industrial growth corridor", "High permit volume in 2024-2026 due to Samsung development nearby", "Thermal expansion tank required on all water heater installs", "Backflow prevention required on all irrigation connections"], inspector: "Taylor Building Department", phone: "(512) 352-3675", directLine: "(512) 352-3675", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "taylortx.gov/permits", thirdParty: ["Fox Energy Specialists", "Bureau Veritas"] },
   "Liberty Hill": { code: "IPC 2021", population: "15K", region: "Central Texas (Williamson County)", amendments: ["One of fastest growing small cities in Texas", "Williamson County — verify ETJ boundaries carefully", "Thermal expansion tank required on all water heater installs", "Backflow prevention required on all irrigation connections"], inspector: "Liberty Hill Building Inspections", phone: "(512) 778-5449", directLine: "(512) 778-5449", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "libertyhilltexas.gov/permits", thirdParty: ["Fox Energy Specialists", "Crossroads Inspections", "Bureau Veritas"] },
 
-  "Rockwall": { code: "IPC 2021", population: "52K", region: "North Texas (Rockwall County)", amendments: ["Rockwall County seat — fastest growing county in Texas by percentage", "NCTCOG regional amendments apply", "Thermal expansion tank required on all closed water systems", "Underground plastic sewer requires tracer wire", "CSST bonding required per NFPA 54", "Inspections via online portal — no walk-ins"], inspector: "Rockwall Building Inspections", phone: "(972) 771-7700", directLine: "(972) 771-7700", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "rockwall.com/permits", thirdParty: ["Crossroads Inspections", "Bureau Veritas", "Master Code"] },
-
-  "Sachse": { code: "IPC 2021", population: "27K", region: "North Texas (DFW — Dallas/Collin County)", amendments: ["Sits on Dallas and Collin county line — verify which county for permits", "NCTCOG regional amendments apply", "Thermal expansion tank required", "CSST bonding required", "Underground plastic sewer requires tracer wire"], inspector: "Sachse Building Inspections", phone: "(972) 466-9866", directLine: "(972) 466-9866", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "cityofsachse.com/permits", thirdParty: ["Crossroads Inspections", "Bureau Veritas"] },
-
-  "Rowlett": { code: "IPC 2021", population: "68K", region: "North Texas (DFW — Dallas/Rockwall County)", amendments: ["Straddles Dallas and Rockwall county line — verify jurisdiction by address", "NCTCOG regional amendments apply", "Thermal expansion tank required on all closed water systems", "CSST bonding required per NFPA 54"], inspector: "Rowlett Building Inspections", phone: "(972) 412-6100", directLine: "(972) 412-6100", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "rowlett.com/permits", thirdParty: ["Crossroads Inspections", "Bureau Veritas", "Master Code"] },
-
-  "Prosper": { code: "IPC 2021", population: "38K", region: "North Texas (DFW — Collin/Denton County)", amendments: ["One of fastest growing towns in Collin County", "NCTCOG regional amendments apply", "Thermal expansion tank required on all closed water systems", "Underground plastic sewer requires tracer wire", "All permits online via Energov portal"], inspector: "Prosper Building Inspections", phone: "(972) 569-1010", directLine: "(972) 569-1010", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "prospertx.gov/permits", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
-
-  "Little Elm": { code: "IPC 2021", population: "58K", region: "North Texas (DFW — Denton County)", amendments: ["Denton County lakefront community — high growth", "NCTCOG regional amendments apply", "Thermal expansion tank required", "CSST bonding required", "Tracer wire required on underground plastic sewer"], inspector: "Little Elm Building Inspections", phone: "(214) 975-0400", directLine: "(214) 975-0400", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "littleelm.org/permits", thirdParty: ["Crossroads Inspections", "Bureau Veritas"] },
-
-  "Anna": { code: "IPC 2021", population: "24K", region: "North Texas (Collin County)", amendments: ["Fast-growing Collin County suburb north of McKinney", "NCTCOG regional amendments apply", "Thermal expansion tank required on all closed water systems", "Tracer wire required on underground plastic sewer"], inspector: "Anna Building Inspections", phone: "(972) 924-2616", directLine: "(972) 924-2616", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "annatexas.gov/permits", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
-
-  "Celina": { code: "IPC 2021", population: "35K", region: "North Texas (Collin County)", amendments: ["One of fastest growing cities in Texas — massive residential development", "NCTCOG regional amendments apply", "Thermal expansion tank required on all closed water systems", "Tracer wire required on all underground plastic sewer piping", "Inspections via online portal — high volume, schedule ahead"], inspector: "Celina Building Inspections", phone: "(972) 382-2682", directLine: "(972) 382-2682", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "celinatx.gov/permits", thirdParty: ["Crossroads Inspections", "Master Code", "Bureau Veritas"] },
-
-  "Aubrey": { code: "IPC 2021", population: "10K", region: "North Texas (Denton County)", amendments: ["Fast-growing Denton County suburb", "NCTCOG regional amendments apply", "Verify ETJ boundaries for addresses outside city limits", "Thermal expansion tank required"], inspector: "Aubrey Building Department", phone: "(940) 440-9343", directLine: "(940) 440-9343", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "aubreytx.gov/permits", thirdParty: ["Crossroads Inspections", "Bureau Veritas"] },
-
-  "Mansfield": { code: "IPC 2021", population: "78K", region: "North Texas (DFW — Tarrant/Johnson County)", amendments: ["Straddles Tarrant and Johnson county lines — verify county by address", "NCTCOG regional amendments apply", "Thermal expansion tank required on all closed water systems", "CSST bonding required per NFPA 54", "Underground plastic sewer requires tracer wire"], inspector: "Mansfield Building Inspections", phone: "(817) 276-4200", directLine: "(817) 276-4200", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "mansfieldtexas.gov/permits", thirdParty: ["Crossroads Inspections", "Bureau Veritas", "Master Code"] },
-
-  "Burleson": { code: "IPC 2021", population: "52K", region: "North Texas (DFW — Tarrant/Johnson County)", amendments: ["Johnson and Tarrant county line — verify jurisdiction by address", "NCTCOG regional amendments apply", "Thermal expansion tank required", "CSST bonding required", "Gas pressure test: 10 PSI minimum hold"], inspector: "Burleson Building Inspections", phone: "(817) 426-9600", directLine: "(817) 426-9600", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "burlesontx.com/permits", thirdParty: ["Crossroads Inspections", "Bureau Veritas"] },
-
-  "Alvin": { code: "IPC 2021", population: "29K", region: "Gulf Coast (Brazoria County)", amendments: ["Brazoria County — petrochemical corridor area", "Flood zone requirements — slab elevation and equipment elevation rules apply", "Backflow prevention required on all irrigation connections", "Thermal expansion tank required on all closed water systems"], inspector: "Alvin Building Inspections", phone: "(281) 388-4370", directLine: "(281) 388-4370", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "alvincc.com/permits", thirdParty: ["Bureau Veritas", "ECS Limited"] },
-
-  "Angleton": { code: "IPC 2021", population: "20K", region: "Gulf Coast (Brazoria County)", amendments: ["Brazoria County seat", "Flood zone regulations apply — verify FEMA flood map before rough-in", "Backflow prevention required on all irrigation and commercial connections", "Thermal expansion tank required on all closed water systems"], inspector: "Angleton Building Inspections", phone: "(979) 849-4364", directLine: "(979) 849-4364", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "angleton.tx.us/permits", thirdParty: ["Bureau Veritas", "ECS Limited"] },
-
-  "Nacogdoches": { code: "IPC 2021", population: "32K", region: "East Texas (Nacogdoches County)", amendments: ["Oldest town in Texas — Stephen F. Austin State University area", "East Texas expansive clay soils — granular bedding under slab recommended", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum hold"], inspector: "Nacogdoches Building Department", phone: "(936) 559-2573", directLine: "(936) 559-2573", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "ci.nacogdoches.tx.us/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
-
-  "Lufkin": { code: "IPC 2021", population: "35K", region: "East Texas (Angelina County)", amendments: ["Angelina County seat — East Texas timber and industrial area", "East Texas expansive clay soils — granular bedding under slab recommended", "Thermal expansion tank required on all closed water systems", "Gas pressure test: 10 PSI minimum", "Verify county rules for permits outside city limits"], inspector: "Lufkin Building Inspections", phone: "(936) 633-0217", directLine: "(936) 633-0217", scheduleHours: "Mon-Fri 8AM-5PM", permitRequired: true, permitUrl: "ci.lufkin.tx.us/permits", thirdParty: ["Bureau Veritas", "Texas Third Party Inspections LLC"] },
 };
 
 const THIRD_PARTY = {
@@ -1251,7 +1217,7 @@ function AppInner() {
     if (enText && esText) currentSpeechRef.current = { enText, esText };
     setIsSpeaking(true);
     let googleSucceeded = false;
-    // Shorter fallback — 2 seconds feels acceptable, 3 was too long
+    // 1.5 second fallback — if Google hasn't responded, use browser TTS
     const fallbackTimer = setTimeout(() => {
       if (!googleSucceeded) {
         try {
@@ -1263,23 +1229,26 @@ function AppInner() {
           window.speechSynthesis.speak(utt);
         } catch(e) { setIsSpeaking(false); }
       }
-    }, 2000);
+    }, 1500);
     try {
       const res = await fetch("/api/tts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text, lang }) });
       const data = await res.json();
       if (data.audioContent) {
         googleSucceeded = true;
         clearTimeout(fallbackTimer);
+        // Cancel browser TTS aggressively — call twice for Android Chrome
+        try { window.speechSynthesis.cancel(); } catch(e) {}
         try { window.speechSynthesis.cancel(); } catch(e) {}
         const audio = new Audio("data:audio/mp3;base64," + data.audioContent);
         audioRef.current = audio;
         audio.onended = () => setIsSpeaking(false);
         audio.onerror = () => { setIsSpeaking(false); };
-        try {
+        // Small delay to let browser TTS fully stop before Google voice starts
+        setTimeout(() => {
+          try { window.speechSynthesis.cancel(); } catch(e) {}
           const playPromise = audio.play();
           if (playPromise !== undefined) {
             playPromise.catch(() => {
-              // iOS blocked autoplay — fall back to browser TTS
               try {
                 const utt = new SpeechSynthesisUtterance(text.substring(0, 400));
                 utt.lang = lang === "es" ? "es-MX" : "en-US";
@@ -1289,7 +1258,7 @@ function AppInner() {
               } catch(e2) { setIsSpeaking(false); }
             });
           }
-        } catch(playErr) { setIsSpeaking(false); }
+        }, 80);
       } else {
         clearTimeout(fallbackTimer);
         googleSucceeded = true;
@@ -2180,38 +2149,75 @@ function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIM
 
   // Material cost lookup — realistic 2025 supply house pricing
   const MATERIAL_COSTS = {
-    "Ball Valve": 18, "Gate Valve": 22, "Check Valve": 28, "Pressure Reducing Valve": 85,
-    "Pressure Relief Valve": 45, "TPR Valve": 38, "Thermostatic Mixing Valve": 95,
-    "Backflow Preventer": 120, "Pressure Vacuum Breaker": 65, "Double Check Valve": 145,
-    "Reduced Pressure Zone": 280, "Irrigation Backflow": 85,
-    "Water Heater": 650, "Tankless Water Heater": 1100, "Electric Water Heater": 480,
+    // VALVES
+    "Ball Valve": 18, "Gate Valve": 22, "Check Valve": 28,
+    "Pressure Reducing Valve": 85, "Pressure Relief Valve": 45,
+    "TPR Valve": 38, "Thermostatic Mixing Valve": 95,
+    "Backflow Preventer": 120, "Pressure Vacuum Breaker": 65,
+    "Double Check Valve": 145, "Reduced Pressure Zone": 280,
+    "Irrigation Backflow": 85, "Gas Valve": 35, "Gas Regulator": 55,
+    "Shut Off Valve": 18, "Stop Valve": 16, "Angle Stop": 14,
+    // WATER HEATERS
+    "Tankless Water Heater": 1100, "Electric Water Heater": 480,
     "Water Heater Expansion Tank": 55, "Thermal Expansion Tank": 55,
-    "PVC Pipe": 8, "CPVC Pipe": 12, "PEX Pipe": 15, "Copper Pipe": 38,
-    "ABS Pipe": 9, "Cast Iron Pipe": 42, "Galvanized Pipe": 28,
-    "CSST Gas Line": 65, "Black Iron Pipe": 22,
-    "PVC Fitting": 4, "CPVC Fitting": 5, "PEX Fitting": 8, "Copper Fitting": 14,
-    "ABS Fitting": 5, "Wye Fitting": 6, "Tee Fitting": 5, "Elbow": 4,
-    "P-Trap": 18, "S-Trap": 12, "Bottle Trap": 22,
+    "Water Heater": 650,
+    // PIPE — priced per 10 foot stick
+    "CSST Gas Line": 65, "Black Iron Pipe": 22, "Cast Iron Pipe": 42,
+    "Galvanized Pipe": 28, "Copper Pipe": 38, "CPVC Pipe": 12,
+    "PEX Pipe": 15, "PVC Pipe": 8, "ABS Pipe": 9,
+    // FITTINGS
+    "PEX Fitting": 8, "Copper Fitting": 14, "CPVC Fitting": 5,
+    "ABS Fitting": 5, "PVC Fitting": 4,
+    "Wye Fitting": 6, "Tee Fitting": 5, "Elbow": 4,
+    "P-Trap": 18, "Bottle Trap": 22,
     "Cleanout": 24, "Floor Drain": 45, "Roof Drain": 85,
     "Vent Cap": 12, "Air Admittance Valve": 28, "Studor Vent": 35,
     "Sediment Trap": 22, "Drip Leg": 18,
-    "Toilet": 180, "Flange": 22, "Wax Ring": 8,
-    "Faucet": 95, "Kitchen Faucet": 145, "Shower Valve": 185, "Tub Spout": 28,
+    "Supply Line": 12, "Flexible Connector": 18,
+    // TOILET COMPONENTS — specific before general
+    "Toilet Seat": 28, "Toilet Tank": 65, "Toilet Bowl": 95,
+    "Toilet Flange": 22, "Wax Ring": 8, "Fill Valve": 12,
+    "Flush Valve": 18, "Flapper": 6, "Trip Lever": 14,
+    "Water Supply Line": 12,
+    "Toilet": 280,
+    "Flange": 22,
+    // FAUCETS & FIXTURES
+    "Thermostatic Shower System": 450, "Shower Valve": 185,
+    "Kitchen Faucet": 145, "Bathroom Faucet": 95,
+    "Centerset Faucet": 85, "Widespread Faucet": 135,
+    "Single Handle Faucet": 95, "Tub Spout": 28,
     "Shower Head": 45, "Hose Bib": 22, "Sillcock": 22,
+    "Faucet": 95,
+    // SINKS & TUBS
+    "Undermount Sink": 145, "Drop-In Sink": 95, "Vessel Sink": 125,
+    "Farmhouse Sink": 285, "Kitchen Sink": 195,
+    "Bathroom Sink": 95, "Utility Sink": 85,
+    "Bathtub": 350, "Freestanding Tub": 650, "Walk-In Tub": 1800,
+    "Shower Pan": 185, "Shower Base": 185,
+    "Tub": 350, "Sink": 95,
+    // APPLIANCES & EQUIPMENT
     "Garbage Disposal": 165, "Dishwasher Connection": 25,
     "Water Softener": 650, "Water Filter": 185,
     "Sump Pump": 185, "Sewage Pump": 280,
-    "Gas Valve": 35, "Gas Regulator": 55, "Gas Meter": 0,
-    "Shut Off Valve": 18, "Stop Valve": 16, "Angle Stop": 14,
-    "Supply Line": 12, "Flexible Connector": 18,
-    "default": 35
+    "Gas Meter": 0,
+    // DEFAULT
+    "default": 45
   };
 
   const getPartCost = (partName) => {
     if (!partName) return MATERIAL_COSTS.default;
     const name = partName.toLowerCase();
+    // Try exact match first
     for (const [key, val] of Object.entries(MATERIAL_COSTS)) {
-      if (name.includes(key.toLowerCase())) return val;
+      if (key === "default") continue;
+      if (name === key.toLowerCase()) return val;
+    }
+    // Try longest matching key first to prevent "toilet" matching "toilet seat"
+    const sortedKeys = Object.keys(MATERIAL_COSTS)
+      .filter(k => k !== "default")
+      .sort((a, b) => b.length - a.length);
+    for (const key of sortedKeys) {
+      if (name.includes(key.toLowerCase())) return MATERIAL_COSTS[key];
     }
     return MATERIAL_COSTS.default;
   };
