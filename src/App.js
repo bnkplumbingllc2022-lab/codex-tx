@@ -1209,9 +1209,19 @@ function AppInner() {
   const [isOnline, setIsOnline] = useState(true);
   const recognitionRef = useRef(null);
 
-  // Scroll to top whenever any detail view opens — after all state is declared
+  // Scroll to top whenever any detail view opens
+  // Uses overflow:hidden trick to kill iOS scroll momentum before scrolling
   useEffect(() => {
-    setTimeout(() => { try { if (cntRef.current) cntRef.current.scrollTop = 0; } catch(e) {} }, 50);
+    const cnt = cntRef.current;
+    if (!cnt) return;
+    // Kill any ongoing scroll momentum
+    cnt.style.overflow = 'hidden';
+    cnt.scrollTop = 0;
+    // Restore scrolling after momentum is killed
+    requestAnimationFrame(() => {
+      cnt.style.overflow = '';
+      cnt.scrollTop = 0;
+    });
   }, [selectedJurisdiction, selectedCode, selectedThirdParty, screen]);
   const cntRef = useRef(null);
   const synthRef = useRef(null);
@@ -1577,7 +1587,7 @@ function AppInner() {
         .ni:active{opacity:.6}
         .nl{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.08em;font-weight:600}
         .hdr{position:sticky;top:0;background:linear-gradient(180deg,#0e1215 85%,rgba(14,18,21,0));border-bottom:1px solid #d4820a;z-index:50;padding:0 16px;display:flex;align-items:center;height:56px;gap:8px}
-        .cnt{flex:1;overflow-y:auto;padding:16px 16px 100px;height:calc(100vh - 56px);}
+        .cnt{flex:1;overflow-y:auto;padding:16px 16px 100px;height:calc(100vh - 56px);-webkit-overflow-scrolling:touch}
         .hb{background:#161c22;border:1px solid #2a3540;border-radius:14px;padding:18px 16px;display:flex;align-items:center;gap:14px;margin-bottom:10px;cursor:pointer}
         .hb:active{background:#1e262e}
         .ib{background:#161c22;border:1px solid #2a3540;border-radius:12px;padding:16px;margin-bottom:12px}
