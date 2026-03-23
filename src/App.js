@@ -2093,7 +2093,7 @@ function LiveViewfinder({ onCapture, onFallback, isOnline, t, lang }) {
   }
 
   return (
-    <div style={{ position: "relative", borderRadius: 14, overflow: "hidden", background: "#000", aspectRatio: "4/3", maxHeight: 280 }}>
+    <div style={{ position: "relative", borderRadius: 14, overflow: "hidden", background: "#000", aspectRatio: "4/3" }}>
       <video ref={videoRef} autoPlay playsInline muted style={{ width: "100%", height: "100%", objectFit: "cover", display: camReady ? "block" : "none" }} />
       <canvas ref={canvasRef} style={{ display: "none" }} />
       {!camReady && (
