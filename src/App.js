@@ -1211,17 +1211,21 @@ function AppInner() {
   const cntRef = useRef(null);
   const synthRef = useRef(null);
   const audioRef = useRef(null);
-  const cameraLaunchRef = useRef(null); // IdentifyScreen sets this to trigger camera
+  const cameraLaunchRef = useRef(null);
+  const currentSpeechRef = useRef(null); // tracks { enText, esText } of what's currently speaking
   const scrollTop = () => { try { if (cntRef.current) cntRef.current.scrollTop = 0; } catch(e) {} };
   const unlockAudio = () => { if (!audioRef.current) { audioRef.current = new Audio(); } };
   const stopSpeaking = () => {
+    currentSpeechRef.current = null;
     if (audioRef.current) { try { audioRef.current.pause(); audioRef.current.currentTime = 0; } catch(e) {} }
     try { window.speechSynthesis.cancel(); } catch(e) {}
     setIsSpeaking(false);
   };
-  const speak = async (text) => {
+  const speak = async (text, enText, esText) => {
     if (!voiceEnabled || !text) return;
     stopSpeaking();
+    // Track what we're speaking so language switch can restart it
+    if (enText && esText) currentSpeechRef.current = { enText, esText };
     setIsSpeaking(true);
     let googleSucceeded = false;
     // Shorter fallback — 2 seconds feels acceptable, 3 was too long
@@ -1608,7 +1612,18 @@ function AppInner() {
             <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: ".08em", color: tier === "pro" ? "#d4820a" : tier === "basic" ? "#4aba6a" : "#4a6a7a" }}>{tier.toUpperCase()}</span>
           </button>
           {/* LANGUAGE TOGGLE */}
-          <button className="lang-btn p" onClick={() => setLang(l => l === "en" ? "es" : "en")}>
+          <button className="lang-btn p" onClick={() => {
+            const newLang = lang === "en" ? "es" : "en";
+            setLang(newLang);
+            if (isSpeaking && currentSpeechRef.current) {
+              const { enText, esText } = currentSpeechRef.current;
+              const newText = newLang === "es" ? esText : enText;
+              stopSpeaking();
+              setTimeout(() => speak(newText, enText, esText), 100);
+            } else {
+              stopSpeaking();
+            }
+          }}>
             <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, color: "#7acae0", fontWeight: 700, letterSpacing: ".06em" }}>{lang === "en" ? "SPANISH" : "ENGLISH"}</span>
           </button>
           {/* LOGOUT */}
@@ -1713,10 +1728,10 @@ function AppInner() {
               </button>
               {voiceEnabled && (
                 <button onClick={() => {
-                  const speechText = lang === "en"
-                    ? `${selectedCode.title}. ${selectedCode.plain.substring(0, 500)}`
-                    : `${selectedCode.titleEs}. ${selectedCode.plainEs.substring(0, 500)}`;
-                  isSpeaking ? stopSpeaking() : speak(speechText);
+                  const enText = `${selectedCode.title}. ${selectedCode.plain.substring(0, 500)}`;
+                  const esText = `${selectedCode.titleEs}. ${selectedCode.plainEs.substring(0, 500)}`;
+                  const speechText = lang === "en" ? enText : esText;
+                  isSpeaking ? stopSpeaking() : speak(speechText, enText, esText);
                 }} style={{ background: isSpeaking ? "#2a1a1a" : "#1a2a1a", border: `1px solid ${isSpeaking ? "#c85a30" : "#2a5a3a"}`, borderRadius: 10, padding: "12px 14px", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
                   <Icon name="mic" size={16} color={isSpeaking ? "#c85a30" : "#4a9a6a"} />
                   <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 12, letterSpacing: ".06em", color: isSpeaking ? "#c85a30" : "#4a9a6a" }}>{isSpeaking ? "STOP" : "SPEAK"}</span>
@@ -2294,7 +2309,7 @@ function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIM
       setPhase("results");
       saveToHistory(enParts, esParts, imagePreview);
       // Speak in whichever language is active
-      speak(buildSpeech(useLang === "es" ? esParts : enParts));
+      speak(buildSpeech(useLang === "es" ? esParts : enParts), buildSpeech(enParts), buildSpeech(esParts));
 
     } catch (err) {
       console.error("Identify error:", err);
@@ -2560,7 +2575,7 @@ function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIM
                 <div style={{ display: "flex", gap: 8 }}>
                   {isSpeaking && <button onClick={stopSpeaking} style={{ background: "#2a1a1a", border: "1px solid #c85a30", borderRadius: 8, padding: "6px 12px", cursor: "pointer", fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#c85a30" }}>STOP</button>}
                   {!isSpeaking && voiceEnabled && parts.length > 0 && (
-                    <button onClick={() => speak(buildSpeech(parts))} style={{ background: "none", border: "1px solid #2a3038", borderRadius: 8, padding: "6px 10px", cursor: "pointer", display: "flex", alignItems: "center", gap: 4 }}>
+                    <button onClick={() => speak(buildSpeech(parts), buildSpeech(partsEn), buildSpeech(partsEs))} style={{ background: "none", border: "1px solid #2a3038", borderRadius: 8, padding: "6px 10px", cursor: "pointer", display: "flex", alignItems: "center", gap: 4 }}>
                       <span style={{ fontSize: 14 }}>🔊</span>
                       <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#7acae0", fontWeight: 700 }}>REPLAY</span>
                     </button>
