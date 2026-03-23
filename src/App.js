@@ -1133,6 +1133,11 @@ function AppInner() {
     }
   }, []);
 
+  // Scroll to top whenever any detail view opens — covers cities, codes, inspectors
+  useEffect(() => {
+    setTimeout(() => { try { if (cntRef.current) cntRef.current.scrollTop = 0; } catch(e) {} }, 50);
+  }, [selectedJurisdiction, selectedCode, selectedThirdParty, screen]);
+
   const authScreen_JSX = (
     <div style={{ minHeight: "100vh", background: "linear-gradient(160deg,#0e1215 60%,#1a1408 100%)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px 20px" }}>
       <div style={{ width: "100%", maxWidth: 400 }}>
