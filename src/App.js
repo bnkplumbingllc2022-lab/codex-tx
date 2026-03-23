@@ -2518,34 +2518,39 @@ function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIM
           {/* IDLE */}
           {phase === "idle" && (
             <div>
-              <div style={{ marginBottom: 20 }}>
+              <div style={{ marginBottom: 12 }}>
                 <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 28, letterSpacing: ".06em", color: "#e0e8f0", lineHeight: 1.1 }}>{t.identifyTitle}</div>
                 <div style={{ fontFamily: "'Lora',serif", fontStyle: "italic", fontSize: 14, color: "#4a6a7a", marginTop: 6 }}>{t.identifySub}</div>
               </div>
               {!isOnline && (
-                <div style={{ background: "#1a1a2a", border: "1px solid #4a4a8a", borderRadius: 12, padding: "14px 16px", marginBottom: 16, display: "flex", gap: 12, alignItems: "flex-start" }}>
+                <div style={{ background: "#1a1a2a", border: "1px solid #4a4a8a", borderRadius: 12, padding: "14px 16px", marginBottom: 12, display: "flex", gap: 12, alignItems: "flex-start" }}>
                   <span style={{ fontSize: 22, flexShrink: 0 }}>📵</span>
                   <div>
                     <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 15, color: "#9a9ae0", letterSpacing: ".04em", marginBottom: 4 }}>{lang === "en" ? "BOB NEEDS A SIGNAL" : "BOB NECESITA SEÑAL"}</div>
-                    <div style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#6a6a9a", lineHeight: 1.5 }}>{lang === "en" ? "No internet. Photo ID requires a connection. Cities, codes and contacts work offline." : "Sin internet. Identificacion requiere conexion. Ciudades, codigos y contactos funcionan sin conexion."}</div>
-                    {recentHistory.length > 0 && <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, color: "#7a7ab0", marginTop: 8 }}>{lang === "en" ? "Recent saves below" : "Recientes abajo"}</div>}
+                    <div style={{ fontFamily: "'Lora',serif", fontSize: 13, color: "#6a6a9a", lineHeight: 1.5 }}>{lang === "en" ? "No internet. Photo ID requires a connection." : "Sin internet. Identificacion requiere conexion."}</div>
                   </div>
                 </div>
               )}
-              {error && <div style={{ background: "#2a1a1a", border: "1px solid #6a2a2a", borderRadius: 10, padding: "10px 14px", marginBottom: 16, fontFamily: "'Lora',serif", fontSize: 13, color: "#c87a60" }}>{error}</div>}
+              {error && <div style={{ background: "#2a1a1a", border: "1px solid #6a2a2a", borderRadius: 10, padding: "10px 14px", marginBottom: 12, fontFamily: "'Lora',serif", fontSize: 13, color: "#c87a60" }}>{error}</div>}
 
-              {/* RECENT HISTORY — prominent, above camera */}
+              <input ref={fileRef} type="file" accept="image/*" capture="environment" style={{ display: "none" }} onChange={e => handleImage(e.target.files[0])} />
+              <input ref={galleryRef} type="file" accept="image/*" style={{ display: "none" }} onChange={e => handleImage(e.target.files[0])} />
+
+              {/* LIVE VIEWFINDER */}
+              <LiveViewfinder onCapture={handleImage} onFallback={() => { unlockAudio(); if (fileRef.current) fileRef.current.click(); }} isOnline={isOnline} t={t} lang={lang} unlockAudio={unlockAudio} />
+
+              {/* RECENT HISTORY — below viewfinder */}
               {recentHistory.length > 0 && (
-                <div style={{ marginBottom: 16 }}>
-                  <div onClick={() => setShowHistory(h => !h)} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#1a2a3a", border: "1px solid #2a4a6a", borderRadius: 10, padding: "12px 14px", cursor: "pointer", marginBottom: showHistory ? 8 : 0 }}>
+                <div style={{ marginTop: 10 }}>
+                  <div onClick={() => setShowHistory(h => !h)} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#1a2a3a", border: "1px solid #2a4a6a", borderRadius: 10, padding: "10px 14px", cursor: "pointer", marginBottom: showHistory ? 8 : 0 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      <span style={{ fontSize: 18 }}>🕐</span>
+                      <span style={{ fontSize: 16 }}>🕐</span>
                       <div>
-                        <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 15, letterSpacing: ".06em", color: "#7acae0" }}>{lang === "en" ? "RECENT IDENTIFICATIONS" : "IDENTIFICACIONES RECIENTES"}</div>
-                        <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#3a5a6a" }}>{recentHistory.length} {lang === "en" ? "saved — tap to reload" : "guardadas — toca para ver"}</div>
+                        <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 14, letterSpacing: ".06em", color: "#7acae0" }}>{lang === "en" ? "RECENT IDENTIFICATIONS" : "IDENTIFICACIONES RECIENTES"}</div>
+                        <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#3a5a6a" }}>{recentHistory.length} {lang === "en" ? "saved — tap to view" : "guardadas — toca para ver"}</div>
                       </div>
                     </div>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4a7a9a" strokeWidth="2" strokeLinecap="round" style={{ transform: showHistory ? "rotate(180deg)" : "none", transition: "transform .2s", flexShrink: 0 }}><polyline points="6 9 12 15 18 9"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4a7a9a" strokeWidth="2" strokeLinecap="round" style={{ transform: showHistory ? "rotate(180deg)" : "none", transition: "transform .2s", flexShrink: 0 }}><polyline points="6 9 12 15 18 9"/></svg>
                   </div>
                   {showHistory && (
                     <div>
@@ -2569,18 +2574,13 @@ function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIM
                 </div>
               )}
 
-              <input ref={fileRef} type="file" accept="image/*" capture="environment" style={{ display: "none" }} onChange={e => handleImage(e.target.files[0])} />
-              <input ref={galleryRef} type="file" accept="image/*" style={{ display: "none" }} onChange={e => handleImage(e.target.files[0])} />
-
-              {/* LIVE VIEWFINDER */}
-              <LiveViewfinder onCapture={handleImage} onFallback={() => { unlockAudio(); if (fileRef.current) fileRef.current.click(); }} isOnline={isOnline} t={t} lang={lang} unlockAudio={unlockAudio} />
-
+              {/* UPLOAD FROM CAMERA ROLL — below history */}
               <div onClick={() => { if (!isOnline) return; unlockAudio(); openCamera(galleryRef); }} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 12, padding: "12px 16px", marginTop: 10, cursor: isOnline ? "pointer" : "not-allowed", opacity: isOnline ? 1 : 0.4 }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7acae0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                 <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 600, fontSize: 15, letterSpacing: ".06em", color: "#7acae0" }}>{lang === "en" ? "UPLOAD FROM CAMERA ROLL" : "SUBIR DESDE LA GALERIA"}</span>
               </div>
 
-              {/* VOICE READOUT — small, below camera buttons */}
+              {/* VOICE READOUT */}
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 4px", marginTop: 10 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <span style={{ fontSize: 14 }}>🔊</span>
