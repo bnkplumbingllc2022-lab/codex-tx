@@ -1117,12 +1117,6 @@ function AppInner() {
           ))}
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          {authScreen === "signup" && (
-            <div>
-              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#d4820a", letterSpacing: ".08em", marginBottom: 6 }}>INVITE CODE</div>
-              <input autoComplete="off" value={authInvite} onChange={e => setAuthInvite(e.target.value)} placeholder="CODEX-001" style={{ width: "100%", background: "#161c22", border: "1px solid #2a3540", borderRadius: 10, padding: "12px 14px", color: "#e8f0f8", fontFamily: "'Barlow Condensed',sans-serif", fontSize: 16, letterSpacing: ".06em", boxSizing: "border-box", outline: "none" }} />
-            </div>
-          )}
           <div>
             <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: "#d4820a", letterSpacing: ".08em", marginBottom: 6 }}>EMAIL</div>
             <input type="email" autoComplete="email" value={authEmail} onChange={e => setAuthEmail(e.target.value)} placeholder="you@example.com" style={{ width: "100%", background: "#161c22", border: "1px solid #2a3540", borderRadius: 10, padding: "12px 14px", color: "#e8f0f8", fontFamily: "'Lora',serif", fontSize: 15, boxSizing: "border-box", outline: "none" }} />
@@ -1150,7 +1144,7 @@ function AppInner() {
           </button>
         </div>
         <div style={{ textAlign: "center", marginTop: 24, fontFamily: "'Lora',serif", fontSize: 12, color: "#3a5a6a" }}>
-          {authScreen === "login" ? "Need access? Contact your administrator for an invite code." : "Already have an account? Switch to Sign In above."}
+          {authScreen === "login" ? "Don't have an account? Switch to Create Account above." : "Already have an account? Switch to Sign In above."}
         </div>
       </div>
     </div>
