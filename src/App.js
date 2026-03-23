@@ -2093,7 +2093,7 @@ function LiveViewfinder({ onCapture, onFallback, isOnline, t, lang }) {
   }
 
   return (
-    <div style={{ position: "relative", borderRadius: 14, overflow: "hidden", background: "#000", aspectRatio: "4/3" }}>
+    <div style={{ position: "relative", borderRadius: 14, overflow: "hidden", background: "#000", aspectRatio: "4/3", maxHeight: 280 }}>
       <video ref={videoRef} autoPlay playsInline muted style={{ width: "100%", height: "100%", objectFit: "cover", display: camReady ? "block" : "none" }} />
       <canvas ref={canvasRef} style={{ display: "none" }} />
       {!camReady && (
@@ -2197,6 +2197,11 @@ function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIM
         try { unlockAudio(); if (fileRef.current) fileRef.current.click(); } catch(e) {}
       };
     }
+    // Scroll content area to top when identify screen mounts
+    try {
+      const cnt = document.querySelector('.cnt');
+      if (cnt) cnt.scrollTop = 0;
+    } catch(e) {}
     return () => { if (cameraLaunchRef) cameraLaunchRef.current = null; };
   }, []);
 
