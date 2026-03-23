@@ -1032,23 +1032,23 @@ function AppInner() {
   };
 
   const startCheckout = async (priceId) => {
-    if (!authUser?.email) return;
+    const email = authUser?.email || authEmail;
+    if (!email) { alert("Please sign in first"); return; }
     try {
       const res = await fetch("/api/checkout", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ priceId, email: authUser.email })
+        body: JSON.stringify({ priceId, email })
       });
       const data = await res.json();
       if (data.url) window.location.href = data.url;
+      else alert("Could not start checkout — " + (data.error || "please try again"));
     } catch(e) { alert("Could not start checkout — please try again"); }
   };
 
   const doAuth = async (action) => {
     setAuthError(""); setAuthLoading(true);
     try {
-      const body = action === "signup"
-        ? { action, email: authEmail.trim(), password: authPassword, inviteCode: authInvite.trim().toUpperCase() }
-        : { action, email: authEmail.trim(), password: authPassword };
+      const body = { action, email: authEmail.trim(), password: authPassword };
       const res = await fetch("/api/auth", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
       const data = await res.json();
       if (!data.success) { setAuthError(data.error || "Something went wrong"); }
@@ -1621,7 +1621,7 @@ function AppInner() {
             <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, color: "#7acae0", fontWeight: 700, letterSpacing: ".06em" }}>{lang === "en" ? "SPANISH" : "ENGLISH"}</span>
           </button>
           {/* LOGOUT */}
-          <button onClick={() => { setAuthed(false); setAuthEmail(""); setAuthPassword(""); setAuthInvite(""); setAuthUser(null); }} style={{ background: "transparent", border: "1px solid #2a3038", borderRadius: 8, padding: "5px 8px", cursor: "pointer" }} title="Sign out">
+          <button onClick={() => { setAuthed(false); setAuthEmail(""); setAuthPassword(""); setAuthUser(null); }} style={{ background: "transparent", border: "1px solid #2a3038", borderRadius: 8, padding: "5px 8px", cursor: "pointer" }} title="Sign out">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3a5a6a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           </button>
         </div>
