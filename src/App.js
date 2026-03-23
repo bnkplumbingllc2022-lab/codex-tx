@@ -1214,7 +1214,15 @@ function AppInner() {
   const cameraLaunchRef = useRef(null);
   const currentSpeechRef = useRef(null); // tracks { enText, esText } of what's currently speaking
   const scrollTop = () => { try { if (cntRef.current) cntRef.current.scrollTop = 0; } catch(e) {} };
-  const unlockAudio = () => { if (!audioRef.current) { audioRef.current = new Audio(); } };
+  const unlockAudio = () => {
+    try {
+      if (!audioRef.current) audioRef.current = new Audio();
+      // Play a silent buffer to unlock iOS audio context during user gesture
+      const silent = new Audio("data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//OEAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAABAAADQgD///////////////////////////////////////////8AAAA8TGF2YzU4LjU0AAAAAAAAAAAAAAAAJAYAAAAAAAADQhSS7QAAAAAAAAAAAAAAAAAAAAD/84SEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVvEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+      silent.volume = 0.001;
+      silent.play().catch(() => {});
+    } catch(e) {}
+  };
   const stopSpeaking = () => {
     currentSpeechRef.current = null;
     if (audioRef.current) { try { audioRef.current.pause(); audioRef.current.currentTime = 0; } catch(e) {} }
@@ -1252,13 +1260,21 @@ function AppInner() {
         audioRef.current = audio;
         audio.onended = () => setIsSpeaking(false);
         audio.onerror = () => { setIsSpeaking(false); };
-        // iOS requires play() to be called synchronously after a user gesture
-        // Use a try/catch and retry once if it fails
         try {
-          await audio.play();
-        } catch(playErr) {
-          try { await audio.play(); } catch(e2) { setIsSpeaking(false); }
-        }
+          const playPromise = audio.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(() => {
+              // iOS blocked autoplay — fall back to browser TTS
+              try {
+                const utt = new SpeechSynthesisUtterance(text.substring(0, 400));
+                utt.lang = lang === "es" ? "es-MX" : "en-US";
+                utt.rate = 0.92;
+                utt.onend = () => setIsSpeaking(false);
+                window.speechSynthesis.speak(utt);
+              } catch(e2) { setIsSpeaking(false); }
+            });
+          }
+        } catch(playErr) { setIsSpeaking(false); }
       } else {
         clearTimeout(fallbackTimer);
         googleSucceeded = true;
@@ -2035,7 +2051,7 @@ export default function App() {
 }
 
 // ─── LIVE VIEWFINDER COMPONENT ───────────────────────────────
-function LiveViewfinder({ onCapture, onFallback, isOnline, t, lang }) {
+function LiveViewfinder({ onCapture, onFallback, isOnline, t, lang, unlockAudio }) {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const streamRef = useRef(null);
@@ -2068,6 +2084,8 @@ function LiveViewfinder({ onCapture, onFallback, isOnline, t, lang }) {
   }, []);
 
   const capture = () => {
+    // Unlock audio FIRST while still in user gesture context
+    try { if (unlockAudio) unlockAudio(); } catch(e) {}
     if (!camReady || !videoRef.current || !canvasRef.current) { onFallback(); return; }
     try {
       const video = videoRef.current;
@@ -2328,18 +2346,35 @@ function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIM
 
   const saveToHistory = (enParts, esParts, preview) => {
     try {
-      const entry = {
-        id: Date.now(),
-        timestamp: new Date().toLocaleString(),
-        imagePreview: preview,
-        partsEn: enParts,
-        partsEs: esParts,
-        summary: enParts.slice(0, 3).map(p => p.name).join(", ") + (enParts.length > 3 ? ` +${enParts.length - 3} more` : "")
-      };
-      setRecentHistory(prev => {
-        const updated = [entry, ...prev].slice(0, 10);
-        try { localStorage.setItem("codex_recent_history", JSON.stringify(updated)); } catch {}
-        return updated;
+      // Create a small 120x90 thumbnail for storage — full image is too large for localStorage
+      const makeThumbnail = (dataUrl) => new Promise(resolve => {
+        try {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = 120; canvas.height = 90;
+            canvas.getContext("2d").drawImage(img, 0, 0, 120, 90);
+            resolve(canvas.toDataURL("image/jpeg", 0.6));
+          };
+          img.onerror = () => resolve(null);
+          img.src = dataUrl;
+        } catch(e) { resolve(null); }
+      });
+
+      makeThumbnail(preview).then(thumb => {
+        const entry = {
+          id: Date.now(),
+          timestamp: new Date().toLocaleString(),
+          imagePreview: thumb || preview,
+          partsEn: enParts,
+          partsEs: esParts,
+          summary: enParts.slice(0, 3).map(p => p.name).join(", ") + (enParts.length > 3 ? ` +${enParts.length - 3} more` : "")
+        };
+        setRecentHistory(prev => {
+          const updated = [entry, ...prev].slice(0, 5); // cap at 5
+          try { localStorage.setItem("codex_recent_history", JSON.stringify(updated)); } catch {}
+          return updated;
+        });
       });
     } catch {}
   };
@@ -2520,7 +2555,7 @@ function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIM
                       {recentHistory.map(function(entry) {
                         return (
                           <div key={entry.id} onClick={() => { setPartsEn(entry.partsEn); setPartsEs(entry.partsEs); setImagePreview(entry.imagePreview); setPhase("results"); }} style={{ display: "flex", gap: 12, alignItems: "center", background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "10px 12px", marginBottom: 8, cursor: "pointer" }}>
-                            {entry.imagePreview && <img src={entry.imagePreview} alt="" style={{ width: 48, height: 48, objectFit: "cover", borderRadius: 8, flexShrink: 0 }} />}
+                            {entry.imagePreview && <img src={entry.imagePreview} alt="" style={{ width: 72, height: 54, objectFit: "cover", borderRadius: 8, flexShrink: 0, border: "1px solid #2a3540" }} />}
                             <div style={{ flex: 1, minWidth: 0 }}>
                               <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, fontWeight: 600, color: "#c0d0d8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{entry.summary}</div>
                               <div style={{ fontFamily: "'Lora',serif", fontSize: 11, color: "#3a5a6a" }}>{entry.timestamp}</div>
@@ -2541,7 +2576,7 @@ function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIM
               <input ref={galleryRef} type="file" accept="image/*" style={{ display: "none" }} onChange={e => handleImage(e.target.files[0])} />
 
               {/* LIVE VIEWFINDER */}
-              <LiveViewfinder onCapture={handleImage} onFallback={() => { unlockAudio(); if (fileRef.current) fileRef.current.click(); }} isOnline={isOnline} t={t} lang={lang} />
+              <LiveViewfinder onCapture={handleImage} onFallback={() => { unlockAudio(); if (fileRef.current) fileRef.current.click(); }} isOnline={isOnline} t={t} lang={lang} unlockAudio={unlockAudio} />
 
               <div onClick={() => { if (!isOnline) return; unlockAudio(); openCamera(galleryRef); }} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 12, padding: "12px 16px", marginTop: 10, cursor: isOnline ? "pointer" : "not-allowed", opacity: isOnline ? 1 : 0.4 }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7acae0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
