@@ -1542,6 +1542,7 @@ function AppInner() {
         .sic{position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none;color:#4a5a6a}
         .mb{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:6px;border-radius:50%;display:flex;align-items:center;justify-content:center}
         .mb.on{animation:pulse 1s infinite}
+        .sw{position:relative;margin-bottom:16px}
         .cs{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;margin-bottom:16px}
         .cb{flex-shrink:0;background:#161c22;border:1px solid #2a3540;border-radius:20px;padding:6px 14px;color:#6a8a9a;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:.05em;cursor:pointer;transition:all .15s;white-space:nowrap}
         .cb.active{background:#2a1e0a;border-color:#d4820a;color:#f0a030}
@@ -1555,7 +1556,7 @@ function AppInner() {
         .ni:active{opacity:.6}
         .nl{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.08em;font-weight:600}
         .hdr{position:sticky;top:0;background:linear-gradient(180deg,#0e1215 85%,rgba(14,18,21,0));border-bottom:1px solid #d4820a;z-index:50;padding:0 16px;display:flex;align-items:center;height:56px;gap:8px}
-        .cnt{flex:1;overflow-y:auto;padding:16px 16px 90px}
+        .cnt{flex:1;overflow-y:auto;padding:16px 16px 100px;height:calc(100vh - 56px);}
         .hb{background:#161c22;border:1px solid #2a3540;border-radius:14px;padding:18px 16px;display:flex;align-items:center;gap:14px;margin-bottom:10px;cursor:pointer}
         .hb:active{background:#1e262e}
         .ib{background:#161c22;border:1px solid #2a3540;border-radius:12px;padding:16px;margin-bottom:12px}
@@ -1615,13 +1616,12 @@ function AppInner() {
           <button className="lang-btn p" onClick={() => {
             const newLang = lang === "en" ? "es" : "en";
             setLang(newLang);
-            if (isSpeaking && currentSpeechRef.current) {
-              const { enText, esText } = currentSpeechRef.current;
-              const newText = newLang === "es" ? esText : enText;
-              stopSpeaking();
-              setTimeout(() => speak(newText, enText, esText), 100);
-            } else {
-              stopSpeaking();
+            // Save speech content BEFORE stopSpeaking clears the ref
+            const saved = currentSpeechRef.current;
+            stopSpeaking();
+            if (saved) {
+              const newText = newLang === "es" ? saved.esText : saved.enText;
+              setTimeout(() => speak(newText, saved.enText, saved.esText), 150);
             }
           }}>
             <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, color: "#7acae0", fontWeight: 700, letterSpacing: ".06em" }}>{lang === "en" ? "SPANISH" : "ENGLISH"}</span>
