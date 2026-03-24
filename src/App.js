@@ -1366,6 +1366,25 @@ function AppInner() {
   const showBack = selectedCode || selectedJurisdiction || selectedThirdParty || showDiagram;
   const navTo = (s) => { setScreen(s); setSelectedCode(null); setSelectedJurisdiction(null); setSelectedThirdParty(null); setSearchQuery(""); setJSearchQuery(""); setSelectedCategory("All"); setShowDiagram(false); };
 
+  // Push a history entry whenever the user navigates deeper so browser back stays inside the app
+  useEffect(() => {
+    if (selectedCode || selectedJurisdiction || selectedThirdParty || showDiagram) {
+      window.history.pushState({ inApp: true }, "");
+    }
+  }, [selectedCode, selectedJurisdiction, selectedThirdParty, showDiagram]);
+
+  useEffect(() => {
+    const onPop = (e) => {
+      if (showBack) {
+        e.preventDefault();
+        goBack();
+        window.history.pushState({ inApp: true }, "");
+      }
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [showBack, selectedCode, selectedJurisdiction, selectedThirdParty, showDiagram]);
+
   // Safe gated handlers — separates gate check from state update to prevent React crash
   const openCode = (code) => {
     try {
