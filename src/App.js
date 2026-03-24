@@ -1023,7 +1023,7 @@ function AppInner() {
     try {
       const res = await fetch("/api/subscription", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email })
+        body: JSON.stringify({ email: email.toLowerCase().trim() })
       });
       const data = await res.json();
       setTier(data.tier || "free");
@@ -1366,19 +1366,27 @@ function AppInner() {
   const showBack = selectedCode || selectedJurisdiction || selectedThirdParty || showDiagram;
   const navTo = (s) => { setScreen(s); setSelectedCode(null); setSelectedJurisdiction(null); setSelectedThirdParty(null); setSearchQuery(""); setJSearchQuery(""); setSelectedCategory("All"); setShowDiagram(false); };
 
-  // Push a history entry whenever the user navigates deeper so browser back stays inside the app
+  // iOS Safari back button fix — push initial entry on mount so back button has somewhere to go
+  useEffect(() => {
+    window.history.pushState({ inApp: true, depth: 0 }, "");
+  }, []);
+
+  // Push a history entry whenever the user navigates deeper
   useEffect(() => {
     if (selectedCode || selectedJurisdiction || selectedThirdParty || showDiagram) {
-      window.history.pushState({ inApp: true }, "");
+      window.history.pushState({ inApp: true, depth: 1 }, "");
     }
   }, [selectedCode, selectedJurisdiction, selectedThirdParty, showDiagram]);
 
   useEffect(() => {
-    const onPop = (e) => {
+    const onPop = () => {
       if (showBack) {
-        e.preventDefault();
         goBack();
-        window.history.pushState({ inApp: true }, "");
+        // Re-push so back button still has an entry to pop next time
+        setTimeout(() => window.history.pushState({ inApp: true, depth: 1 }, ""), 0);
+      } else {
+        // Nothing to go back to inside app — re-push to prevent exiting
+        window.history.pushState({ inApp: true, depth: 0 }, "");
       }
     };
     window.addEventListener("popstate", onPop);
