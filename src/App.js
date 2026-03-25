@@ -953,14 +953,14 @@ const Icon = ({ name, size = 20, color = "currentColor" }) => {
 // ─── MAIN APP ────────────────────────────────────────────────
 function AppInner() {
   // ── AUTH STATE ───────────────────────────────────────────
-  const [authed, setAuthed] = useState(false);
+  const [authed, setAuthed] = useState(() => { try { return localStorage.getItem('codex_authed') === 'true'; } catch(e) { return false; } });
   const [authScreen, setAuthScreen] = useState("login");
   const [authEmail, setAuthEmail] = useState("");
   const [authPassword, setAuthPassword] = useState("");
   const [authInvite, setAuthInvite] = useState("");
   const [authError, setAuthError] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
-  const [authUser, setAuthUser] = useState(null);
+  const [authUser, setAuthUser] = useState(() => { try { const u = localStorage.getItem('codex_user'); return u ? JSON.parse(u) : null; } catch(e) { return null; } });
 
   // ── SUBSCRIPTION & USAGE ─────────────────────────────────
   const [tier, setTier] = useState("free"); // "free" | "basic" | "pro"
@@ -1056,6 +1056,7 @@ function AppInner() {
         setAuthUser(data.user);
         setAuthed(true);
         setShowLanding(false);
+        try { localStorage.setItem('codex_authed', 'true'); localStorage.setItem('codex_user', JSON.stringify(data.user)); } catch(e) {}
         await checkSubscription(data.user.email);
       }
     } catch(e) { setAuthError("Network error — check your connection"); }
@@ -1084,6 +1085,7 @@ function AppInner() {
         setAuthUser({ email });
         setAuthed(true);
         setShowLanding(false);
+        try { localStorage.setItem('codex_authed', 'true'); localStorage.setItem('codex_user', JSON.stringify({ email })); } catch(e) {}
         checkSubscription(email);
         window.history.replaceState(null, "", window.location.pathname);
       }
@@ -1648,7 +1650,7 @@ function AppInner() {
             <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, color: "#7acae0", fontWeight: 700, letterSpacing: ".06em" }}>{lang === "en" ? "SPANISH" : "ENGLISH"}</span>
           </button>
           {/* LOGOUT */}
-          <button onClick={() => { setAuthed(false); setAuthEmail(""); setAuthPassword(""); setAuthUser(null); }} style={{ background: "transparent", border: "1px solid #2a3038", borderRadius: 8, padding: "5px 8px", cursor: "pointer" }} title="Sign out">
+          <button onClick={() => { setAuthed(false); setAuthEmail(""); setAuthPassword(""); setAuthUser(null); try { localStorage.removeItem('codex_authed'); localStorage.removeItem('codex_user'); } catch(e) {} }} style={{ background: "transparent", border: "1px solid #2a3038", borderRadius: 8, padding: "5px 8px", cursor: "pointer" }} title="Sign out">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3a5a6a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           </button>
         </div>
@@ -1813,7 +1815,7 @@ function AppInner() {
                   </button>
                 )}
                 {j.scheduleHours && <div style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#3a5a6a", padding: "6px 0" }}>🕐 {t.scheduleHours}: {j.scheduleHours}</div>}
-                {j.permitUrl && <div style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#3a5a6a", padding: "4px 0" }}>🌐 {j.permitUrl}</div>}
+                {j.permitUrl && <div onClick={() => window.open('https://' + j.permitUrl.replace(/^https?:\/\//,''), '_blank')} style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#7acae0", padding: "4px 0", cursor: "pointer", textDecoration: "underline" }}>🌐 {j.permitUrl}</div>}
                 {j.staffDirectory && <div style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#3a8a9a", padding: "4px 0" }}>👤 Staff directory: {j.staffDirectory}</div>}
               </div>
 
@@ -2617,7 +2619,7 @@ function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIM
               )}
 
               {/* UPLOAD FROM CAMERA ROLL — below history */}
-              <div onClick={() => { if (!isOnline) return; unlockAudio(); openCamera(galleryRef); }} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 12, padding: "12px 16px", marginTop: 10, cursor: isOnline ? "pointer" : "not-allowed", opacity: isOnline ? 1 : 0.4 }}>
+              <div onClick={() => { if (!isOnline) return; unlockAudio(); try { if (galleryRef.current) { galleryRef.current.click(); } } catch(e) {} }} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 12, padding: "12px 16px", marginTop: 10, cursor: isOnline ? "pointer" : "not-allowed", opacity: isOnline ? 1 : 0.4 }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7acae0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                 <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 600, fontSize: 15, letterSpacing: ".06em", color: "#7acae0" }}>{lang === "en" ? "UPLOAD FROM CAMERA ROLL" : "SUBIR DESDE LA GALERIA"}</span>
               </div>
