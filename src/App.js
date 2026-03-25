@@ -1709,7 +1709,10 @@ function AppInner() {
                 { s: "jurisdiction", icon: "map", bg: "linear-gradient(135deg,#1a3a2a,#0f2218)", border: "#2a6a3a", ic: "#4aba6a", ti: t.jurisdiction, sub: `${cityCount} ${t.jurisdictionSub}` },
                 { s: "inspectors", icon: "user", bg: "linear-gradient(135deg,#2a2010,#1a1408)", border: "#6a4a10", ic: "#d4820a", ti: t.inspectors, sub: t.inspectorsSub }
               ].map(item => (
-                <div key={item.s} className="hb p" onClick={() => navTo(item.s)} style={{ background: item.bg, border: `1px solid ${item.border}` }}>
+                <div key={item.s} className="hb p" onClick={() => {
+                  if (tier === "basic" && item.s === "inspectors") { setUpgradeFeature("inspectors"); setShowUpgrade(true); return; }
+                  navTo(item.s);
+                }} style={{ background: item.bg, border: `1px solid ${item.border}` }}>
                   <div style={{ width: 44, height: 44, background: "rgba(0,0,0,.3)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, border: `1px solid ${item.border}` }}><Icon name={item.icon} size={22} color={item.ic} /></div>
                   <div><div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 16, letterSpacing: ".05em", color: "#e8f0f8", marginBottom: 2 }}>{item.ti}</div><div style={{ fontFamily: "'Lora',serif", fontSize: 12, color: "#5a7a8a" }}>{item.sub}</div></div>
                   <div style={{ marginLeft: "auto", color: item.ic, opacity: 0.6 }}><Icon name="chevron" size={18} color={item.ic} /></div>
@@ -1878,7 +1881,7 @@ function AppInner() {
 
               <div className="sl">{t.amendments}</div>
               <div className="ib" style={{ marginBottom: 16 }}>{j.amendments.map((a, i) => <div key={i} className="ar"><div className="dot" /><div style={{ fontFamily: "'Lora',serif", fontSize: 14, color: "#b0c8d8", lineHeight: 1.6 }}>{a}</div></div>)}</div>
-              {j.thirdParty && j.thirdParty.length > 0 && <><div className="sl">{t.thirdParty}</div><div style={{ display: "flex", flexWrap: "wrap", marginBottom: 16 }}>{j.thirdParty.map(tp => <div key={tp} className="tc p" onClick={() => { setSelectedThirdParty(tp); setScreen("inspectors"); }}><span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, color: "#4a9a6a", fontWeight: 600 }}>{tp}</span><Icon name="chevron" size={12} color="#2a6a2a" /></div>)}</div></>}
+              {j.thirdParty && j.thirdParty.length > 0 && <><div className="sl">{t.thirdParty}</div><div style={{ display: "flex", flexWrap: "wrap", marginBottom: 16 }}>{j.thirdParty.map(tp => <div key={tp} className="tc p" onClick={() => { if (tier === "basic") { setUpgradeFeature("inspectors"); setShowUpgrade(true); return; } setSelectedThirdParty(tp); setScreen("inspectors"); }}><span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, color: "#4a9a6a", fontWeight: 600 }}>{tp}</span><Icon name="chevron" size={12} color="#2a6a2a" /></div>)}</div></>}
 
               {/* REGIONAL SUPPLIERS */}
               {(function() {
@@ -2044,7 +2047,10 @@ function AppInner() {
           const isCamera = item.id === "identify";
           if (isCamera) {
             return (
-              <div key={item.id} className="ni" onClick={() => navTo(item.id)}>
+              <div key={item.id} className="ni" onClick={() => {
+                if (tier === "basic") { setUpgradeFeature("identify"); setShowUpgrade(true); return; }
+                navTo(item.id);
+              }}>
                 <div style={{ width: 46, height: 46, borderRadius: "50%", background: active ? "#c85a30" : "linear-gradient(135deg,#2a1a0f,#1a2a3a)", border: `2px solid ${active ? "#ff7a50" : "#c85a30"}`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 ${active ? "16px" : "6px"} rgba(200,90,48,${active ? ".6" : ".3"})`, marginBottom: 2 }}>
                   <Icon name="camera" size={22} color={active ? "#fff" : "#c85a30"} />
                 </div>
@@ -2691,7 +2697,7 @@ function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIM
                 </div>
               )}
               {parts.length > 0 && (
-                <div onClick={() => { setActiveTab("estimate"); setEstimateParts(parts.map(function(p) { return Object.assign({}, p, {qty: 1}); })); }} style={{ display: "flex", alignItems: "center", gap: 8, background: "#0a1a10", border: "1px solid #1a4a2a", borderRadius: 10, padding: "10px 14px", marginBottom: 14, cursor: "pointer" }}>
+                <div onClick={() => { if (tier === "basic") { setUpgradeFeature("estimate"); setShowUpgrade(true); return; } setActiveTab("estimate"); setEstimateParts(parts.map(function(p) { return Object.assign({}, p, {qty: 1}); })); }} style={{ display: "flex", alignItems: "center", gap: 8, background: "#0a1a10", border: "1px solid #1a4a2a", borderRadius: 10, padding: "10px 14px", marginBottom: 14, cursor: "pointer" }}>
                   <span style={{ fontSize: 16 }}>💰</span>
                   <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, color: "#4a9a6a", fontWeight: 700 }}>{lang === "en" ? "ESTIMATE THIS JOB" : "ESTIMAR ESTE TRABAJO"}</div>
                 </div>
@@ -2833,7 +2839,7 @@ function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIM
             <input type="text" value={jobAddress} onChange={function(e) { setJobAddress(e.target.value); }} placeholder={t.jobModeAddressPlaceholder} style={{ width: "100%", background: "#1a1f24", border: "1px solid #2a3038", borderRadius: 10, padding: "10px 14px", fontFamily: "'Lora',serif", fontSize: 14, color: "#c0d0d8", outline: "none", boxSizing: "border-box" }} />
           </div>
           <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 16 }}>
-            <div onClick={function() { if (!isOnline || jobPhotos.length >= 10) return; if (tier !== "pro") { const count = getUsage()["jobmode"] || 0; if (count >= (FREE_LIMITS["jobmode"] || 1)) { setTimeout(() => { setUpgradeFeature("jobmode"); setShowUpgrade(true); }, 0); return; } bumpUsage("jobmode"); } if (jobFileRef.current) jobFileRef.current.click(); }} style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: jobPhotos.length >= 10 ? "#1a1f24" : "#1a1a0a", border: "1px solid " + (jobPhotos.length >= 10 ? "#2a3038" : "#c85a30"), borderRadius: 12, padding: "14px 16px", cursor: (!isOnline || jobPhotos.length >= 10) ? "not-allowed" : "pointer", opacity: (!isOnline || jobPhotos.length >= 10) ? 0.5 : 1 }}>
+            <div onClick={function() { if (!isOnline || jobPhotos.length >= 10) return; if (tier === "basic") { setUpgradeFeature("jobmode"); setShowUpgrade(true); return; } if (tier !== "pro") { const count = getUsage()["jobmode"] || 0; if (count >= (FREE_LIMITS["jobmode"] || 1)) { setTimeout(() => { setUpgradeFeature("jobmode"); setShowUpgrade(true); }, 0); return; } bumpUsage("jobmode"); } if (jobFileRef.current) jobFileRef.current.click(); }} style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: jobPhotos.length >= 10 ? "#1a1f24" : "#1a1a0a", border: "1px solid " + (jobPhotos.length >= 10 ? "#2a3038" : "#c85a30"), borderRadius: 12, padding: "14px 16px", cursor: (!isOnline || jobPhotos.length >= 10) ? "not-allowed" : "pointer", opacity: (!isOnline || jobPhotos.length >= 10) ? 0.5 : 1 }}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={jobPhotos.length >= 10 ? "#3a5a6a" : "#c85a30"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
               <div>
                 <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 15, letterSpacing: ".06em", color: jobPhotos.length >= 10 ? "#3a5a6a" : "#e0e8f0" }}>{t.jobModePhoto}</div>
@@ -2906,7 +2912,7 @@ function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIM
                   </div>
                 </div>
                 <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
-                  <div onClick={function() { setEstimateParts(jobParts); setActiveTab("estimate"); }} style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, background: "#0a1a10", border: "1px solid #1a4a2a", borderRadius: 10, padding: "12px 14px", cursor: "pointer" }}>
+                  <div onClick={function() { if (tier === "basic") { setUpgradeFeature("estimate"); setShowUpgrade(true); return; } setEstimateParts(jobParts); setActiveTab("estimate"); }} style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, background: "#0a1a10", border: "1px solid #1a4a2a", borderRadius: 10, padding: "12px 14px", cursor: "pointer" }}>
                     <span style={{ fontSize: 16 }}>💰</span>
                     <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, fontWeight: 700, color: "#4a9a6a" }}>{t.jobModeEstimate}</span>
                   </div>
