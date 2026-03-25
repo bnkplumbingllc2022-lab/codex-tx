@@ -967,7 +967,8 @@ function AppInner() {
   const [tierLoaded, setTierLoaded] = useState(true); // default true — set false only during active check
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [upgradeFeature, setUpgradeFeature] = useState("");
-  const [showLanding, setShowLanding] = useState(true);
+  // Hide landing if already logged in from previous session
+  const [showLanding, setShowLanding] = useState(() => { try { return localStorage.getItem('codex_authed') !== 'true'; } catch(e) { return true; } });
 
   // Usage counters stored in localStorage
   const getUsage = () => {
@@ -1078,6 +1079,16 @@ function AppInner() {
 
   // Handle Google OAuth redirect and Stripe return
   useEffect(() => {
+    // If already logged in from a previous session, re-check subscription
+    try {
+      const savedUser = localStorage.getItem('codex_user');
+      const isAuthed = localStorage.getItem('codex_authed') === 'true';
+      if (isAuthed && savedUser) {
+        const user = JSON.parse(savedUser);
+        if (user?.email) checkSubscription(user.email);
+      }
+    } catch(e) {}
+
     const hash = window.location.hash;
     if (hash && hash.includes("access_token")) {
       const params = new URLSearchParams(hash.replace("#", "?"));
