@@ -9,7 +9,11 @@ export default async function handler(req, res) {
     const { text, lang } = req.body;
     if (!text) return res.status(400).json({ error: "No text provided" });
 
-    const apiKey = process.env.GOOGLE_TTS_KEY || "AIzaSyBBbeRX9ycA67jWBQHUvyHYUH52-A_iMwg";
+    const apiKey = process.env.GOOGLE_TTS_KEY;
+    if (!apiKey) {
+      console.error("Missing GOOGLE_TTS_KEY env var");
+      return res.status(500).json({ error: "TTS not configured" });
+    }
 
     const languageCode = lang === "es" ? "es-US" : "en-US";
     const voiceName = lang === "es" ? "es-US-Journey-D" : "en-US-Journey-D";

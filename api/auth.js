@@ -5,8 +5,13 @@ export default async function handler(req, res) {
   if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
-  const SUPABASE_URL = process.env.SUPABASE_URL || "https://mgvrvvhbhhgwihkrrlge.supabase.co";
-  const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ndnJ2dmhiaGhnd2loa3JybGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5Nzk2NzksImV4cCI6MjA4OTU1NTY3OX0.AJL4NxfNW-uphpVjJPvlSt8v7BFlRaFvDulX42Lld6E";
+  const SUPABASE_URL = process.env.SUPABASE_URL;
+  const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
+
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+    console.error("Missing Supabase env vars in auth");
+    return res.status(500).json({ error: "Server misconfiguration" });
+  }
 
   try {
     const { action, email, password } = req.body;
@@ -17,7 +22,6 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: "Email and password required" });
       }
 
-      // Create user in Supabase Auth
       const signupRes = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
         method: "POST",
         headers: {

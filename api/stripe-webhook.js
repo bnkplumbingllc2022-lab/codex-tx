@@ -17,27 +17,40 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: `Webhook Error: ${err.message}` });
   }
 
-  const SUPABASE_URL = process.env.SUPABASE_URL || 'https://mgvrvvhbhhgwihkrrlge.supabase.co';
-  const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ndnJ2dmhiaGhnd2loa3JybGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5Nzk2NzksImV4cCI6MjA4OTU1NTY3OX0.AJL4NxfNW-uphpVjJPvlSt8v7BFlRaFvDulX42Lld6E';
+  const SUPABASE_URL = process.env.SUPABASE_URL;
+  const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY;
+
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
+    console.error('Missing Supabase env vars');
+    return res.status(500).json({ error: 'Server misconfiguration' });
+  }
 
   const supabaseUpdate = async (email, tier, stripeCustomerId, subscriptionId, periodEnd) => {
-    await fetch(`${SUPABASE_URL}/rest/v1/subscriptions`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Prefer': 'resolution=merge-duplicates'
-      },
-      body: JSON.stringify({
-        email,
-        tier,
-        stripe_customer_id: stripeCustomerId,
-        stripe_subscription_id: subscriptionId,
-        period_end: periodEnd,
-        updated_at: new Date().toISOString()
-      })
-    });
+    try {
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/subscriptions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+          'Prefer': 'resolution=merge-duplicates'
+        },
+        body: JSON.stringify({
+          email,
+          tier,
+          stripe_customer_id: stripeCustomerId,
+          stripe_subscription_id: subscriptionId,
+          period_end: periodEnd,
+          updated_at: new Date().toISOString()
+        })
+      });
+      if (!response.ok) {
+        const errText = await response.text();
+        console.error('Supabase update failed:', response.status, errText);
+      }
+    } catch (err) {
+      console.error('Supabase update threw:', err.message);
+    }
   };
 
   try {
@@ -98,11 +111,12 @@ export default async function handler(req, res) {
   res.status(200).json({ received: true });
 }
 
+// Collect raw Buffer chunks — required for Stripe signature verification
 async function getRawBody(req) {
   return new Promise((resolve, reject) => {
-    let data = '';
-    req.on('data', chunk => { data += chunk; });
-    req.on('end', () => resolve(data));
+    const chunks = [];
+    req.on('data', chunk => { chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk); });
+    req.on('end', () => resolve(Buffer.concat(chunks)));
     req.on('error', reject);
   });
 }
