@@ -1,5 +1,12 @@
 import Stripe from 'stripe';
 
+// Tell Vercel NOT to parse the body — Stripe signature verification requires the raw body
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {

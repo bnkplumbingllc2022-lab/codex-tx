@@ -2,10 +2,5 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
   "outputDirectory": "build",
-  "framework": "create-react-app",
-  "functions": {
-    "api/stripe-webhook.js": {
-      "bodyParser": false
-    }
-  }
+  "framework": "create-react-app"
 }
