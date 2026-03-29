@@ -24,8 +24,13 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: `Webhook Error: ${err.message}` });
   }
 
-  const SUPABASE_URL = process.env.SUPABASE_URL || "https://mgvrvvhbhhgwihkrrlge.supabase.co";
-  const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const SUPABASE_URL = process.env.SUPABASE_URL;
+  const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY;
+
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
+    console.error('Missing Supabase env vars');
+    return res.status(500).json({ error: 'Server misconfiguration' });
+  }
 
   const supabaseUpdate = async (email, tier, stripeCustomerId, subscriptionId, periodEnd) => {
     try {

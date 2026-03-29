@@ -1249,7 +1249,7 @@ function AppInner() {
           window.speechSynthesis.speak(utt);
         } catch(e) { setIsSpeaking(false); }
       }
-    }, 1500);
+    }, 400);
     try {
       const res = await fetch("/api/tts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text, lang }) });
       const data = await res.json();
@@ -2345,6 +2345,8 @@ function IdentifyScreen({ t, lang, isOnline, tier, getUsage, bumpUsage, FREE_LIM
       setImagePreview(dataUrl);
       setPhase("analyzing");
       setError(null);
+      // Speak immediately so user hears something while Claude processes
+      speak(lang === "es" ? "Analizando la foto, un momento..." : "Got it, analyzing your photo now...");
       await analyzeImage(base64, lang);
     };
     reader.readAsDataURL(file);
