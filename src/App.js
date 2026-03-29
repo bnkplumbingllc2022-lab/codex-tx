@@ -1685,9 +1685,7 @@ function AppInner() {
           </div>
         ) : (
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ width: 30, height: 30, background: "linear-gradient(135deg,#d4820a,#a05a06)", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M 4 20 L 14 10"/><path d="M 14 10 C 14 10 13 7 15 5 C 17 3 20 3.5 20 3.5 L 18 5.5 L 18.5 7 L 20 7.5 L 22 5.5 C 22 5.5 22 8.5 20 10 C 18 11.5 15 10.5 14 10 Z"/><path d="M 4 20 C 3 21 2 21 2 20 C 2 19 3 18 4 18 L 6 20 Z"/></svg>
-            </div>
+            <img src="/icon-192.png" alt="CODEX TX" style={{ width: 30, height: 30, borderRadius: 8, display: "block" }} />
             <div>
               <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 20, letterSpacing: ".1em", color: "#e8f0f8", lineHeight: 1 }}>CODEX TX</div>
               <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 9, color: "#d4820a", letterSpacing: ".15em" }}>{t.appSub}</div>
