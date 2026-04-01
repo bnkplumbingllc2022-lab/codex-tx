@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, Component } from "react";
+import { Analytics } from '@vercel/analytics/react';
 
 // ─── ERROR BOUNDARY ──────────────────────────────────────────
 class ErrorBoundary extends Component {
@@ -2132,6 +2133,7 @@ export default function App() {
   return (
     <ErrorBoundary>
       <AppInner />
+      <Analytics />
     </ErrorBoundary>
   );
 }
